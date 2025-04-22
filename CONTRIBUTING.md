@@ -15,7 +15,7 @@ Please follow the steps below to keep our workflow clean and consistent.
    ```
 
 2. **Create your own branch**  
-   Always work on a feature branch — never push directly to `main` or `release-*`.
+   Always work on a feature branch — never push directly to `master` or `release-*`.
 
    Use this format:
    ```
@@ -35,29 +35,31 @@ Please follow the steps below to keep our workflow clean and consistent.
 ## 🔁 Pull Requests (PRs)
 
 After pushing, GitHub will suggest opening a **Pull Request**.  
-We require all changes to go through a PR — no direct pushes to `main` or `release-*`.
+We require all changes to go through a PR — no direct pushes to `master` or `release-*`.
 
 ### PR Guidelines:
 - Keep PRs focused on a single task or fix
 - Add a brief but meaningful description
 - Link any related issues or tasks
 - Use clear titles like:  
-  `✨ Add dietary tag filtering to recipe search`
+  `Add dietary tag filtering to recipe search`
 
 ## ✅ Commit Messages
 
-Use present tense, imperative tone. Examples:
+Use present tense and include a scope (e.g., `backend`, `ui`, `db`, `docs`). 
+
+Examples:
 ```
-Add validation for login form  
-Fix mobile view overflow in dashboard  
-Refactor recipe model to support categories  
+backend: Add validation for login form  
+ui: Fix mobile view overflow in dashboard  
+db: Refactor recipe model to support categories  
 ```
 
 
 ## 🔒 Branch Protections
 
 The following branches are protected:
-- `main`
+- `master`
 - Any `release-*` branches
 
 This means:
@@ -68,10 +70,10 @@ This means:
 ## 🧪 Testing & Review
 
 Before creating a PR:
-- Test your changes locally
-- Ensure no console errors or major UI issues
 - Write clean, modular code using the MVC structure
-
+- Test your changes locally or in a shared environment by merging your branch into the `dev` branch.<br/>
+Ultimately, please make sure there are no critical bugs, console errors, or major issues before requesting a review.
+- Ensure no console errors or major UI issues
 
 After creating a PR:
 - Add PR link to Trello ticket
@@ -79,6 +81,7 @@ After creating a PR:
 - Fix any feedback
 - An authorized team member will merge once approved
 
+P.S. If you are requested to be a reviewer, please review the code promptly and leave constructive feedback or approval to keep the workflow moving smoothly.
 
 ## 🙌 Thank You
 

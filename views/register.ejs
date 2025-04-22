@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Register - FoodMate</title>
+        <link rel="stylesheet" href="/css/style.css" />
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+            rel="stylesheet"
+        />
+    </head>
+    <body class="left-side">
+        <!-- reuse same layout as login, no right-side banner -->
+
+        <div class="card login-card z-depth-2">
+            <h5 class="center-align">
+                Create Your
+                <strong>FoodMate</strong>
+                Account
+            </h5>
+            <p class="center-align">Sign up to start planning meals</p>
+
+            <form action="/register" method="POST">
+                <div class="input-field">
+                    <input id="username" name="username" type="text" class="validate" required />
+                    <label for="username">Username</label>
+                </div>
+
+                <div class="input-field">
+                    <input id="password" name="password" type="password" class="validate" required />
+                    <label for="password">Password</label>
+                </div>
+
+                <div class="center-align">
+                    <button type="submit" class="btn waves-effect waves-light">Sign Up</button>
+                </div>
+            </form>
+
+            <div class="center-align" style="margin-top: 20px">
+                <p>
+                    Already have an account?
+                    <a href="/">Login here</a>
+                </p>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </body>
+</html>

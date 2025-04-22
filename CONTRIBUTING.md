@@ -1,7 +1,9 @@
 
 # Contributing to FoodMate
 
-👋 Welcome! This guide is for team members contributing to **FoodMate**, our collaborative meal planning app developed as part of our SIT725 Unit. 
+👋 Welcome! 
+
+This guide is for team members contributing to **FoodMate**, our collaborative meal planning app developed as part of our SIT725 Unit. 
 
 Please follow the steps below to keep our workflow clean and consistent.
 

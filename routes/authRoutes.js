@@ -32,4 +32,11 @@ router.get("/home", (req, res) => {
     res.render("home", { title: "Dashboard", user: req.session.user });
 });
 
+router.get("/api/student", (req, res) => {
+    res.json({
+        name: "April Dae Bation",
+        studentId: "S224009373",
+    });
+});
+
 export default router;

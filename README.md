@@ -1,11 +1,9 @@
 # foodmate
 **Foodmate** is a meal planning and recipe browsing web app that helps users discover recipes based on their preferences, dietary needs, and available ingredients. Built with Node.js, MongoDB, and Materialize CSS, it supports JWT authentication and third-party API integration.
 
-
-
 ## Docker Instructions (SIT725 HD Task)
 
-You can run this app using a standalone Docker image **or** using Docker Compose (recommended).
+Run this app using a standalone Docker image **or** using Docker Compose (recommended).
 
 ## Option 1: Run via Dockerfile
 
@@ -20,8 +18,6 @@ docker build -t foodmate-app .
 ```bash
 docker run -p 3000:3000 foodmate-app
 ```
-
-Replace `3000` with your actual port if your app runs on a different one. 
 
 ### Access the App
 

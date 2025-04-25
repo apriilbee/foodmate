@@ -1,4 +1,4 @@
-name: CI - Lint & Docker Build
+name: Foodmate CI Pipelined
 
 on:
   pull_request:

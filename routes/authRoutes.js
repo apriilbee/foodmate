@@ -32,4 +32,9 @@ router.get("/home", (req, res) => {
     res.render("home", { title: "Dashboard", user: req.session.user });
 });
 
+// HEALTH
+router.get("/health", (req, res) => {
+    res.status(200).json({ status: "ok" });
+});
+
 export default router;

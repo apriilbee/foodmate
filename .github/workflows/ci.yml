@@ -1,4 +1,4 @@
-name: Foodmate CI Pipelined
+name: Foodmate CI Pipeline
 
 on:
   pull_request:

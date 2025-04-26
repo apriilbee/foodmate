@@ -4,7 +4,7 @@ export const getIndex = (req, res) => {
 
 export const getHome = (req, res) => {
     if (!req.session.user) {
-        return res.redirect("/auth/login");
+        return res.redirect("/home");
     }
     res.render("home", { title: "Dashboard", user: req.session.user });
 };

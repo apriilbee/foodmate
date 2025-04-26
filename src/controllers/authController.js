@@ -1,10 +1,10 @@
-import User from "../models/User.js";
+import { loginUser, registerUser } from "../services/authService.js";
 
 export const postLogin = async (req, res) => {
     const { username, password } = req.body;
-    const user = await User.findOne({ username });
+    const user = await loginUser(username, password);
 
-    if (user && (await user.comparePassword(password))) {
+    if (user) {
         req.session.user = user;
         res.redirect("/home");
     } else {
@@ -19,13 +19,10 @@ export const getRegister = (req, res) => {
 export const postRegister = async (req, res) => {
     const { username, password } = req.body;
 
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-        return res.send("Username already exists");
+    try {
+        await registerUser(username, password);
+        res.send("Registration successful! You can now log in.");
+    } catch (error) {
+        res.send(error.message);
     }
-
-    const newUser = new User({ username, password });
-    await newUser.save();
-
-    res.send("Registration successful! You can now log in.");
 };

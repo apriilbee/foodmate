@@ -14,5 +14,5 @@ COPY . .
 # Expose the port your server listens on
 EXPOSE 3000
 
-# Run the server
-CMD ["node", "index.js"]
+# Run the server from the new entry point
+CMD ["node", "src/index.js"]

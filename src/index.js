@@ -6,10 +6,11 @@ import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 const PORT = 3000;
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/foodmate";
 
 mongoose
-    .connect("mongodb://localhost:27017/foodmate")
-    .then(() => console.log("Connected to MongoDB"))
+    .connect(MONGO_URI)
+    .then(() => console.log(`Connected to MongoDB at ${MONGO_URI}`))
     .catch((err) => console.error("MongoDB connection error:", err));
 
 app.use(bodyParser.urlencoded({ extended: true }));

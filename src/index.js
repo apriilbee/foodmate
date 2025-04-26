@@ -2,7 +2,9 @@ import express from "express";
 import bodyParser from "body-parser";
 import session from "express-session";
 import mongoose from "mongoose";
+
 import authRoutes from "./routes/authRoutes.js";
+import homeRoutes from "./routes/homeRoutes.js";
 
 const app = express();
 const PORT = 3000;
@@ -26,8 +28,8 @@ app.use(
     })
 );
 
-// Routes
-app.use("/", authRoutes);
+app.use("/auth", authRoutes);
+app.use("/", homeRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);

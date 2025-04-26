@@ -24,17 +24,4 @@ router.get("/logout", (req, res) => {
 router.get("/register", getRegister);
 router.post("/register", postRegister);
 
-// HOME
-router.get("/home", (req, res) => {
-    if (!req.session.user) {
-        return res.redirect("/");
-    }
-    res.render("home", { title: "Dashboard", user: req.session.user });
-});
-
-// HEALTH
-router.get("/health", (req, res) => {
-    res.status(200).json({ status: "ok" });
-});
-
 export default router;

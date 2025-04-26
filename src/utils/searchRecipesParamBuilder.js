@@ -31,10 +31,5 @@ export const searchRecipesParamBuilder = (category, tags) => {
         }
     });
 
-<<<<<<< Updated upstream
-    params.append("number", 6);
-
-=======
->>>>>>> Stashed changes
     return params;
 };

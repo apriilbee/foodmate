@@ -2,14 +2,6 @@ import axios from "axios";
 import { ENV } from "../utils/envLoader.js";
 import { searchRecipesParamBuilder } from "../utils/searchRecipesParamBuilder.js";
 import { SPOONACULAR } from "../constants/apiEndpoints.js";
-<<<<<<< Updated upstream
-
-export const getFilteredRecipes = async (category, tags) => {
-    const params = searchRecipesParamBuilder(category, tags);
-    params.append("apiKey", ENV.SPOONACULAR_KEY);
-    const response = await axios.get(`${SPOONACULAR.COMPLEX_SEARCH}${params.toString()}`);
-    return response.data;
-=======
 import { RecipeSearchCache } from "../models/RecipeSearchCache.js";
 import { logger } from "../utils/logger.js";
 
@@ -64,5 +56,4 @@ const buildCacheKey = (category, tags, page) => {
               .join(",")
         : "";
     return `${category || "any"}|${sortedTags}|page=${page}`;
->>>>>>> Stashed changes
 };

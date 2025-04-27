@@ -1,8 +1,10 @@
 import express from "express";
 import { getRegister, postRegister, postLogin } from "../controllers/authController.js";
 import { logger } from "../utils/logger.js";
+
 import Meal from "../models/Meal.js";
 import moment from "moment";
+
 const router = express.Router();
 
 // INDEX
@@ -28,6 +30,7 @@ router.post("/register", postRegister);
 // MY MEAL PLAN
 router.get("/mealplan", async (req, res) => {
     if (!req.session.user) return res.redirect("/");
+
 
     const userId = req.session.user._id;
     const selectedWeek = req.query.week || moment().startOf("isoWeek").format("YYYY-MM-DD");

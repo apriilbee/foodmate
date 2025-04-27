@@ -1,21 +1,28 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import bodyParser from "body-parser";
 import session from "express-session";
 import mongoose from "mongoose";
-import authRoutes from "./routes/authRoutes.js";
+
+import { ENV } from "./utils/envLoader.js";
 import mealRoutes from "./routes/mealRoutes.js";
 
+import authRoutes from "./routes/authRoutes.js";
+import homeRoutes from "./routes/homeRoutes.js";
+
+import { logger } from "./utils/logger.js";
+
 const app = express();
-const PORT = 3000;
 
 mongoose
-    .connect("mongodb://localhost:27017/foodmate")
-    .then(() => console.log("Connected to MongoDB"))
-    .catch((err) => console.error("MongoDB connection error:", err));
+    .connect(ENV.MONGO_URI)
+    .then(() => logger.info(`Connected to MongoDB at ${ENV.MONGO_URI}`))
+    .catch((err) => logger.error("MongoDB connection error:", err));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.json()); 
 app.use(express.static("public"));
 
 app.set("view engine", "ejs");
@@ -28,9 +35,9 @@ app.use(
     })
 );
 
-// Routes
-app.use("/", authRoutes);
-app.use("/meal", mealRoutes); 
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+app.use("/auth", authRoutes);
+app.use("/", homeRoutes);
+app.use("/meal", mealRoutes);
+app.listen(ENV.PORT, () => {
+    logger.info(`Server running at http://localhost:${ENV.PORT}`);
 });

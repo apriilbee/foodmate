@@ -1,8 +1,8 @@
 import express from "express";
 import { getRegister, postRegister, postLogin } from "../controllers/authController.js";
+import { logger } from "../utils/logger.js";
 import Meal from "../models/Meal.js";
-import moment from "moment"; // Use moment.js for date formatting
-
+import moment from "moment";
 const router = express.Router();
 
 // INDEX
@@ -15,7 +15,7 @@ router.post("/login", postLogin);
 router.get("/logout", (req, res) => {
     req.session.destroy((err) => {
         if (err) {
-            console.log("Logout error:", err);
+            logger.info("Logout error:", err);
             return res.send("Error logging out");
         }
         res.redirect("/");
@@ -25,15 +25,7 @@ router.get("/logout", (req, res) => {
 // REGISTER
 router.get("/register", getRegister);
 router.post("/register", postRegister);
-
-// HOME
-router.get("/home", (req, res) => {
-    if (!req.session.user) {
-        return res.redirect("/");
-    }
-    res.render("home", { title: "Dashboard", user: req.session.user });
-});
-// ✅ MY MEAL PLAN
+// MY MEAL PLAN
 router.get("/mealplan", async (req, res) => {
     if (!req.session.user) return res.redirect("/");
 
@@ -61,7 +53,7 @@ router.get("/mealplan", async (req, res) => {
             endOfWeek: endOfWeek.format("YYYY-MM-DD"),
             prevWeek: moment(startOfWeek).subtract(1, "week").format("YYYY-MM-DD"),
             nextWeek: moment(startOfWeek).add(1, "week").format("YYYY-MM-DD"),
-            moment // 👈 add this line
+            moment 
         });
     } catch (err) {
         console.error(err);
@@ -69,7 +61,7 @@ router.get("/mealplan", async (req, res) => {
     }
 });
 
-// ✅ ADD MEAL
+
 router.post("/meal/add", async (req, res) => {
     try {
         const { recipe_id, date, type } = req.body;
@@ -80,7 +72,7 @@ router.post("/meal/add", async (req, res) => {
 
         const newMeal = new Meal({
             user: req.session.user._id,
-            recipe_id,  // Just store the recipe_id directly for now
+            recipe_id,  
             date,
             type
         });
@@ -92,7 +84,7 @@ router.post("/meal/add", async (req, res) => {
         res.status(500).send("Error saving meal");
     }
 });
-// DELETE MEAL
+
 router.post("/meal/delete", async (req, res) => {
     try {
         const { mealId } = req.body;

@@ -1,12 +1,242 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Meal Plan Management</title>
-  <link rel="stylesheet" href="/css/style.css"> 
-</head>
-<body>
-  <h1>Meal Plan Management</h1>
-  <p>Welcome to the Meal Plan Management page!</p>
-</body>
-</html>
+<%- include("partials/head") %>
+<%- include("partials/navbar") %>
+
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    nav {
+        margin-bottom: 0;
+    }
+
+    .meal-header {
+        background: #934E26;
+        color: white;
+        padding: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .meal-header a {
+        color: white;
+        text-decoration: none;
+        font-size: 24px;
+        padding: 0 15px;
+    }
+
+    .meal-header span {
+        font-weight: bold;
+        font-size: 24px;
+    }
+
+    .week-view {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+        background-color: #e3a882;
+        padding: 20px;
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 80vh;
+    }
+
+    .day-column {
+        background-color: #d99166;
+        border-radius: 15px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 320px;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .day-column h4 {
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .meal-slot {
+        margin: 8px 0;
+        text-align: center;
+    }
+
+    .meal-name {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .meal-recipe {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+    }
+
+    .empty {
+        color: #555;
+        font-style: italic;
+        font-size: 13px;
+    }
+
+    .delete-meal-btn {
+        background: none;
+        border: none;
+        color: red;
+        font-weight: bold;
+        margin-left: 6px;
+        cursor: pointer;
+    }
+
+    .calories-footer {
+        margin-top: 10px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #323232;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Very light small shadow */
+    z-index: 9999;
+    display: none;
+    max-width: 220px; /* Very small width */
+    min-width: 140px;
+    white-space: nowrap;
+    height: auto;
+line-height: normal;
+    text-align: center;
+}
+</style>
+
+<!-- Meal Plan Header -->
+<div class="meal-header">
+    <a href="/mealplan?week=<%= prevWeek %>">&lt;</a>
+    <span>MEAL PLAN: <%= moment(startOfWeek).format("MMMM D") %> - <%= moment(endOfWeek).format("D") %></span>
+    <a href="/mealplan?week=<%= nextWeek %>">&gt;</a>
+</div>
+
+<!-- Week Calendar -->
+<div class="week-view">
+<%
+    function getOrdinalSuffix(day) {
+        if (day > 3 && day < 21) return 'th';
+        switch (day % 10) {
+            case 1: return 'st';
+            case 2: return 'nd';
+            case 3: return 'rd';
+            default: return 'th';
+        }
+    }
+
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const mealsByDay = {};
+
+    for (let d = 0; d < 7; d++) {
+        const day = new Date(startOfWeek);
+        day.setDate(day.getDate() + d);
+        const dateStr = day.toISOString().split("T")[0];
+        mealsByDay[dateStr] = { Breakfast: null, Lunch: null, Dinner: null };
+    }
+
+    meals.forEach(meal => {
+        if (mealsByDay[meal.date]) {
+            mealsByDay[meal.date][meal.type] = meal;
+        }
+    });
+
+    Object.entries(mealsByDay).forEach(([date, slots], index) => {
+        const dayObj = new Date(date);
+        const formattedDate = dayObj.getDate() + getOrdinalSuffix(dayObj.getDate());
+        let totalCalories = 0;
+%>
+    <div class="day-column">
+        <h4><%= dayNames[index] %> <br> <%= formattedDate %></h4>
+
+        <% ["Breakfast", "Lunch", "Dinner"].forEach(type => {
+            const meal = slots[type];
+        %>
+        <div class="meal-slot">
+            <span class="meal-name"><%= type %>:</span>
+            <% if (meal) { %>
+            <div class="meal-recipe">
+                <%= meal.recipe_id || "Recipe" %>
+                <button class="delete-meal-btn" data-meal-id="<%= meal._id %>">X</button>
+            </div>
+            <% totalCalories += parseInt(meal.calories || 0); %>
+            <% } else { %>
+            <div class="empty">No meal</div>
+            <% } %>
+        </div>
+        <% }); %>
+
+        <div class="calories-footer">
+            <%= totalCalories %> kcal
+        </div>
+    </div>
+<% }); %>
+</div>
+
+<!-- Toast for deletion message -->
+<div id="toast" class="toast">Meal deleted!</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll(".delete-meal-btn");
+
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", async () => {
+                const mealId = button.getAttribute("data-meal-id");
+
+                const confirmed = confirm("Are you sure you want to delete this meal?");
+                if (!confirmed) return;
+
+                const res = await fetch("/meal/delete", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ mealId })
+                });
+
+                if (res.ok) {
+                    showToast("Meal deleted!");
+                    setTimeout(() => {
+                        location.reload(); // reload after short delay
+                    }, 1000);
+                } else {
+                    alert("Failed to delete meal.");
+                }
+            });
+        });
+
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.style.display = "block";
+            setTimeout(() => {
+                toast.style.display = "none";
+            }, 2000);
+        }
+    });
+</script>

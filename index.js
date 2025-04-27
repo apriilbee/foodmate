@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import session from "express-session";
 import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes.js";
+import mealRoutes from "./routes/mealRoutes.js";
 
 const app = express();
 const PORT = 3000;
@@ -13,6 +14,8 @@ mongoose
     .catch((err) => console.error("MongoDB connection error:", err));
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(express.json()); 
 app.use(express.static("public"));
 
 app.set("view engine", "ejs");
@@ -27,7 +30,7 @@ app.use(
 
 // Routes
 app.use("/", authRoutes);
-
+app.use("/meal", mealRoutes); 
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });

@@ -2,7 +2,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -28,7 +27,7 @@ mongoose
     .catch((err) => logger.error("MongoDB connection error:", err));
 
 // Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(cookieParser());
 

@@ -1,4 +1,5 @@
 import { loginUser, registerUser } from "../services/authService.js";
+import { logger } from "../utils/logger.js";
 
 export const postLogin = async (req, res) => {
     const { username, password } = req.body;
@@ -7,8 +8,7 @@ export const postLogin = async (req, res) => {
         const result = await loginUser(username, password);
 
         if (!result) {
-            res.status(400);
-            return res.render("index", { title: "Login", error: "Invalid username or password" });
+            return res.status(400).json({ message: "Invalid username or password" });
         }
 
         const { token } = result;
@@ -19,10 +19,13 @@ export const postLogin = async (req, res) => {
             maxAge: 15 * 60 * 1000,
         });
 
-        res.redirect("/home");
+        return res.status(200).json({ redirectUrl: "/home" });
     } catch (error) {
         logger.error("Login error:", error);
-        res.render("index", { title: "Login", error: "An unexpected error occurred. Please try again." });
+
+        return res
+            .status(500)
+            .render("index", { title: "Login", error: "An unexpected error occurred. Please try again." });
     }
 };
 

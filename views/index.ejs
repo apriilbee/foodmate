@@ -13,7 +13,7 @@
 
                     <!-- Form -->
                     <div class="login-body">
-                        <form action="/auth/login" method="POST">
+                        <form id="loginForm">
                             <div class="input-field">
                                 <input id="username" name="username" type="text" required />
                                 <label for="username">Username</label>
@@ -24,9 +24,9 @@
                                 <label for="password">Password</label>
                             </div>
 
-                            <% if (error) { %>
-                            <div style="color: red; text-align: center; margin-bottom: 1rem"><%= error %></div>
-                            <% } %>
+                            <div id="errorMessage" style="color: red; text-align: center; margin-bottom: 1rem">
+                                <% if (error) { %> <%= error %> <% } %>
+                            </div>
 
                             <button type="submit" class="btn full-btn">Login</button>
                         </form>

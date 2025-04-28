@@ -5,7 +5,7 @@ export const postLogin = async (req, res) => {
     const result = await loginUser(username, password);
 
     if (result) {
-        const { user, token } = result;
+        const { token } = result;
 
         res.cookie("token", token, {
             httpOnly: true,

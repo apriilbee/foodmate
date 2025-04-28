@@ -6,6 +6,8 @@ import { RecipeSearchCache } from "../models/RecipeSearchCache.js";
 import { logger } from "../utils/logger.js";
 
 export const getFilteredRecipes = async (category, tags, page = 1) => {
+    logger.info(`Filtering Recipes: ${category} | ${tags} | ${page} `);
+
     const cacheKey = buildCacheKey(category, tags, page);
 
     // Check cache first
@@ -25,6 +27,7 @@ export const getFilteredRecipes = async (category, tags, page = 1) => {
     // const offset = (page - 1) * number;
 
     const params = searchRecipesParamBuilder(category, tags);
+    logger.info(`Params: ${params}`);
     params.append("apiKey", ENV.SPOONACULAR_KEY);
     const response = await axios.get(`${SPOONACULAR.COMPLEX_SEARCH}?${params.toString()}`);
 

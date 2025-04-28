@@ -164,29 +164,38 @@ nav {
 }
 
 .foodmate-navbar {
-    background: linear-gradient(135deg, #f6f9f9, #e3f2fd);
+    background: linear-gradient(150deg, #FE8641, #fa9e68);
     border-bottom: 1px solid #ddd;
-    border-radius: 0 0 12px 12px;
+    border-radius: 0 0 5px 5px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .brand-logo {
-    font-family: "Bebas Neue", sans-serif;
-    font-size: 2rem;
-    color: #2e2e2e !important;
-    letter-spacing: 1px;
+    height: 60px; 
+}
+
+.brand-logo-img {
+    height: 60px;
+    margin-left: 60px;
 }
 
 .nav-link {
     font-weight: 600;
-    color: #333 !important;
+    color: #fff !important;
     transition: 0.2s ease;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .nav-link:hover {
-    color: #00897b !important;
+    color: #FE8641 !important;
     background-color: rgba(0, 137, 123, 0.1);
     border-radius: 6px;
+}
+
+.dropdown-trigger img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    transition: 0.3s ease;
 }
 
 /* ==== Mobile Hero Style ==== */
@@ -233,5 +242,11 @@ nav {
         margin: 0 auto;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         z-index: 4;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .brand-logo-img{
+        height: 55px;
     }
 }

@@ -31,3 +31,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdowns = document.querySelectorAll('.dropdown-trigger');
+    M.Dropdown.init(dropdowns, {
+        constrainWidth: false,
+        coverTrigger: false,   
+        alignment: 'right',   
+        inDuration: 300,      
+    });
+});

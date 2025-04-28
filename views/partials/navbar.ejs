@@ -1,21 +1,40 @@
-<!-- Navbar -->
 <nav class="nav-extended foodmate-navbar z-depth-1">
     <div class="nav-wrapper container">
-        <a href="/" class="brand-logo bebas">FoodMate</a>
-        <a href="#" data-target="mobile-nav" class="sidenav-trigger">
-            <i class="material-icons black-text">menu</i>
+        <a href="/" class="brand-logo bebas">
+            <img src="/img/logo.svg" alt="FoodMate Logo" class="brand-logo-img">
         </a>
+
+        <a href="#" data-target="mobile-nav" class="sidenav-trigger">
+            <i class="material-icons white-text">menu</i>
+        </a>
+
         <ul class="right hide-on-med-and-down">
-            <li><a href="#" class="nav-link">My Plans</a></li>
-            <li><a href="#" class="nav-link">Favourites</a></li>
-            <li><a href="/auth/logout" class="nav-link">Log out</a></li>
+            <li><a href="/meal-plan" class="nav-link white-text">Meal Plan</a></li>
+            <li><a href="/grocery-list" class="nav-link white-text">Grocery List</a></li>
+            <% if (user) { %>
+            <li>
+                <a class="dropdown-trigger" href="#!" data-target="profile-dropdown">
+                    <i class="material-icons white-text">account_circle</i>
+                </a>
+            </li>
+            <% } else { %>
+            <li><a href="/auth/login" class="nav-link white-text">Log In</a></li>
+            <% } %>
         </ul>
     </div>
 </nav>
 
-<!-- Mobile Menu -->
+<!-- Profile Dropdown -->
+<ul id="profile-dropdown" class="dropdown-content">
+    <li><a href="/settings">Settings</a></li>
+    <li class="divider"></li>
+    <li><a href="/auth/logout">Log Out</a></li>
+</ul>
+
+<!-- Mobile Sidenav -->
 <ul class="sidenav" id="mobile-nav">
-    <li><a href="#">My Plans</a></li>
-    <li><a href="#">Favourites</a></li>
-    <li><a href="/auth/logout">Log out</a></li>
+    <li><a href="/meal-plan">Meal Plan</a></li>
+    <li><a href="/grocery-list">Grocery List</a></li>
+    <li><a href="#">Profile Setting</a></li>
+    <li><a href="/auth/login">Logout</a></li>
 </ul>

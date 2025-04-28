@@ -26,9 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(`/api/recipes?${params.toString()}`)
             .then((res) => res.json())
             .then((data) => {
-                console.log("🍽️ Recipes:", data);
-
-                // Optional: dynamically update the page
                 const resultsContainer = document.querySelector("#recipe-results");
                 if (resultsContainer) {
                     resultsContainer.innerHTML = data.length

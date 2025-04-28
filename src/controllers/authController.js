@@ -11,9 +11,9 @@ export const postLogin = async (req, res) => {
             return res.render("index", { title: "Login", error: "Invalid username or password" });
         }
 
-        const { accessToken } = result;
+        const { token } = result;
 
-        res.cookie("accessToken", accessToken, {
+        res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             maxAge: 15 * 60 * 1000,

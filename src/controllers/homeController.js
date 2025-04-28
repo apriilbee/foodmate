@@ -1,5 +1,5 @@
 export const getIndex = (req, res) => {
-    res.render("index", { title: "Login" });
+    res.render("index", { title: "Login", error: null });
 };
 
 export const getHome = (req, res) => {

@@ -2,7 +2,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url";

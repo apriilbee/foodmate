@@ -21,7 +21,7 @@ export const getFilteredRecipes = async (category, tags, page = 1) => {
     }
 
     // Not cached; Fetch from Spoonacular
-    const number = 10; // items per page
+    // const number = 10; // items per page
     // const offset = (page - 1) * number;
 
     const params = searchRecipesParamBuilder(category, tags);

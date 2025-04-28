@@ -2,13 +2,20 @@ import { loginUser, registerUser } from "../services/authService.js";
 
 export const postLogin = async (req, res) => {
     const { username, password } = req.body;
-    const user = await loginUser(username, password);
+    const result = await loginUser(username, password);
 
-    if (user) {
-        req.session.user = user;
+    if (result) {
+        const { user, token } = result;
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 3600000, // 1 hour
+        });
+
         res.redirect("/home");
     } else {
-        res.send("Invalid username or password");
+        res.status(401).json({ message: "Invalid username or password" });
     }
 };
 
@@ -21,8 +28,8 @@ export const postRegister = async (req, res) => {
 
     try {
         await registerUser(username, password);
-        res.send("Registration successful! You can now log in.");
+        res.redirect("/");
     } catch (error) {
-        res.send(error.message);
+        res.status(400).json({ message: error.message });
     }
 };

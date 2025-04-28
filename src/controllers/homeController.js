@@ -3,10 +3,10 @@ export const getIndex = (req, res) => {
 };
 
 export const getHome = (req, res) => {
-    if (!req.session.user) {
-        return res.redirect("/auth/login");
-    }
-    res.render("home", { title: "Dashboard", user: req.session.user });
+    res.render("home", {
+        title: "Home",
+        user: req.user,
+    });
 };
 
 export const healthCheck = (req, res) => {

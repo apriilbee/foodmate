@@ -71,8 +71,8 @@ body {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
-    scrollbar-width: none; 
-    -ms-overflow-style: none; 
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     gap: 24px;
     padding: 10px 20px;
 }
@@ -134,7 +134,7 @@ body {
 }
 
 .tag.active {
-    background-color: #ffa726; 
+    background-color: #ffa726;
     color: #000;
     font-weight: bold;
 }
@@ -166,14 +166,14 @@ nav {
 }
 
 .foodmate-navbar {
-    background: linear-gradient(150deg, #FE8641, #FE8641);
+    background: linear-gradient(150deg, #fe8641, #fe8641);
     border-bottom: 1px solid #ddd;
     border-radius: 0 0 5px 5px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .brand-logo {
-    height: 60px; 
+    height: 60px;
 }
 
 .brand-logo-img {
@@ -189,7 +189,7 @@ nav {
 }
 
 .nav-link:hover {
-    color: #FE8641 !important;
+    color: #fe8641 !important;
     background-color: rgba(0, 137, 123, 0.1);
     border-radius: 6px;
 }
@@ -203,7 +203,7 @@ nav {
 .sidenav .user-view {
     padding-bottom: 20px;
 }
-  
+
 .sidenav .user-view .name {
     font-weight: bold;
     font-size: 1.2rem;
@@ -216,7 +216,7 @@ nav {
     transform: translateX(-50%);
     background: white;
     border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     padding: 15px;
     min-width: 200px;
     z-index: 100;
@@ -285,7 +285,7 @@ nav {
 }
 
 @media screen and (max-width: 600px) {
-    .brand-logo-img{
+    .brand-logo-img {
         height: 55px;
     }
 }

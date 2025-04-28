@@ -1,9 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
     const registerForm = document.getElementById("registerForm");
+    const errorMessage = document.getElementById("registerErrorMessage");
 
     if (registerForm) {
         registerForm.addEventListener("submit", async function (event) {
             event.preventDefault();
+
+            if (errorMessage) errorMessage.textContent = "";
 
             const formData = new FormData(registerForm);
             const formObject = Object.fromEntries(formData.entries());
@@ -24,11 +27,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log(data.redirectUrl);
                     window.location.href = data.redirectUrl;
                 } else {
-                    alert(data.message || "Registration failed.");
+                    if (errorMessage) {
+                        errorMessage.textContent = data.message || "Registration failed.";
+                    }
                 }
             } catch (error) {
                 console.error("Registration error:", error);
-                alert("Server error. Please try again.");
+                if (errorMessage) {
+                    errorMessage.textContent = "Server error. Please try again.";
+                }
             }
         });
     }

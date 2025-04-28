@@ -1,5 +1,6 @@
 import { loginUser, registerUser } from "../services/authService.js";
 import { logger } from "../utils/logger.js";
+import validator from "validator";
 
 export const postLogin = async (req, res) => {
     const { username, password } = req.body;
@@ -37,7 +38,22 @@ export const postRegister = async (req, res) => {
     const { username, password } = req.body;
 
     try {
+        const isStrong = validator.isStrongPassword(password, {
+            minLength: 8,
+            minLowercase: 1,
+            minUppercase: 1,
+            minNumbers: 1,
+            minSymbols: 1,
+        });
+
+        if (!isStrong) {
+            return res.status(400).json({
+                message: "Password must be at least 8 characters and include uppercase, lowercase, number, and symbol.",
+            });
+        }
+
         await registerUser(username, password);
+
         res.status(201).json({ redirectUrl: "/" });
     } catch (error) {
         console.error("Register error:", error);

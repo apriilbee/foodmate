@@ -34,12 +34,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /* global M */
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
+    const sidenav = document.querySelectorAll('.sidenav');
+    M.Sidenav.init(sidenav);
+
     const dropdowns = document.querySelectorAll('.dropdown-trigger');
     M.Dropdown.init(dropdowns, {
         constrainWidth: false,
-        coverTrigger: false,   
-        alignment: 'right',   
-        inDuration: 300,      
+        coverTrigger: false,
+        alignment: 'right',
+        inDuration: 300,
     });
 });

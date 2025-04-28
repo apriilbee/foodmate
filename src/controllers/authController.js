@@ -38,8 +38,9 @@ export const postRegister = async (req, res) => {
 
     try {
         await registerUser(username, password);
-        res.redirect("/");
+        res.status(201).json({ redirectUrl: "/" });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error("Register error:", error);
+        res.status(400).json({ message: error.message || "Registration failed." });
     }
 };

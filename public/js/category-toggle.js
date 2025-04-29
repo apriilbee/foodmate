@@ -18,8 +18,22 @@ document.addEventListener("DOMContentLoaded", () => {
             .filter((tag) => tag.classList.contains("active"))
             .map((tag) => tag.textContent.trim());
 
-        console.log("📦 Selected category:", selectedCategory);
-        console.log("🥗 Selected diets:", selectedDiets);
+        const params = new URLSearchParams({
+            category: selectedCategory,
+            tags: selectedDiets.join(","),
+        });
+
+        fetch(`/api/recipes?${params.toString()}`)
+            .then((res) => res.json())
+            .then((data) => {
+                const resultsContainer = document.querySelector("#recipe-results");
+                if (resultsContainer) {
+                    resultsContainer.innerHTML = data.length
+                        ? data.map((recipe) => `<li>${recipe.name}</li>`).join("")
+                        : "<li>No recipes found.</li>";
+                }
+            })
+            .catch((err) => console.error("Failed to fetch recipes:", err));
     }
 
     // Click to select category

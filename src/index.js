@@ -10,6 +10,7 @@ import { ENV } from "./utils/envLoader.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import homeRoutes from "./routes/homeRoutes.js";
+import recipeRoutes from "./routes/recipeRoutes.js";
 
 import { logger } from "./utils/logger.js";
 
@@ -33,8 +34,10 @@ app.use(
     })
 );
 
-app.use("/auth", authRoutes);
+// ROUTES
 app.use("/", homeRoutes);
+app.use("/auth", authRoutes);
+app.use("/api", recipeRoutes);
 
 app.listen(ENV.PORT, () => {
     logger.info(`Server running at http://localhost:${ENV.PORT}`);

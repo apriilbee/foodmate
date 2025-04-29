@@ -235,3 +235,128 @@ nav {
         z-index: 4;
     }
 }
+
+
+/* General Profile Styling */
+.profile-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.profile-left {
+  flex: 1;
+}
+
+.profile-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.profile-name {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.edit-pic-btn {
+  background-color: #FF9800;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  text-align: center;
+}
+
+.edit-pic-btn:hover {
+  background-color: #e68900;
+}
+
+/* Dietary Preferences Section */
+.checkbox-wrapper {
+  margin-bottom: 15px;
+  background-color: #f1f1f1;
+  padding: 15px;
+  border-radius: 5px;
+  display: flex;
+  flex-wrap: wrap; /* Allows options to wrap to new line */
+  gap: 15px; /* Adds spacing between checkboxes */
+}
+
+.checkbox-wrapper label {
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  color: #333;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+  width: 20px;  /* Adjust checkbox size */
+  height: 20px; /* Adjust checkbox size */
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Input fields */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="checkbox"] {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+input[type="text"]::placeholder {
+  color: #ccc;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.other-input {
+  margin-top: 10px;
+}
+
+/* Save Button */
+.save-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  display: inline-block;
+  border: none;
+}
+
+.save-btn:hover {
+  background-color: #45a049;
+}
+
+/* Cancel Button */
+.cancel-btn {
+  color: #007BFF;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.cancel-btn:hover {
+  background-color: #0056b3;
+  color: white;
+}

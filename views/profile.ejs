@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/head') %>
+  
+  <body>
+    <%- include('partials/navbar') %>
+  
+ 
+    <div class="container">
+      <main>
+        <h1>User Profile Settings</h1>
+ 
+        <div class="profile-wrapper">
+          
+          <!-- Left: Profile Form -->
+          <div class="profile-left">
+            <form id="edit-profile-form" action="/profile/update" method="POST">
+              
+              <div class="profile-info">
+                <label>User Name:</label>
+                <input type="text" name="name" value="<%= user?.name || '' %>" required>
+ 
+                <label>User Email:</label>
+                <input type="email" name="email" value="<%= user?.email || '' %>" required>
+              </div>
+ 
+              <div class="change-password">
+                <h3>Change Password</h3>
+                <input type="password" name="currentPassword" placeholder="Current Password" required>
+                <input type="password" name="newPassword" placeholder="New Password" required>
+                <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
+              </div>
+ 
+              <div class="actions">
+                <button type="submit" class="save-btn">Save Changes</button>
+              </div>
+            </form>
+          </div>
+ 
+          <!-- Right: Profile Picture -->
+          <div class="profile-right">
+            <img src="/images/default-avatar.png" alt="Profile Picture" class="avatar">
+            <div class="profile-name">Sahithi</div>
+            <button class="edit-pic-btn">Edit Profile Picture</button>
+          </div>
+ 
+        </div> <!-- End of profile-wrapper -->
+ 
+        <!-- Dietary Preferences Section -->
+        <section class="preferences">
+          <h2>Dietary Preferences</h2>
+ 
+          <form id="dietary-form" action="/profile/preferences" method="POST">
+            <div class="checkbox-wrapper">
+              <label><input type="checkbox" name="dietary" value="Vegan"> Vegan</label>
+              <label><input type="checkbox" name="dietary" value="Gluten-Free"> Gluten-free</label>
+              <label><input type="checkbox" name="dietary" value="Keto"> Keto</label>
+              <label><input type="checkbox" name="dietary" value="Vegetarian"> Vegetarian</label>
+              <label><input type="checkbox" name="dietary" value="Pescatarian"> Pescatarian</label>
+            </div>
+ 
+            <div class="other-input">
+              <label>Others:</label>
+              <input type="text" name="dietaryOther" placeholder="Enter other dietary preference">
+            </div>
+ 
+            <div class="checkbox-wrapper">
+              <label><input type="checkbox" name="allergies" value="Soy"> Soy Allergy</label>
+              <label><input type="checkbox" name="allergies" value="Nuts"> Nuts Allergy</label>
+              <label><input type="checkbox" name="allergies" value="Dairy"> Dairy Allergy</label>
+            </div>
+ 
+            <div class="other-input">
+              <label>Others:</label>
+              <input type="text" name="allergyOther" placeholder="Enter other allergies">
+            </div>
+ 
+            <div class="actions">
+              <button type="submit" class="save-btn">Save Preferences</button>
+            </div>
+          </form>
+        </section>
+ 
+        <!-- Account Privacy -->
+        <section class="account-privacy">
+          <h2>Account & Privacy</h2>
+          <p><a href="/profile/download">Download My Data</a></p>
+          <p><a href="/profile/delete" style="color:red;">Delete My Account</a></p>
+        </section>
+ 
+        <% if (message) { %>
+          <div id="message"><%= message %></div>
+        <% } %>
+ 
+        <div class="actions">
+          <a href="/" class="cancel-btn">Cancel</a>
+        </div>
+ 
+      </main>
+    </div>
+ 
+    <%- include('partials/scripts') %>
+  </body>
+</html>
+ 

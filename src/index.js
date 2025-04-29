@@ -10,7 +10,8 @@ import { ENV } from "./utils/envLoader.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import homeRoutes from "./routes/homeRoutes.js";
-
+import profileRoutes from './routes/profileRoutes.js';
+import groceryRoutes from './routes/groceryRoutes.js';
 import { logger } from "./utils/logger.js";
 
 const app = express();
@@ -35,6 +36,8 @@ app.use(
 
 app.use("/auth", authRoutes);
 app.use("/", homeRoutes);
+app.use('/', profileRoutes);
+app.use("/", groceryRoutes);
 
 app.listen(ENV.PORT, () => {
     logger.info(`Server running at http://localhost:${ENV.PORT}`);

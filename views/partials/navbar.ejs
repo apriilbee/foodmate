@@ -1,32 +1,38 @@
 <nav class="nav-extended foodmate-navbar z-depth-1">
     <div class="nav-wrapper container">
         <a href="/auth/login" class="brand-logo bebas">
-            <img src="/img/logo.svg" alt="" class="brand-logo-img">
+            <img src="/img/logo.svg" alt="" class="brand-logo-img" />
         </a>
 
         <!-- Hamburger Menu for Mobile -->
-         <a href="#" data-target="mobile-nav" class="sidenav-trigger">
+        <a href="#" data-target="mobile-nav" class="sidenav-trigger">
             <i class="material-icons white-text">menu</i>
-         </a>
+        </a>
 
-         <ul class="right hide-on-med-and-down">
+        <ul class="right hide-on-med-and-down">
             <li><a href="#" class="nav-link white-text">Meal Plan</a></li>
             <li><a href="#" class="nav-link white-text">Grocery List</a></li>
 
             <% if (user) { %>
-                <li>
-                    <a class="dropdown-trigger" href="#!" data-target="profile-dropdown" style="display: flex; align-items: center;">
-                      <i class="material-icons white-text" style="margin-right: 6px;">account_circle</i>
-                      <span class="white-text" style="font-weight: 500;"><%= user.username %></span>
-                    </a>
-                  </li>
+            <li>
+                <a
+                    class="dropdown-trigger"
+                    href="#!"
+                    data-target="profile-dropdown"
+                    style="display: flex; align-items: center"
+                >
+                    <i class="material-icons white-text" style="margin-right: 6px">account_circle</i>
+                    <span class="white-text" style="font-weight: 500"><%= user.username %></span>
+                </a>
+            </li>
             <% } else { %>
-                <li><a href="/auth/login" class="nav-link white-text">Log In</a></li>
+            <li><a href="/auth/login" class="nav-link white-text">Log In</a></li>
             <% } %>
-         </ul>
+        </ul>
     </div>
 </nav>
 
+<!-- Profile Dropdown Menu -->
 <!-- Profile Dropdown Menu -->
 <ul id="profile-dropdown" class="dropdown-content">
     <li><a href="#">Settings</a></li>
@@ -37,25 +43,49 @@
 <!-- Mobile Sidenav -->
 <ul id="mobile-nav" class="sidenav">
     <li class="sidenav-header">
-      <div class="user-view">
-        <div class="background" style="background: linear-gradient(135deg, #FE8641, #ffa726);"></div>
-        <a href="/"><img src="/img/logo.svg" alt="FoodMate Logo"></a>
-        <% if (user) { %>
-          <a href="#"><span class="white-text name"><%= user.username %></span></a>
-        <% } else { %>
-          <a href="#"><span class="white-text name">Welcome!</span></a>
-        <% } %>
-      </div>
+        <div class="user-view">
+            <div class="background" style="background: linear-gradient(135deg, #fe8641, #ffa726)"></div>
+            <a href="/"><img src="/img/logo.svg" alt="FoodMate Logo" /></a>
+            <% if (user) { %>
+            <a href="#"><span class="white-text name"><%= user.username %></span></a>
+            <% } else { %>
+            <a href="#"><span class="white-text name">Welcome!</span></a>
+            <% } %>
+        </div>
     </li>
-  
-    <li><a href="/meal-plan"><i class="material-icons">restaurant_menu</i>Meal Plan</a></li>
-    <li><a href="/grocery-list"><i class="material-icons">local_grocery_store</i>Grocery List</a></li>
+
+    <li>
+        <a href="/meal-plan">
+            <i class="material-icons">restaurant_menu</i>
+            Meal Plan
+        </a>
+    </li>
+    <li>
+        <a href="/grocery-list">
+            <i class="material-icons">local_grocery_store</i>
+            Grocery List
+        </a>
+    </li>
     <% if (user) { %>
-      <li><a href="/settings"><i class="material-icons">settings</i>Settings</a></li>
-      <li><div class="divider"></div></li>
-      <li><a href="/auth/logout"><i class="material-icons">exit_to_app</i>Log Out</a></li>
+    <li>
+        <a href="/settings">
+            <i class="material-icons">settings</i>
+            Settings
+        </a>
+    </li>
+    <li><div class="divider"></div></li>
+    <li>
+        <a href="/auth/logout">
+            <i class="material-icons">exit_to_app</i>
+            Log Out
+        </a>
+    </li>
     <% } else { %>
-      <li><a href="/auth/login"><i class="material-icons">login</i>Log In</a></li>
+    <li>
+        <a href="/auth/login">
+            <i class="material-icons">login</i>
+            Log In
+        </a>
+    </li>
     <% } %>
 </ul>
-  

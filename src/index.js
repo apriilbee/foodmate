@@ -34,8 +34,8 @@ app.use(cookieParser());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../views"));
 
-app.use("/", homeRoutes);
 app.use("/auth", authRoutes);
+app.use("/", homeRoutes);
 app.use("/api", recipeRoutes);
 
 // Start server

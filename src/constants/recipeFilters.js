@@ -1,17 +1,32 @@
 export const TAG_MAPPINGS = {
+    // Diets
     Vegan: { param: "diet", value: "vegan" },
-    Pescatarian: { param: "diet", value: "pescetarian" },
-    "Low-Carb / Keto": { param: "diet", value: "keto" },
+    Vegetarian: { param: "diet", value: "vegetarian" },
+    Pescatarian: { param: "diet", value: "pescatarian" },
+    "Low-Carb / Keto": { param: "diet", value: "ketogenic" },
+    "High-Protein": { param: "diet", value: "high-protein" },
+    "Low-Fat": { param: "diet", value: "low-fat" },
+    Paleo: { param: "diet", value: "paleo" },
+    "Plant-Based": { param: "diet", value: "vegan" },
 
+    // Intolerances
     "Dairy-Free": { param: "intolerances", value: "dairy" },
     "Gluten-Free": { param: "intolerances", value: "gluten" },
-    "Sugar-Free": { param: "intolerances", value: "sugar" },
-    "Nut-Free": { param: "intolerances", value: "nuts" },
+    "Nut-Free": { param: "intolerances", value: "peanut,tree nut" },
     "Soy-Free": { param: "intolerances", value: "soy" },
 
-    "Low-Fat": { param: "maxFat", value: 10 },
-    "Low-Sodium": { param: "maxSodium", value: 140 },
-    "High-Protein": { param: "minProtein", value: 30 },
+    // Nutrition Constraints
+    "Sugar-Free": { param: "nutrition", key: "nutrition.maxSugar", value: 0 },
+    "Low Sugar": { param: "nutrition", key: "nutrition.maxSugar", value: 5 },
+    "Low-Sodium": { param: "nutrition", key: "nutrition.maxSodium", value: 140 },
+    "Low Calorie": { param: "nutrition", key: "nutrition.maxCalories", value: 400 },
+
+    // Special Cases
+    "No Red Meat": { param: "excludeIngredients", value: "beef,pork,lamb" },
+    Whole30: { param: "keyword", value: "whole30" },
+    Mediterranean: { param: "keyword", value: "mediterranean" },
+
+    // (Allergies will be added dynamically later)
 };
 
 export const MEAL_TYPES = ["Breakfast", "Lunch", "Dinner", "Snacks", "Dessert"];

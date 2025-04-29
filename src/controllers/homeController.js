@@ -1,12 +1,12 @@
 export const getIndex = (req, res) => {
-    res.render("index", { title: "Login", error: null });
+    res.render("index", { title: "Login" });
 };
 
 export const getHome = (req, res) => {
-    res.render("home", {
-        title: "Home",
-        user: req.user,
-    });
+    if (!req.session.user) {
+        return res.redirect("/home");
+    }
+    res.render("home", { title: "Dashboard", user: req.session.user });
 };
 
 export const healthCheck = (req, res) => {

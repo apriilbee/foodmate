@@ -27,6 +27,7 @@ export const getFilteredRecipes = async (category, tags, page = 1) => {
     // const offset = (page - 1) * number;
 
     const params = searchRecipesParamBuilder(category, tags);
+    logger.info(`Category: ${category}, Tags: ${tags}`);
     logger.info(`Params: ${params}`);
     params.append("apiKey", ENV.SPOONACULAR_KEY);
     const response = await axios.get(`${SPOONACULAR.COMPLEX_SEARCH}?${params.toString()}`);

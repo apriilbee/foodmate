@@ -1,3 +1,5 @@
+import { renderRecipes } from './recipe-card.js';
+
 document.addEventListener("DOMContentLoaded", () => {
     const categories = document.querySelectorAll(".category-item");
     const dietTags = document.querySelectorAll(".tag");
@@ -17,31 +19,27 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedDiets = [...dietTags]
             .filter((tag) => tag.classList.contains("active"))
             .map((tag) => tag.textContent.trim());
-
-        const params = new URLSearchParams({
-            category: selectedCategory,
-            tags: selectedDiets.join(","),
-        });
-
+        const selectedAllergies = Array.from(document.querySelectorAll('#allergy-dropdown input[type="checkbox"]:checked'))
+            .map((cb) => cb.value);
+    
+        const params = new URLSearchParams();
+    
+        if (selectedCategory) params.append('category', selectedCategory);
+        if (selectedDiets.length) params.append('tags', selectedDiets.join(','));
+        if (selectedAllergies.length) params.append('allergies', selectedAllergies.join(','));
+    
         fetch(`/api/recipes?${params.toString()}`)
             .then((res) => res.json())
             .then((data) => {
-                const resultsContainer = document.querySelector("#recipe-results");
-                if (resultsContainer) {
-                    resultsContainer.innerHTML = data.length
-                        ? data.map((recipe) => `<li>${recipe.name}</li>`).join("")
-                        : "<li>No recipes found.</li>";
-                }
+                renderRecipes(data.recipes.slice(0, 9)); 
             })
             .catch((err) => console.error("Failed to fetch recipes:", err));
     }
-
-    // Click to select category
+    
     categories.forEach((item, index) => {
         item.addEventListener("click", () => setActiveCategory(index));
     });
 
-    // Keyboard arrow nav
     document.addEventListener("keydown", (e) => {
         if (e.key === "ArrowRight" && activeIndex < categories.length - 1) {
             setActiveCategory(activeIndex + 1);
@@ -50,11 +48,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Click to toggle diet tags
     dietTags.forEach((tag) => {
         tag.addEventListener("click", () => {
             tag.classList.toggle("active");
             logSelection();
         });
     });
+
+    logSelection();
 });

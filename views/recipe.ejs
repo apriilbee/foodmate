@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/head') %>
+    <link rel="stylesheet" href="/css/recipe.css">
+    <body>
+        <%- include('partials/navbar') %>
+        <div class="container recipe-container">   
+            <div class="col s12 m7 left-content">
+              <h4><%= recipe.title %></h4>
+              <div>
+                <% if (recipe.vegan) { %>
+                  <div class="chip tag-chip">Vegan</div>
+                <% } %>
+                <% recipe.dishTypes.forEach(type => { %>
+                  <div class="chip tag-chip"><%= type %></div>
+                <% }); %>
+                <% recipe.cuisines.forEach(cuisine => { %>
+                  <div class="chip tag-chip"><%= cuisine %></div>
+                <% }); %>
+              </div>
+              <div class="info-icons">
+                <p><i class="material-icons">schedule</i> <%= recipe.readyInMinutes %> minutes</p>
+                <p><i class="material-icons">restaurant</i> Serves <%= recipe.servings %></p>
+                <% if (recipe.nutrition?.nutrients) {
+                     const calories = recipe.nutrition.nutrients.find(n => n.name === 'Calories');
+                     if (calories) { %>
+                  <p><i class="material-icons">local_fire_department</i> <%= calories.amount %> kcal</p>
+                <% } } %>
+              </div>
+              <button style="background-color: orange; color: white; padding: 10px 16px; border: none; border-radius: 8px;">
+                Add to Meal Plan
+              </button>
+              <h5>
+                Ingredients</h5>
+              <ul class="collection">
+                <% recipe.formattedIngredients.forEach(ingredient => { %>
+                  <li class="collection-item"><%= ingredient %></li>
+                <% }) %>
+              </ul>
+              <h5>Instructions</h5>
+              <div>
+                <% recipe.instructionDetails.forEach((step, index) => { %>
+                  <div class="step">
+                    <strong>Step <%= index + 1 %>:</strong> <%= step %>
+                  </div>
+                <% }) %>
+              </div>
+            </div>
+            <div class="col s12 m5 right-image">
+              <img src="<%= recipe.image %>" alt="Recipe Image" class="recipe-image">
+            </div>
+        </div> 
+        <%- include('partials/scripts') %>
+    </body>        
+</html>

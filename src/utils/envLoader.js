@@ -5,10 +5,10 @@ export const ENV = {
     get MONGO_URI() {
         return process.env.MONGO_URI;
     },
-    get SESSION_SECRET() {
-        return process.env.SESSION_SECRET || "default-session-secret";
-    },
     get PORT() {
         return process.env.PORT || 3000;
+    },
+    get JWT_SECRET() {
+        return process.env.JWT_SECRET;
     },
 };

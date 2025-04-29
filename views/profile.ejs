@@ -10,29 +10,34 @@
         <h1 class="page-title">User Profile Settings</h1>
 
         <div class="profile-wrapper">
+          <!-- Left Section: Profile Form -->
           <div class="profile-left">
-            <form id="edit-profile-form" action="/profile/update" method="POST">
+            <form id="edit-profile-form">
               <div class="profile-info">
                 <label>User Name:</label>
-                <input type="text" name="name" value="<%= user?.name || '' %>" required>
+                <input type="text" name="name" id="name" value="<%= user?.name || '' %>" required>
 
                 <label>User Email:</label>
-                <input type="email" name="email" value="<%= user?.email || '' %>" required>
+                <input type="email" name="email" id="email" value="<%= user?.email || '' %>" required>
               </div>
 
               <div class="change-password">
                 <h3>Change Password</h3>
-                <input type="password" name="currentPassword" placeholder="Current Password" required>
-                <input type="password" name="newPassword" placeholder="New Password" required>
-                <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
+                <input type="password" name="currentPassword" id="currentPassword" placeholder="Current Password" required>
+                <input type="password" name="newPassword" id="newPassword" placeholder="New Password" required>
+                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required>
               </div>
 
               <div class="actions">
                 <button type="submit" class="save-btn">Save Changes</button>
               </div>
             </form>
+
+            <!-- ✅ Message Display -->
+            <div id="message" style="margin-top: 15px;"></div>
           </div>
 
+          <!-- Right Section: Profile Picture -->
           <div class="profile-right">
             <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Profile Picture" class="avatar">
             <div class="profile-name"><%= user?.name || "User" %></div>
@@ -40,41 +45,58 @@
           </div>
         </div>
 
-        <!-- Preferences -->
+        <!-- Dietary Preferences Section -->
         <section class="preferences">
           <h2>Dietary Preferences</h2>
 
           <form id="dietary-form" action="/profile/preferences" method="POST">
             <div class="checkbox-wrapper">
-              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Vegan"> Vegan</label>
-              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Gluten-Free"> Gluten-Free</label>
-              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Keto"> Keto</label>
-              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Vegetarian"> Vegetarian</label>
-              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Pescatarian"> Pescatarian</label>
+              <label class="styled-checkbox">
+                <input type="checkbox" name="dietary" value="Vegan"> Vegan
+              </label>
+              <label class="styled-checkbox">
+                <input type="checkbox" name="dietary" value="Gluten-Free"> Gluten-Free
+              </label>
+              <label class="styled-checkbox">
+                <input type="checkbox" name="dietary" value="Keto"> Keto
+              </label>
+              <label class="styled-checkbox">
+                <input type="checkbox" name="dietary" value="Vegetarian"> Vegetarian
+              </label>
+              <label class="styled-checkbox">
+                <input type="checkbox" name="dietary" value="Pescatarian"> Pescatarian
+              </label>
             </div>
 
-            <div class="other-input">
+            <div class="other-input" style="margin-top: 15px;">
               <label>Other Dietary Preference:</label>
               <input type="text" name="dietaryOther" placeholder="Enter other dietary preference">
             </div>
 
-            <div class="checkbox-wrapper">
-              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Soy"> Soy Allergy</label>
-              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Nuts"> Nuts Allergy</label>
-              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Dairy"> Dairy Allergy</label>
+            <div class="checkbox-wrapper" style="margin-top: 30px;">
+              <label class="styled-checkbox">
+                <input type="checkbox" name="allergies" value="Soy"> Soy Allergy
+              </label>
+              <label class="styled-checkbox">
+                <input type="checkbox" name="allergies" value="Nuts"> Nuts Allergy
+              </label>
+              <label class="styled-checkbox">
+                <input type="checkbox" name="allergies" value="Dairy"> Dairy Allergy
+              </label>
             </div>
 
-            <div class="other-input">
+            <div class="other-input" style="margin-top: 15px;">
               <label>Other Allergies:</label>
               <input type="text" name="allergyOther" placeholder="Enter other allergies">
             </div>
 
-            <div class="actions">
+            <div class="actions" style="margin-top: 20px;">
               <button type="submit" class="save-btn">Save Preferences</button>
             </div>
           </form>
         </section>
 
+        <!-- Account Privacy Section -->
         <section class="account-privacy">
           <h2>Account & Privacy</h2>
           <p><a href="/profile/download">Download My Data</a></p>
@@ -82,14 +104,72 @@
         </section>
 
         <% if (message) { %>
-          <div id="message"><%= message %></div>
+          <div id="message-server" style="margin-top: 20px; color: green;"><%= message %></div>
         <% } %>
 
-        <div class="actions">
+        <div class="actions" style="margin-top: 20px;">
           <a href="/" class="cancel-btn">Cancel</a>
         </div>
       </main>
     </div>
+
+    <!-- Scripts: Validation and Fetch -->
+    <script>
+      const form = document.getElementById('edit-profile-form');
+      const message = document.getElementById('message');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = form.name.value.trim();
+        const email = form.email.value.trim();
+        const currentPassword = form.currentPassword.value;
+        const newPassword = form.newPassword.value;
+        const confirmPassword = form.confirmPassword.value;
+
+        if (!name || !email || !currentPassword || !newPassword || !confirmPassword) {
+          return showMessage('Please fill in all fields.', 'red');
+        }
+
+        const emailPattern = /^[^@]+@[^@]+\.[^@]+$/;
+        if (!emailPattern.test(email)) {
+          return showMessage('Enter a valid email address.', 'red');
+        }
+
+        if (newPassword.length < 6) {
+          return showMessage('New password must be at least 6 characters.', 'red');
+        }
+
+        if (newPassword !== confirmPassword) {
+          return showMessage('Passwords do not match.', 'red');
+        }
+
+        try {
+          const response = await fetch('/profile/update', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, currentPassword, newPassword, confirmPassword })
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            showMessage('Profile updated successfully!', 'green');
+          } else {
+            showMessage(result.message || 'Something went wrong.', 'red');
+          }
+        } catch (error) {
+          showMessage('Server error. Please try again later.', 'red');
+        }
+      });
+
+      function showMessage(text, color) {
+        message.textContent = text;
+        message.style.color = color;
+        message.style.marginTop = '15px';
+        message.style.fontWeight = 'bold';
+      }
+    </script>
 
     <%- include('partials/scripts') %>
   </body>

@@ -11,6 +11,7 @@ import { ENV } from "./utils/envLoader.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import homeRoutes from "./routes/homeRoutes.js";
+import recipeRoutes from "./routes/recipeRoutes.js";
 
 import { logger } from "./utils/logger.js";
 
@@ -33,9 +34,9 @@ app.use(cookieParser());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../views"));
 
-// Routes
-app.use("/auth", authRoutes);
 app.use("/", homeRoutes);
+app.use("/auth", authRoutes);
+app.use("/api", recipeRoutes);
 
 // Start server
 app.listen(ENV.PORT, () => {

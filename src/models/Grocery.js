@@ -21,5 +21,5 @@ const grocerySchema = new mongoose.Schema({
 });
 
 // Create the model from the schema
-const Grocery = mongoose.model('Grocery', grocerySchema);
-export default Grocery;  // Export the model for use in the controller
+const GroceryItem = mongoose.model('Grocery', grocerySchema);
+export default GroceryItem;  // Export the model for use in the controller

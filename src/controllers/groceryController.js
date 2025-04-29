@@ -1,4 +1,4 @@
-import GroceryItem from '../models/grocery.js';
+import GroceryItem from '../models/Grocery.js';
 
 // Show Grocery List
 export async function getGroceryList(req, res) {

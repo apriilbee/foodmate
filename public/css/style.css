@@ -236,127 +236,137 @@ nav {
     }
 }
 
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fdf6f0;
+      margin: 0;
+      padding: 0;
+      color: #5c4033;
+    }
 
-/* General Profile Styling */
-.profile-wrapper {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-}
+    .container {
+      padding: 40px 20px;
+    }
 
-.profile-left {
-  flex: 1;
-}
+    .page-title {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 30px;
+    }
 
-.profile-right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+    .profile-wrapper {
+      display: flex;
+      gap: 30px;
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
 
-.avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 10px;
-}
+    .profile-left {
+      flex: 2;
+    }
 
-.profile-name {
-  font-weight: bold;
-  margin-top: 10px;
-}
+    .profile-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-.edit-pic-btn {
-  background-color: #FF9800;
-  color: white;
-  padding: 8px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  border: none;
-  text-align: center;
-}
+    .avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border: 3px solid #d2a679;
+    }
 
-.edit-pic-btn:hover {
-  background-color: #e68900;
-}
+    .profile-name {
+      font-weight: bold;
+      margin-top: 10px;
+      text-align: center;
+      word-break: break-word;
+    }
 
-/* Dietary Preferences Section */
-.checkbox-wrapper {
-  margin-bottom: 15px;
-  background-color: #f1f1f1;
-  padding: 15px;
-  border-radius: 5px;
-  display: flex;
-  flex-wrap: wrap; /* Allows options to wrap to new line */
-  gap: 15px; /* Adds spacing between checkboxes */
-}
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
 
-.checkbox-wrapper label {
-  display: inline-flex;
-  align-items: center;
-  font-size: 14px;
-  color: #333;
-}
+    .edit-pic-btn,
+    .save-btn,
+    .cancel-btn {
+      background-color: #d2a679;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 10px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
 
-.checkbox-wrapper input[type="checkbox"] {
-  width: 20px;  /* Adjust checkbox size */
-  height: 20px; /* Adjust checkbox size */
-  margin-right: 8px;
-  vertical-align: middle;
-}
+    .edit-pic-btn:hover,
+    .save-btn:hover {
+      background-color: #b0764f;
+    }
 
-/* Input fields */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="checkbox"] {
-  width: 100%;
-  padding: 10px;
-  margin: 8px 0;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-}
+    .cancel-btn {
+      background: none;
+      color: #c28e5c;
+      padding: 10px 20px;
+      font-weight: bold;
+      text-decoration: none;
+    }
 
-input[type="text"]::placeholder {
-  color: #ccc;
-}
+    .cancel-btn:hover {
+      background-color: #c28e5c;
+      color: white;
+    }
 
-input[type="checkbox"] {
-  margin-right: 10px;
-}
+    section {
+      margin-top: 40px;
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
 
-.other-input {
-  margin-top: 10px;
-}
+    .delete-link {
+      color: red;
+      font-weight: bold;
+    }
 
-/* Save Button */
-.save-btn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: center;
-  display: inline-block;
-  border: none;
-}
+    .checkbox-wrapper {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      background-color: #fffaf5;
+      padding: 20px;
+      border-radius: 10px;
+    }
 
-.save-btn:hover {
-  background-color: #45a049;
-}
+    .styled-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      color: #5c4033;
+      margin-bottom: 10px;
+    }
 
-/* Cancel Button */
-.cancel-btn {
-  color: #007BFF;
-  text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-weight: bold;
-}
-
-.cancel-btn:hover {
-  background-color: #0056b3;
-  color: white;
-}
+    .styled-checkbox input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: #d2a679;
+      cursor: pointer;
+    }
+  

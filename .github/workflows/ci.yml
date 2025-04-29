@@ -2,9 +2,13 @@ name: Foodmate CI Pipeline
 
 on:
   pull_request:
-    branches: [master]
+    branches:
+      - master
+      - release-*
   push:
-    branches: [master]
+    branches:
+      - master
+      - release-*
 
 jobs:
   lint:

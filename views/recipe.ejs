@@ -27,9 +27,14 @@
                   <p><i class="material-icons">local_fire_department</i> <%= calories.amount %> kcal</p>
                 <% } } %>
               </div>
-              <button style="background-color: orange; color: white; padding: 10px 16px; border: none; border-radius: 8px;">
-                Add to Meal Plan
-              </button>
+              <button
+  style="background-color: orange; color: white; padding: 10px 16px; border: none; border-radius: 8px;"
+  class="add-to-meal-btn"
+  onclick="openModal(this)"
+  data-recipe-id="<%= recipe._id || recipe.id %>">
+  Add to Meal Plan
+</button>
+
               <h5>
                 Ingredients</h5>
               <ul class="collection">
@@ -51,5 +56,7 @@
             </div>
         </div> 
         <%- include('partials/scripts') %>
+        <%- include("partials/recipes/add-to-meal-modal") %>
+
     </body>        
 </html>

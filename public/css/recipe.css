@@ -76,3 +76,14 @@ h4, h5 {
     border-left: 3px solid #ff9800;
     color: #444;
 }
+
+.button-row {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.no-uppercase {
+  text-transform: none !important;
+}

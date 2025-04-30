@@ -4,6 +4,7 @@ import { searchRecipesParamBuilder } from "../utils/searchRecipesParamBuilder.js
 import { SPOONACULAR } from "../constants/apiEndpoints.js";
 import { RecipeSearchCache } from "../models/RecipeSearchCache.js";
 import { logger } from "../utils/logger.js";
+import { Recipe } from "../models/Recipe.js";
 
 export const getFilteredRecipes = async (category, tags, page = 1) => {
     logger.info(`Filtering Recipes: ${category} | ${tags} | ${page}`);
@@ -81,3 +82,59 @@ const buildCacheKey = (category, tags, page) => {
         : "";
     return `${category || "any"}|${sortedTags}|page=${page}`;
 };
+
+export const getRecipeDetails = async (id) => {
+    logger.info(`Obtaining Recipe Information ID #: ${id}`);
+
+    try {
+        //check cached recipes first
+        let recipe = await Recipe.findOne( {id : id})
+        
+        if (recipe) {
+            logger.info(`Recipe ${id} found in cache`)
+            return recipe;
+        }
+        
+        //get recipe from spooncaular api if not found in cache
+        const response = await axios.get(SPOONACULAR.RECIPE_INFORMATION(id), {
+            params : {
+                apiKey: ENV.SPOONACULAR_KEY,
+                includeNutrition : true
+            }
+        })
+
+        const data = response.data
+        
+        //save recipe to cache
+        const newRecipe = new Recipe({
+            id: data.id,
+            image: data.image,
+            imageType: data.imageType,
+            title: data.title,
+            readyInMinutes: data.readyInMinutes,
+            servings: data.servings,
+            sourceUrl: data.sourceUrl,
+            sourceName: data.sourceName,
+            vegetarian: data.vegetarian,
+            vegan: data.vegan,
+            glutenFree: data.glutenFree,
+            dairyFree: data.dairyFree,
+            extendedIngredients: data.extendedIngredients,
+            nutrition: data.nutrition,
+            summary: data.summary,
+            cuisines: data.cuisines,
+            dishTypes: data.dishTypes,
+            diets: data.diets,
+            instructions: data.instructions,
+            analyzedInstructions: data.analyzedInstructions
+        })
+
+        await newRecipe.save()
+
+        return newRecipe
+    }
+    catch (error) {
+        logger.info(`Error fetching recipe: ${error.message}`);
+        return { error: "Failed to fetch recipe" }
+    }
+}

@@ -39,19 +39,8 @@ export function renderRecipes(recipes) {
                         <p style="font-size: 14px; color: #777; margin: 0;">
                             🍽️ <a href="#" class="show-more-link" style="text-decoration: none; color: #FE8641;">Show more...</a>
                         </p>
-                        <button class="modal-trigger add-button" style="
-                            background: #FE8641;
-                            border: none;
-                            border-radius: 50%;
-                            width: 32px;
-                            height: 32px;
-                            font-size: 20px;
-                            color: white;
-                            cursor: pointer;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                        ">+</button>
+                        <!--button-->
+                 <button class="add-to-meal-btn" onclick="openModal(this)" data-recipe-id="12345">+</button>
                     </div>
                 </div>
             </div>

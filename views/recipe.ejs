@@ -37,6 +37,9 @@
               <button style="background-color: orange; color: white; padding: 10px 16px; border: none; border-radius: 8px;">
                 Add to Meal Plan
               </button>
+              <a href="/home" style="background-color: orange; color: white; padding: 8.5px 16px; border: none; border-radius: 8px; text-decoration: none; display: inline-block;">
+                Back to Recipes
+              </a>
               <h5>
                 Ingredients</h5>
               <ul class="collection">
@@ -56,7 +59,9 @@
               <% } %>              
             </div>
             <div class="col s12 m5 right-image">
-              <img src="<%= recipe.image %>" alt="Recipe Image" class="recipe-image">
+              <div class="row">
+                <img src="<%= recipe.image %>" alt="Recipe Image" class="recipe-image">
+              </div> 
             </div>
         </div> 
         <%- include('partials/scripts') %>

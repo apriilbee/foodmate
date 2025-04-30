@@ -21,9 +21,9 @@ h4, h5 {
 .right-image {
   flex: 1;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-top: 95px;
 }
 
 .recipe-image {
@@ -67,6 +67,9 @@ h4, h5 {
     .right-image {
       order: -1; /* Move image to top on small screens */
       margin-bottom: 20px;
+      margin-right: 13px;
+      justify-content: center; /* center the image horizontally */
+      padding-top: 0;
     }
 }
 

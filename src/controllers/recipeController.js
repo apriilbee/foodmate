@@ -15,11 +15,14 @@ export const getRecipes = async (req, res) => {
 export const getRecipeById = async (req, res) => {
     const recipeId= req.params.id;
     if (!recipeId) {
-        return res.status(400).json({ error: `Recipe ID is required` })
+        return res.status(404).json({ error: `Recipe ID is required` })
     }
     try {
         const recipe = await getRecipeDetails(recipeId);        
-        if (recipe.error) return res.status(400).json({ error: recipe.error })
+        if (recipe.error) return res.render("404", {
+            title: "Not Found",
+            message: "The recipe you're looking for doesn't exist."
+        })
         
         recipe['formattedIngredients'] = getIngredientDetails(recipe.extendedIngredients);
         if (recipe.analyzedInstructions) {

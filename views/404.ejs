@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>404 - Not Found</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <style>
+      body {
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        color: #ff9800;
+        text-align: center;
+      }
+      h1 {
+        font-size: 6rem;
+        margin-bottom: 0;
+      }
+      h5 {
+        margin-top: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>404</h1>
+    <h5><%= message || "The recipe you're looking for doesn't exist." %></h5>
+    <a href="/home" class="btn btn-large orange lighten-1 white-text" style="margin-top: 20px; border-radius: 30px;">Go Back Home</a>
+  </body>
+</html>

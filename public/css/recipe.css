@@ -60,7 +60,7 @@ h4, h5 {
   border-left: 4px solid #ff9800;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1280px) {
     .recipe-container {
       flex-direction: column;
     }

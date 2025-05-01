@@ -8,28 +8,38 @@
             <div class="col s12 m7 left-content">
               <h4><%= recipe.title %></h4>
               <div>
-                <% if (recipe.vegan) { %>
-                  <div class="chip tag-chip">Vegan</div>
-                <% } %>
-                <% recipe.dishTypes.forEach(type => { %>
-                  <div class="chip tag-chip"><%= type %></div>
-                <% }); %>
-                <% recipe.cuisines.forEach(cuisine => { %>
-                  <div class="chip tag-chip"><%= cuisine %></div>
+                <% recipe.tags.forEach(tag => { %>
+                  <div class="chip tag-chip"><%= tag %></div>
                 <% }); %>
               </div>
               <div class="info-icons">
                 <p><i class="material-icons">schedule</i> <%= recipe.readyInMinutes %> minutes</p>
                 <p><i class="material-icons">restaurant</i> Serves <%= recipe.servings %></p>
-                <% if (recipe.nutrition?.nutrients) {
-                     const calories = recipe.nutrition.nutrients.find(n => n.name === 'Calories');
-                     if (calories) { %>
-                  <p><i class="material-icons">local_fire_department</i> <%= calories.amount %> kcal</p>
-                <% } } %>
+                <% if (recipe.nutrition?.nutrients) { 
+                  const calories = recipe.nutrition.nutrients.find(n => n.name === 'Calories');
+                  const protein = recipe.nutrition.nutrients.find(n => n.name === 'Protein');
+                  const sugar = recipe.nutrition.nutrients.find(n => n.name === 'Sugar');
+                  const carbs = recipe.nutrition.nutrients.find(n => n.name === 'Carbohydrates');
+                  if (calories) { %>
+                      <p><i class="material-icons">local_fire_department</i> <%= calories.amount %> kcal</p>
+                  <% } 
+                  if (protein) { %>
+                      <p><i class="material-icons">fitness_center</i> <%= protein.amount %> g Protein</p>
+                  <% }
+                  if (sugar) { %>
+                      <p><i class="material-icons">icecream</i> <%= sugar.amount %> g Sugar</p>
+                  <% } 
+                  if (carbs) { %>
+                    <p><i class="material-icons">bakery_dining</i> <%= carbs.amount %> g Carbs</p>
+                <% }
+              } %>
               </div>
               <button style="background-color: orange; color: white; padding: 10px 16px; border: none; border-radius: 8px;">
                 Add to Meal Plan
               </button>
+              <a href="/home" style="background-color: orange; color: white; padding: 8.5px 16px; border: none; border-radius: 8px; text-decoration: none; display: inline-block;">
+                Back to Recipes
+              </a>
               <h5>
                 Ingredients</h5>
               <ul class="collection">
@@ -37,17 +47,21 @@
                   <li class="collection-item"><%= ingredient %></li>
                 <% }) %>
               </ul>
-              <h5>Instructions</h5>
-              <div>
-                <% recipe.instructionDetails.forEach((step, index) => { %>
-                  <div class="step">
-                    <strong>Step <%= index + 1 %>:</strong> <%= step %>
-                  </div>
-                <% }) %>
-              </div>
+              <% if (recipe.instructionDetails && recipe.instructionDetails.length > 0) { %>
+                <h5>Instructions</h5>
+                <div>
+                  <% recipe.instructionDetails.forEach((step, index) => { %>
+                    <div class="step">
+                      <strong>Step <%= index + 1 %>:</strong> <%= step %>
+                    </div>
+                  <% }) %>
+                </div>
+              <% } %>              
             </div>
             <div class="col s12 m5 right-image">
-              <img src="<%= recipe.image %>" alt="Recipe Image" class="recipe-image">
+              <div class="row">
+                <img src="<%= recipe.image %>" alt="Recipe Image" class="recipe-image">
+              </div> 
             </div>
         </div> 
         <%- include('partials/scripts') %>

@@ -20,7 +20,7 @@ export function renderRecipes(recipes) {
             <div class="col s12 m6 l4">
                 <div class="card hoverable" style="border-radius: 16px; overflow: hidden;">
                     <div class="card-image">
-                        <img src="${recipe.image}" alt="${recipe.title}" style="height: 200px; object-fit: cover;">
+                        <a href="/api/recipes/${recipe.id}"><img src="${recipe.image}" alt="${recipe.title}" style="height: 200px; object-fit: cover;"></a>
                         <span class="card-title" style="
                             background: rgba(0, 0, 0, 0.5);
                             font-size: 18px;
@@ -37,7 +37,7 @@ export function renderRecipes(recipes) {
                     </div>
                     <div class="card-content" style="display: flex; justify-content: space-between; align-items: center;">
                         <p style="font-size: 14px; color: #777; margin: 0;">
-                            🍽️ <a href="#" class="show-more-link" style="text-decoration: none; color: #FE8641;">Show more...</a>
+                            🍽️ <a href="/api/recipes/${recipe.id}" class="show-more-link" style="text-decoration: none; color: #FE8641;">Show more...</a>
                         </p>
                         <button class="modal-trigger add-button" style="
                             background: #FE8641;

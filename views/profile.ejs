@@ -1,212 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
   <%- include('partials/head') %>
-  <style>
-
-/* Profile wrapper and layout */
-.profile-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-top: 20px;
-    padding: 10px;
-}
- 
-.profile-left {
-    width: 65%;
-}
- 
-.profile-right {
-    width: 30%;
-    text-align: right;
-}
- 
-.avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-}
- 
-.edit-pic-btn {
-    background-color: #f97316;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    margin-top: 10px;
-    cursor: pointer;
-}
- 
-/* Profile form inputs */
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    width: 90%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-}
- 
-/* Dietary Preferences Section */
-.checkbox-wrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
-    padding: 10px;
-    color: #f97316;
-}
- 
-/* Styling for checkboxes */
-.checkbox-wrapper input[type="checkbox"] {
-    width: 30px; /* Increase checkbox size */
-    height: 30px; /* Increase checkbox size */
-    background-color: #fff; /* White background */
-    border: 3px solid #808080; /* Grey border */
-    border-radius: 4px; /* Rounded borders */
-    display: inline-block;
-    vertical-align: middle;
-    position: relative;
-}
- 
-/* When checkbox is checked */
-.checkbox-wrapper input[type="checkbox"]:checked {
-    background-color: #808080; /* Grey background when checked */
-    border-color: #333; /* Darker border */
-}
- 
-/* Hover effect for checkboxes */
-.checkbox-wrapper input[type="checkbox"]:hover {
-    border-color: #f97316; /* Orange border color on hover */
-}
- 
-/* Label for checkboxes */
-.checkbox-wrapper label {
-    font-size: 14px;
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-    color: #333; /* Dark text color for labels */
-}
- 
-/* Styling for "Other" input fields */
-.other-input {
-    margin-top: 10px;
-}
- 
-/* Save and Cancel buttons */
-.save-btn, .cancel-btn {
-    background-color: #f97316;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    margin-top: 20px;
-}
- 
-.cancel-btn {
-    background-color: #6b7280;
-}
- 
-  </style>
+  <link rel="stylesheet" href="/css/profile.css" />
+  <!-- Font Awesome for camera icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <body>
     <%- include('partials/navbar') %>
-  
  
-    <div class="container">
+    <!-- Banner -->
+    <div class="profile-header-bg">
+      <h3 class="page-title">User Profile Settings</h3>
+    </div>
+    <div class="profile-container container">
       <main>
-        <h1>User Profile Settings</h1>
- 
         <div class="profile-wrapper">
-          
-          <!-- Left: Profile Form -->
+          <!-- Left: User Info -->
           <div class="profile-left">
-            <form id="edit-profile-form" action="/profile" method="POST">
-              
+            <form id="edit-profile-form">
               <div class="profile-info">
-                <label>User Name:</label>
-                <input type="text" name="name" value="<%= user?.name || '' %>" required>
- 
-                <label>User Email:</label>
-                <input type="email" name="email" value="<%= user?.email || '' %>" >
-              </div>
- 
-              <div class="change-password">
-                <h3>Change Password</h3>
-                <input type="password" name="currentPassword" placeholder="Current Password" >
-                <input type="password" name="newPassword" placeholder="New Password" >
-                <input type="password" name="confirmPassword" placeholder="Confirm Password" >
-              </div>
- 
-              <div class="actions">
-                <button type="submit" class="save-btn">Save Changes</button>
+                <p class="user-line"><strong>User Name:</strong> <span class="user-name"><%= user?.username || 'User' %></span></p>
               </div>
             </form>
+            <div id="message" style="margin-top: 15px;"></div>
           </div>
  
-          <!-- Right: Profile Picture -->
+          <!-- Right: Avatar + Name + Role -->
           <div class="profile-right">
-            <img src="/images/default-avatar.png" alt="Profile Picture" class="avatar">
+            <div class="avatar-wrapper">
+              <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Profile Picture" class="avatar">
+              <div class="avatar-overlay"><i class="fa fa-camera"></i></div>
+            </div>
+            <div class="profile-name"><%= user?.username || "User" %></div>
+            <p class="profile-role">Meal Plan User</p>
             <button class="edit-pic-btn">Edit Profile Picture</button>
           </div>
+        </div>
  
-        </div> 
-        <!-- End of profile-wrapper -->
- 
-        <!-- Dietary Preferences Section -->
+        <!-- Preferences Section -->
         <section class="preferences">
-          <h2>Dietary Preferences</h2>
- 
+          <h2>🥗 Dietary Preferences</h2>
           <form id="dietary-form" action="/profile/dietpreferences" method="POST">
             <div class="checkbox-wrapper">
-              <label><input type="checkbox" name="dietary" value="Vegan"> Vegan</label>
-              <label><input type="checkbox" name="dietary" value="Gluten-Free"> Gluten-free</label>
-              <label><input type="checkbox" name="dietary" value="Keto"> Keto</label>
-              <label><input type="checkbox" name="dietary" value="Vegetarian"> Vegetarian</label>
-              <label><input type="checkbox" name="dietary" value="Pescatarian"> Pescatarian</label>
+              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Vegan"> Vegan</label>
+              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Gluten-Free"> Gluten-Free</label>
+              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Keto"> Keto</label>
+              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Vegetarian"> Vegetarian</label>
+              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Pescatarian"> Pescatarian</label>
             </div>
  
-            <div class="other-input">
-              <label>Others:</label>
+            <div class="other-input" style="margin-top: 15px;">
+              <label>Other Dietary Preference:</label>
               <input type="text" name="dietaryOther" placeholder="Enter other dietary preference">
             </div>
  
-            <div class="checkbox-wrapper">
-              <label><input type="checkbox" name="allergies" value="Soy"> Soy Allergy</label>
-              <label><input type="checkbox" name="allergies" value="Nuts"> Nuts Allergy</label>
-              <label><input type="checkbox" name="allergies" value="Dairy"> Dairy Allergy</label>
+            <div class="checkbox-wrapper" style="margin-top: 30px;">
+              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Soy"> Soy Allergy</label>
+              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Nuts"> Nuts Allergy</label>
+              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Dairy"> Dairy Allergy</label>
             </div>
  
-            <div class="other-input">
-              <label>Others:</label>
+            <div class="other-input" style="margin-top: 15px;">
+              <label>Other Allergies:</label>
               <input type="text" name="allergyOther" placeholder="Enter other allergies">
             </div>
  
-            <div class="actions">
+            <div class="actions" style="margin-top: 20px;">
               <button type="submit" class="save-btn">Save Preferences</button>
             </div>
+            <div id="message" style="margin-top: 15px;"></div>
           </form>
         </section>
  
-        <!-- Account Privacy -->
+        <!-- Account Privacy Section -->
         <section class="account-privacy">
-          <h2>Account & Privacy</h2>
-          <p><a href="/profile/download">Download My Data</a></p>
-          <p><a href="/profile/delete" style="color:red;">Delete My Account</a></p>
+          <h2>🔐 Account & Privacy</h2>
+          <p><a href="#" id="openPasswordModal" class="modal-link">Change Password</a></p>
+          <p><a href="/profile/delete" class="delete-link">Delete My Account</a></p>
         </section>
- 
-        <% if (message) { %>
-          <div id="message"><%= message %></div>
-        <% } %>
- 
-        <div class="actions">
-          <a href="/" class="cancel-btn">Cancel</a>
-        </div>
- 
       </main>
+    </div>
+ 
+    <!-- Password Modal -->
+    <div id="passwordModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closePasswordModal">&times;</span>
+        <!-- Inside passwordModal -->
+         <form id="passwordchange">
+          <h3>Change Password</h3>
+          <input type="password" id="currentPassword" name="currentPassword" placeholder="Current Password" >
+          <input type="password" id="newPassword" name="newPassword" placeholder="New Password" >
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" >
+          <div id="passwordMessage" style="margin: 10px 0;"></div>
+          <button type="submit" id="savePasswordBtn" class="save-btn">Save Changes</button>
+        </form>
+      </div>
     </div>
  
     <%- include('partials/scripts') %>

@@ -15,12 +15,13 @@
         <div class="profile-form-wide">
           <div class="form-avatar-side">
             <div class="avatar-wrapper">
-              <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Profile Picture" class="avatar" />
+              <img src="<%= user.profilePic || '/img/profile.svg' %>" alt="Profile Picture" class="avatar" id="profilePic">
+              <input type="file" id="profilePicInput" name="profilePic" accept="image/*" style="display: none;">
               <div class="avatar-overlay"><i class="fa fa-camera"></i></div>
             </div>
-            <button class="edit-pic-btn">Change Profile Picture</button>
+            <button type="button" class="edit-pic-btn">Change Profile Picture</button>
           </div>
- 
+          
           <div class="form-info-side">
             <div class="info-field">
               <label>User Name</label>
@@ -30,6 +31,7 @@
               <label>Email</label>
               <p><%= user?.email || 'user@example.com' %></p>
             </div>
+            <div id="imageresponse" ></div>
           </div>
         </div>
         

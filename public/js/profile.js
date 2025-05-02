@@ -82,7 +82,7 @@ const deleteModal = document.getElementById("deleteAccountModal");
         deleteMessage.textContent = data.message;
 
         setTimeout(() => {
-          window.location.href = "/"; // or homepage
+          window.location.href = "/"; 
         }, 1500);
       } else {
         deleteMessage.style.color = "red";
@@ -96,22 +96,27 @@ const deleteModal = document.getElementById("deleteAccountModal");
   };
 
   document.getElementById("dietary-form").addEventListener("submit", async function (e) {
+    e.preventDefault();  // Prevent the default form submission
+  
+    const form = e.target;
+    
     const dietary = Array.from(form.querySelectorAll('input[name="dietary"]:checked')).map(el => el.value);
     const allergies = Array.from(form.querySelectorAll('input[name="allergies"]:checked')).map(el => el.value);
     const dietaryOther = form.querySelector('input[name="dietaryOther"]').value;
     const allergyOther = form.querySelector('input[name="allergyOther"]').value;
-    
+  
+    // Payload
     const payload = { dietary, allergies, dietaryOther, allergyOther };
-
+  
     try {
       const response = await fetch("/profile/dietpreferences", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-
+  
       const data = await response.json();
-
+  
       document.getElementById("preferenceresponse").innerHTML = `
         <div class="${data.success ? 'success-msg' : 'error-msg'}">
           ${data.message}
@@ -123,3 +128,39 @@ const deleteModal = document.getElementById("deleteAccountModal");
       `;
     }
   });
+
+  document.querySelector(".edit-pic-btn").addEventListener("click", () => {
+    document.getElementById("profilePicInput").click(); // Trigger file input on button click
+  });
+  
+  document.getElementById("profilePicInput").addEventListener("change", async function () {
+    const file = this.files[0]; 
+    if (!file) return;
+  
+    const formData = new FormData();
+    formData.append("profilePic", file); 
+  
+    try {
+      // Send the image to the server for uploading
+      const response = await fetch("/profile/uploadpicture", {
+        method: "POST",
+        body: formData,
+      });
+  
+      const data = await response.json();
+      const msgContainer = document.getElementById("imageresponse");
+  
+      // On success, update the profile picture on the webpage
+      if (data.success) {
+        document.getElementById("profilePic").src = data.profilePic;  
+        msgContainer.innerHTML = `<div class="success-msg">${data.message}</div>`;
+      } else {
+        msgContainer.innerHTML = `<div class="error-msg">${data.message}</div>`;
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      document.getElementById("imageresponse").innerHTML = `
+        <div class="error-msg">Something went wrong while uploading.</div>
+      `;
+    }
+  });  

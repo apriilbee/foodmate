@@ -1,31 +1,33 @@
 import User from '../models/User.js';
 import UserPreferences from '../models/UserPreferences.js';
+import UserProfile from '../models/UserProfile.js';
 import bcrypt from 'bcryptjs';
 
-
 export const getProfile = async (req, res) => {
-    try {
-      const user = await User.findById(req.user._id);
-      const preferences = await UserPreferences.findOne({ userId: user._id });
-  
-      res.render('profile', {
-        title: "Profile Settings",
-        user: {
-          ...user.toObject(),
-          dietary: preferences?.dietaryPreferences || [],
-          allergies: preferences?.allergies || []
-        },
-        message: null
-      });
-    } catch (error) {
-      console.error('Error loading profile:', error);
-      res.render('profile', {
-        title: "Profile Settings",
-        user: req.user,
-        message: 'Failed to load profile settings'
-      });
-    }
-  };
+  try {
+    const user = await User.findById(req.user.id);
+    const preferences = await UserPreferences.findOne({ userId: user.id });
+    const profile = await UserProfile.findOne({ userId: user.id }); // Fetch profile for profilePic
+
+    res.render('profile', {
+      title: "Profile Settings",
+      user: {
+        ...user.toObject(),
+        dietary: preferences?.dietaryPreferences || [],
+        allergies: preferences?.allergies || [],
+        profilePic: profile?.profilePic || '/img/profile.svg' // Include profile picture
+      },
+      message: null
+    });
+  } catch (error) {
+    console.error('Error loading profile:', error);
+    res.render('profile', {
+      title: "Profile Settings",
+      user: req.user,
+      message: 'Failed to load profile settings'
+    });
+  }
+};
   
 export const updateProfile = async (req, res) => {
   try {
@@ -87,34 +89,33 @@ export const updateDietaryPreferences = async (req, res) => {
 
     let { dietary, allergies, dietaryOther, allergyOther } = req.body;
 
-    // Normalize to arrays
-    if (!Array.isArray(dietary)) dietary = dietary ? [dietary] : [];
-    if (!Array.isArray(allergies)) allergies = allergies ? [allergies] : [];
+    dietary = Array.isArray(dietary) ? dietary : (dietary ? [dietary] : []);
+    allergies = Array.isArray(allergies) ? allergies : (allergies ? [allergies] : []);
 
-    // Add "Other" fields if present
     if (dietaryOther?.trim()) dietary.push(dietaryOther.trim());
     if (allergyOther?.trim()) allergies.push(allergyOther.trim());
 
-    // Clean the arrays (trim and remove empty strings)
     const updatedDietary = dietary.map(d => d.trim()).filter(Boolean);
     const updatedAllergies = allergies.map(a => a.trim()).filter(Boolean);
 
-    // Update or create preferences
-    await UserPreferences.findOneAndUpdate(
+    // Find and update the user's preferences or create if doesn't exist
+    const userPreferences = await UserPreferences.findOneAndUpdate(
       { userId },
       { dietary: updatedDietary, allergies: updatedAllergies },
       { upsert: true, new: true }
     );
 
-    res.status(200).json({ success: true, message: 'Preferences updated successfully.' });
+    return res.status(200).json({
+      success: true,
+      message: 'Preferences updated successfully.',
+      data: userPreferences, 
+    });
 
   } catch (err) {
     console.error('Error updating preferences:', err.message, err.stack);
-    res.status(500).json({ success: false, message: 'Internal server error.' });
+    return res.status(500).json({ success: false, message: 'Internal server error.' });
   }
 };
-
-
 
 
 export const deleteAccount = async (req, res) => {
@@ -127,7 +128,7 @@ export const deleteAccount = async (req, res) => {
 
     await User.findByIdAndDelete(userId);
 
-    // Optionally destroy session or token (depends on auth method)
+    // Optionally destroy session or token
     req.logout?.(); 
     req.session?.destroy();
 
@@ -138,3 +139,37 @@ export const deleteAccount = async (req, res) => {
   }
 };
 
+// Controller for uploading the profile picture
+export const uploadProfilePicture = async (req, res) => {
+  try {
+    const userId = req.user.id; 
+
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'No file uploaded' });
+    }
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(req.file.mimetype)) {
+      return res.status(400).json({ success: false, message: 'Invalid image format' });
+    }
+
+    const profilePicPath = `/uploads/${req.file.filename}`;
+
+    const updatedUserProfile = await UserProfile.findOneAndUpdate(
+      { userId },  
+      { profilePic: profilePicPath },  
+      { new: true } 
+    );
+
+    // Respond with the updated profile picture URL
+    res.status(200).json({
+      success: true,
+      message: 'Profile picture updated successfully',
+      profilePic: profilePicPath 
+    });
+
+  } catch (err) {
+    console.error('Error uploading profile picture:', err);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};

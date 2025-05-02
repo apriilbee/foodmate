@@ -12,7 +12,8 @@ import { ENV } from "./utils/envLoader.js";
 import authRoutes from "./routes/authRoutes.js";
 import homeRoutes from "./routes/homeRoutes.js";
 import recipeRoutes from "./routes/recipeRoutes.js";
-import profileRoutes from "./routes/profileRoutes.js";
+import mealPlanRoutes from "./routes/mealPlanRoutes.js";
+
 import { logger } from "./utils/logger.js";
 
 const app = express();
@@ -37,10 +38,8 @@ app.set("views", path.join(__dirname, "../views"));
 app.use("/auth", authRoutes);
 app.use("/", homeRoutes);
 app.use("/api/recipes", recipeRoutes);
-app.use("/profile", profileRoutes);
-app.get("/meal-planner", (req, res) => {
-    res.render("mealplanner"); 
-});
+app.use("/api/mealPlan", mealPlanRoutes);
+
 // Start server
 app.listen(ENV.PORT, () => {
     logger.info(`Server running at http://localhost:${ENV.PORT}`);

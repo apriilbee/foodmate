@@ -1,10 +1,11 @@
 import express from "express";
-import { getRecipes, getRecipeById } from "../controllers/recipeController.js";
+import { getRecipes, getRecipeById, searchRecipes } from "../controllers/recipeController.js";
 import { authenticateJWT } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/recipes", authenticateJWT, getRecipes);
-router.get("/recipes/:id", authenticateJWT, getRecipeById);
+router.get("/search", authenticateJWT, searchRecipes);
+router.get("/:id", authenticateJWT, getRecipeById);
+router.get("/", authenticateJWT, getRecipes);
 
 export default router;

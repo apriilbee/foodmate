@@ -3,125 +3,49 @@ import { ENV } from "../utils/envLoader.js";
 import { searchRecipesParamBuilder } from "../utils/searchRecipesParamBuilder.js";
 import { SPOONACULAR } from "../constants/apiEndpoints.js";
 import { RecipeSearchCache } from "../models/RecipeSearchCache.js";
-import { logger } from "../utils/logger.js";
 import { Recipe } from "../models/Recipe.js";
+import { logger } from "../utils/logger.js";
+
+// ----- PUBLIC FUNCTIONS -----
 
 export const getFilteredRecipes = async (category, tags) => {
     logger.info(`Filtering Recipes: ${category || "None"} | ${tags || "None"}`);
 
-    const isRandom = !category && !tags;
-    let page = 1;
-    let cacheKey = "";
+    if (!category && !tags) return await getRandomRecipes();
 
-    if (isRandom) {
-        logger.info("No category/tags. Fetching truly random recipes...");
-        const { data } = await axios.get(
-            `${SPOONACULAR.RANDOM_RECIPES}?limitLicense=true&number=10&apiKey=${ENV.SPOONACULAR_KEY}`
-        );
+    const page = getRandomPage(5);
+    const cacheKey = buildCacheKey("filter", category, tags, page);
 
-        const recipes = data.recipes;
-        if (!recipes || recipes.length === 0) {
-            throw new Error("No random recipes found from Spoonacular.");
-        }
-
-        logger.info("Fetched random recipes. Not cached.");
-        return {
-            recipes,
-            totalResults: recipes.length,
-            number: recipes.length,
-            offset: 0,
-        };
-    }
-
-    // Normal Search (Category/Tags Provided)
-    page = getRandomPage(5); // Randomize 1-5
-    cacheKey = buildCacheKey(category, tags, page);
-
-    logger.info(`Searching category. Randomized page: ${page}`);
-
-    // Check cache for this specific page
-    const cached = await RecipeSearchCache.findOne({ cacheKey });
-    if (cached) {
-        logger.info(`Cache hit for: ${cacheKey}`);
-        return formatCachedResult(cached);
-    }
-
-    // Fetch from Spoonacular
-    const recipesResult = await fetchRecipesFromSpoonacular(category, tags, page);
-
-    if (!recipesResult.recipes.length) {
-        logger.warn(`No recipes on random page ${page}. Falling back to page 1...`);
-
-        page = 1;
-        cacheKey = buildCacheKey(category, tags, page);
-
-        // Check cache for fallback page 1
-        const fallbackCached = await RecipeSearchCache.findOne({ cacheKey });
-        if (fallbackCached) {
-            logger.info(`Fallback cache hit for: ${cacheKey}`);
-            return formatCachedResult(fallbackCached);
-        }
-
-        // Fetch fallback from Spoonacular
-        const fallbackResult = await fetchRecipesFromSpoonacular(category, tags, page);
-        await cacheRecipeResults(cacheKey, fallbackResult);
-        return fallbackResult;
-    }
-
-    // Cache fetched random page
-    await cacheRecipeResults(cacheKey, recipesResult);
-    return recipesResult;
-};
-
-// -------- Utilities --------
-
-const getRandomPage = (maxPage = 5) => Math.floor(Math.random() * maxPage) + 1;
-
-const buildCacheKey = (category, tags, page) => {
-    const sortedTags = tags
-        ? tags
-              .split(",")
-              .map((t) => t.trim())
-              .sort()
-              .join(",")
-        : "";
-    return `${category || "any"}|${sortedTags}|page=${page}`;
-};
-
-const fetchRecipesFromSpoonacular = async (category, tags, page) => {
-    const params = searchRecipesParamBuilder(category, tags);
-    params.append("apiKey", ENV.SPOONACULAR_KEY);
-    params.append("offset", (page - 1) * 10);
-
-    logger.info(`Fetching from Spoonacular with params: ${params.toString()}`);
-
-    const { data } = await axios.get(`${SPOONACULAR.COMPLEX_SEARCH}?${params.toString()}`);
-
-    return {
-        recipes: data.results || [],
-        totalResults: data.totalResults || 0,
-        number: data.number || 0,
-        offset: data.offset || 0,
-    };
-};
-
-const cacheRecipeResults = async (cacheKey, result) => {
-    await RecipeSearchCache.create({
+    return await getWithCacheFallback(
         cacheKey,
-        recipes: result.recipes,
-        totalResults: result.totalResults,
-        number: result.number,
-        offset: result.offset,
-    });
-    logger.info(`Cached result for: ${cacheKey}`);
+        () => fetchRecipesFromSpoonacular(category, tags, page),
+        () => {
+            const fallbackKey = buildCacheKey("filter", category, tags, 1);
+            return fetchRecipesFromSpoonacular(category, tags, 1).then((result) => {
+                cacheRecipeResults(fallbackKey, result);
+                return result;
+            });
+        }
+    );
 };
 
-const formatCachedResult = (cached) => ({
-    recipes: cached.recipes,
-    totalResults: cached.totalResults,
-    number: cached.number,
-    offset: cached.offset,
-});
+export const fetchRecipesByQuery = async (query) => {
+    const baseKey = `query|${query.toLowerCase().trim()}`;
+    const page = getRandomPage(5);
+    const cacheKey = `${baseKey}|page=${page}`;
+
+    return await getWithCacheFallback(
+        cacheKey,
+        () => fetchQueryFromSpoonacular(query, page),
+        async () => {
+            const fallbackKey = `${baseKey}|page=1`;
+            return fetchQueryFromSpoonacular(query, 1).then((result) => {
+                cacheRecipeResults(fallbackKey, result);
+                return result;
+            });
+        }
+    );
+};
 
 export const getRecipeDetails = async (id) => {
     logger.info(`Obtaining Recipe Information ID #: ${id}`);
@@ -177,3 +101,117 @@ export const getRecipeDetails = async (id) => {
         return { error: "Failed to fetch recipe" };
     }
 };
+
+// ----- PRIVATE UTILITIES -----
+
+const getRandomRecipes = async () => {
+    logger.info("Fetching truly random recipes...");
+    const { data } = await axios.get(
+        `${SPOONACULAR.RANDOM_RECIPES}?limitLicense=true&number=10&apiKey=${ENV.SPOONACULAR_KEY}`
+    );
+
+    const recipes = data.recipes || [];
+    if (recipes.length === 0) throw new Error("No random recipes found.");
+
+    return {
+        recipes,
+        totalResults: recipes.length,
+        number: recipes.length,
+        offset: 0,
+    };
+};
+
+const fetchRecipesFromSpoonacular = async (category, tags, page) => {
+    const params = searchRecipesParamBuilder(category, tags);
+    params.append("apiKey", ENV.SPOONACULAR_KEY);
+    params.append("offset", (page - 1) * 10);
+
+    logger.info(`Fetching with params: ${params.toString()}`);
+
+    const { data } = await axios.get(`${SPOONACULAR.COMPLEX_SEARCH}?${params.toString()}`);
+    return formatResult(data);
+};
+
+const fetchQueryFromSpoonacular = async (query, page) => {
+    try {
+        const response = await axios.get(SPOONACULAR.COMPLEX_SEARCH, {
+            params: {
+                query,
+                number: 10,
+                offset: (page - 1) * 10,
+                limitLicense: true,
+                apiKey: ENV.SPOONACULAR_KEY,
+            },
+        });
+        return formatResult(response.data);
+    } catch (error) {
+        logger.error(`Query fetch failed: ${error.message}`);
+        return { recipes: [], totalResults: 0, number: 0, offset: 0 };
+    }
+};
+
+const getWithCacheFallback = async (cacheKey, fetchFn, fallbackFn) => {
+    const cached = await RecipeSearchCache.findOne({ cacheKey });
+    if (cached) {
+        logger.info(`Cache hit: ${cacheKey}`);
+        return formatCachedResult(cached);
+    }
+
+    const result = await fetchFn();
+    if (result.recipes && result.recipes.length > 0) {
+        await cacheRecipeResults(cacheKey, result);
+        return result;
+    }
+
+    logger.warn(`Empty result for: ${cacheKey}. Trying fallback.`);
+    return fallbackFn();
+};
+
+const buildCacheKey = (type, categoryOrQuery, tags = "", page = 1) => {
+    if (type === "filter") {
+        const sortedTags = tags
+            ? tags
+                  .split(",")
+                  .map((t) => t.trim())
+                  .sort()
+                  .join(",")
+            : "";
+        return `${categoryOrQuery || "any"}|${sortedTags}|page=${page}`;
+    }
+    return `${categoryOrQuery.toLowerCase().trim()}|page=${page}`;
+};
+
+const cacheRecipeResults = async (cacheKey, result) => {
+    const exists = await RecipeSearchCache.exists({ cacheKey });
+
+    if (exists) {
+        logger.info(`Cache already exists for: ${cacheKey}. Skipping insert.`);
+        return;
+    }
+
+    await RecipeSearchCache.create({
+        cacheKey,
+        recipes: result.recipes,
+        totalResults: result.totalResults,
+        number: result.number,
+        offset: result.offset,
+    });
+
+    logger.info(`Cached result for: ${cacheKey}`);
+};
+
+const formatResult = (data) => ({
+    recipes: data.results || [],
+    totalResults: data.totalResults || 0,
+    number: data.number || 0,
+    offset: data.offset || 0,
+});
+
+const formatCachedResult = (cached) => ({
+    recipes: cached.recipes,
+    totalResults: cached.totalResults,
+    number: cached.number,
+    offset: cached.offset,
+});
+
+const getRandomPage = (max = 5) => Math.floor(Math.random() * max) + 1;

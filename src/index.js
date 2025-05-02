@@ -13,6 +13,7 @@ import authRoutes from "./routes/authRoutes.js";
 import homeRoutes from "./routes/homeRoutes.js";
 import profileRoutes from './routes/profileRoutes.js'; 
 import recipeRoutes from "./routes/recipeRoutes.js";
+import mealPlanRoutes from "./routes/mealPlanRoutes.js";
 
 import { logger } from "./utils/logger.js";
 
@@ -40,6 +41,8 @@ app.use("/auth", authRoutes);
 app.use("/", homeRoutes);
 app.use('/', profileRoutes);
 app.use("/api", recipeRoutes);
+app.use("/api/recipes", recipeRoutes);
+app.use("/api/mealPlan", mealPlanRoutes);
 
 // Start server
 app.listen(ENV.PORT, () => {

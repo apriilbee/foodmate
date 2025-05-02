@@ -21,39 +21,43 @@ export const getRecipeById = async (req, res) => {
 
     const recipeId = req.params.id;
     if (!recipeId) {
-        return res.status(404).render("error", {
-            title: "Error",
-            code: 404,
-            message: "Recipe ID is required.",
-        });
+        return res.status(404).json({
+            error: "Something went wrong fetching recipes"
+        })
     }
 
     const recipe = await getRecipeDetails(recipeId);
 
     if (recipe.error) {
-        return res.render("error", {
-            title: "Error",
-            code: 500,
-            message: "Something went wrong fetching recipes",
+        return res.status(500).json({
+          error: "Something went wrong fetching recipes",
         });
+      }
+
+    const formattedIngredients = getIngredientDetails(recipe.extendedIngredients);
+    let instructionDetails;
+    if (recipe.analyzedInstructions.length > 0) {
+        instructionDetails = getInstructionDetails(recipe.analyzedInstructions[0].steps);
     }
 
-    recipe["formattedIngredients"] = getIngredientDetails(recipe.extendedIngredients);
-    if (recipe.analyzedInstructions.length > 0) {
-        recipe["instructionDetails"] = getInstructionDetails(recipe.analyzedInstructions[0].steps);
-    }
-    recipe["tags"] = getDietTags(
+    const tags = getDietTags(
         recipe.extendedIngredients,
         recipe.nutrition?.nutrients || [],
         recipe.dishTypes || [],
-        recipe.diets || []
+        recipe.diets || [],
+        recipe.cuisines || []
     );
 
-    res.render("recipe", {
-        title: recipe.title,
-        user: req.user,
-        recipe,
-    });
+    const rawRecipe = recipe.toObject();
+    
+    const fullRecipe = {
+        ...rawRecipe,
+        formattedIngredients,
+        tags,
+        instructionDetails
+    }
+    
+    res.status(200).json({ recipe: fullRecipe })                                                                                                                     
 };
 
 export const searchRecipes = async (req, res) => {

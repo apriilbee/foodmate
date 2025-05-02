@@ -9,6 +9,13 @@ export const getHome = (req, res) => {
     });
 };
 
+export const getRecipe = (req, res) => {
+    res.render("recipe", {
+        title: "Recipe",
+        user: req.user
+    })
+}
+
 export const healthCheck = (req, res) => {
     res.status(200).json({ status: "ok" });
 };

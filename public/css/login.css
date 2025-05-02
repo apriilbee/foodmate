@@ -1,0 +1,90 @@
+/* ===== Login Layout (Left Form, Right Image) ===== */
+.login-container {
+    display: flex;
+    height: 100vh;
+    flex-direction: row;
+}
+
+/* Left side: Login form */
+.left-side {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+}
+
+/* Right side: Image */
+.right-side {
+    flex: 1;
+    background-image: url("/img/food.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+/* Login card */
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Full-width login button */
+.full-btn {
+    width: 100%;
+    background-color: #fe8641;
+    color: white;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* ===== Responsive for Mobile ===== */
+@media screen and (max-width: 768px) {
+  .login-container {
+    flex-direction: column-reverse;
+    height: auto;
+  }
+
+  .left-side,
+  .right-side {
+    width: 100% !important;
+    flex: unset !important;
+  }
+
+  .right-side {
+    height: 180px;
+    border-bottom-left-radius: 50% 10%;
+    border-bottom-right-radius: 50% 10%;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .left-side {
+    padding: 20px 16px;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+  }
+
+  .login-card {
+    max-width: 100%;
+    width: 100%;
+    padding: 24px;
+    margin-top: -60px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+  }
+
+  .login-logo {
+    width: 140px;
+    margin-bottom: 10px;
+  }
+
+  .login-header {
+    margin-bottom: 20px;
+  }
+}

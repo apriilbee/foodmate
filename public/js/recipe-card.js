@@ -1,9 +1,8 @@
 export function renderRecipes(recipes) {
     const mealList = document.getElementById('meal-list');
-    mealList.innerHTML = ''; // Clear old results
+    mealList.innerHTML = '';
 
     if (!recipes || recipes.length === 0) {
-        const mealList = document.getElementById('meal-list');
         mealList.innerHTML = `
             <div class="col s12 center-align" style="margin-top: 40px;">
                 <img src="/img/icons/empty-plate.svg" alt="No results" style="width: 100px; margin-bottom: 16px;" />
@@ -13,14 +12,15 @@ export function renderRecipes(recipes) {
         `;
         return;
     }
-    
 
     recipes.slice(0, 9).forEach(recipe => {
         const cardHTML = `
             <div class="col s12 m6 l4">
                 <div class="card hoverable" style="border-radius: 16px; overflow: hidden;">
                     <div class="card-image">
-                        <img src="${recipe.image}" alt="${recipe.title}" style="height: 200px; object-fit: cover;">
+                        <a href="/api/recipes/${recipe.id}">
+                            <img src="${recipe.image}" alt="${recipe.title}" style="height: 200px; object-fit: cover;">
+                        </a>
                         <span class="card-title" style="
                             background: rgba(0, 0, 0, 0.5);
                             font-size: 18px;
@@ -33,19 +33,17 @@ export function renderRecipes(recipes) {
                             text-overflow: ellipsis;
                             white-space: nowrap;
                         ">${recipe.title}</span>
-
                     </div>
                     <div class="card-content" style="display: flex; justify-content: space-between; align-items: center;">
                         <p style="font-size: 14px; color: #777; margin: 0;">
-                            🍽️ <a href="#" class="show-more-link" style="text-decoration: none; color: #FE8641;">Show more...</a>
+                            🍽️ <a href="/api/recipes/${recipe.id}" class="show-more-link" style="text-decoration: none; color: #FE8641;">Show more...</a>
                         </p>
-                        <!--button-->
-                 <button class="add-to-meal-btn" onclick="openModal(this)" data-recipe-id="12345">+</button>
+                        <button class="add-to-meal-btn" onclick="openModal(this)" data-recipe-id="${recipe.id}">+</button>
                     </div>
                 </div>
             </div>
         `;
-        
+
         mealList.insertAdjacentHTML('beforeend', cardHTML);
     });
 }

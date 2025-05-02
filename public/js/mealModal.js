@@ -1,48 +1,68 @@
 function openModal(button) {
-    console.log("Clicked + button"); 
     const recipeId = button.getAttribute("data-recipe-id");
-    document.getElementById("recipeIdInput").value = recipeId;
+    console.log("Clicked + button with recipeId:", recipeId);
 
-    const modalElem = document.getElementById("addMealModal");
-
-    let modalInstance = M.Modal.getInstance(modalElem);
-    if (!modalInstance) {
-        modalInstance = M.Modal.init(modalElem); 
+    const input = document.getElementById("recipeIdInput");
+    if (!input) {
+        console.error("Hidden input #recipeIdInput not found!");
+        return;
     }
 
-    modalInstance.open(); 
+    input.value = recipeId;
+
+    const modalElem = document.getElementById("addMealModal");
+    let modalInstance = M.Modal.getInstance(modalElem) || M.Modal.init(modalElem);
+    modalInstance.open();
 }
 
 function closeModal() {
     const modalElem = document.getElementById("addMealModal");
-    let modalInstance = M.Modal.getInstance(modalElem);
-    if (!modalInstance) {
-        modalInstance = M.Modal.init(modalElem);
-    }
-    modalInstance.close(); 
+    let modalInstance = M.Modal.getInstance(modalElem) || M.Modal.init(modalElem);
+    modalInstance.close();
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-
-    const elems = document.querySelectorAll(".modal");
-    M.Modal.init(elems);
+    M.Modal.init(document.querySelectorAll(".modal"));
+    M.FormSelect.init(document.querySelectorAll("select"));
 
     const form = document.getElementById("addMealForm");
+    if (!form) return;
 
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
         e.preventDefault();
 
         const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-        console.log("Static form data (not submitted):", data);
+        const data = Object.fromEntries(formData.entries());
 
-      
-        M.toast({ html: "Meal added!" });
+        console.log("Form Data Submitted:", data);
 
-        closeModal();
+        if (!data.recipeId || !data.mealType || !data.date || !data.userId) {
+            M.toast({ html: "Please fill in all fields." });
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/mealPlan", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            console.log("Server response:", result);
+
+            if (response.ok) {
+                M.toast({ html: "Meal added!" });
+                closeModal();
+            } else {
+                M.toast({ html: result.message || "Failed to add meal." });
+            }
+        } catch (err) {
+            console.error("Submission error:", err);
+            M.toast({ html: "Server error. Please try again." });
+        }
     });
-
-
-    const selects = document.querySelectorAll("select");
-    M.FormSelect.init(selects);
 });

@@ -12,14 +12,15 @@
 
             <div class="input-field">
                 <label for="mealType">Meal Type:</label><br />
-                <select id="mealType" name="type" required>
+                <select id="mealType" name="mealType" required>
                     <option value="Breakfast">Breakfast</option>
                     <option value="Lunch">Lunch</option>
                     <option value="Dinner">Dinner</option>
                 </select>
             </div>
 
-            <input type="hidden" id="recipeIdInput" name="recipe_id" />
+            <input type="hidden" id="recipeIdInput" name="recipeId" />
+            <input type="hidden" id="userIdInput" name="userId">
             <button class="btn" type="submit">Add</button>
         </form>
     </div>

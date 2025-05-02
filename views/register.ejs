@@ -1,52 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Register - FoodMate</title>
-        <link rel="stylesheet" href="/css/style.css" />
-        <link
-            href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-            rel="stylesheet"
-        />
-    </head>
-    <body class="left-side">
-        <!-- reuse same layout as login, no right-side banner -->
+  <head>
+    <meta charset="UTF-8" />
+    <title>Register - FoodMate</title>
 
-        <div class="card login-card z-depth-2">
-            <h5 class="center-align">
-                Create Your
-                <strong>FoodMate</strong>
-                Account
-            </h5>
-            <p class="center-align">Sign up to start planning meals</p>
+    <link rel="stylesheet" href="/css/register.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body class="auth-page">
+    <div class="auth-card z-depth-1">
+      <h5>Create Your FoodMate Account</h5>
+      <p>Sign up to start planning meals</p>
 
-            <form id="registerForm">
-                <div class="input-field">
-                    <input id="username" name="username" type="text" class="validate" required />
-                    <label for="username">Username</label>
-                </div>
-
-                <div class="input-field">
-                    <input id="password" name="password" type="password" class="validate" required />
-                    <label for="password">Password</label>
-                </div>
-
-                <div id="registerErrorMessage" style="color: red; text-align: center; margin-bottom: 1rem"></div>
-
-                <div class="center-align">
-                    <button type="submit" class="btn waves-effect waves-light">Sign Up</button>
-                </div>
-            </form>
-
-            <div class="center-align" style="margin-top: 20px">
-                <p>
-                    Already have an account?
-                    <a href="/">Login</a>
-                </p>
-            </div>
+      <form id="registerForm">
+        <div class="input-field">
+          <input id="username" name="username" type="text" class="validate" required />
+          <label for="username">Username</label>
         </div>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    </body>
-    <%- include('partials/scripts') %>
+        <div class="input-field">
+          <input id="password" name="password" type="password" class="validate" required />
+          <label for="password">Password</label>
+        </div>
+
+        <div id="registerErrorMessage" style="color: red; text-align: center; margin-bottom: 1rem;"></div>
+
+        <button type="submit" class="btn waves-effect waves-light">Sign Up</button>
+      </form>
+
+      <div class="footer-link">
+        Already have an account?
+        <a href="/">Login</a>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="/js/register.js"></script>
+  </body>
 </html>

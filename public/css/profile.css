@@ -1,0 +1,260 @@
+/* === General Page Styling === */
+body {
+  background-color: #fff4eb;
+  font-family: 'Nunito', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+}
+
+.profile-header-bg {
+  background-color: #fff4eb;
+  padding: 40px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.page-title {
+  color: #f97316;
+  font-size: 36px;
+  font-weight: 800;
+}
+
+.profile-container {
+  padding: 0 20px 60px;
+}
+
+/* === Layout: Profile Section === */
+.profile-form-wide {
+  display: flex;
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  border: 1px solid #f5e2d9;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  max-width: 1000px;
+  width: 100%;
+  margin: auto;
+  gap: 40px;
+  margin-bottom: 40px;
+  align-items: center;
+}
+
+.form-avatar-side {
+  flex: 0 0 180px;
+  text-align: center;
+}
+
+.form-info-side {
+  flex: 1;
+}
+
+.info-field {
+  margin-bottom: 20px;
+}
+
+.info-field label {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+/* === Inputs: Clean Box Style (no !important) === */
+.profile-container input[type="text"],
+.profile-container input[type="email"],
+.profile-container input[type="password"] {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  font-size: 17px;
+  padding: 12px 15px;
+  width: 100%;
+  box-shadow: none;
+  outline: none;
+  margin-bottom: 10px;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.profile-container input[type="text"]:focus,
+.profile-container input[type="email"]:focus,
+.profile-container input[type="password"]:focus {
+  border: 2px solid #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+/* Autofill fix (no underline) */
+input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px white inset;
+  border-radius: 10px;
+}
+
+/* === Avatar Section === */
+.avatar-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: auto;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f97316;
+}
+
+.avatar-overlay {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: #f97316;
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.edit-pic-btn {
+  background-color: #f97316;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: none;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+/* === Sections (Dietary, Account) === */
+.card-section {
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  border: 1px solid #f5e2d9;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  max-width: 1000px;
+  width: 100%;
+  margin: 40px auto 0;
+}
+
+.section-heading {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* === Preferences Section === */
+.checkbox-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  background-color: #fffaf5;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.styled-checkbox {
+  font-size: 16px;
+  color: #5c4033;
+}
+
+.styled-checkbox input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: #f97316;
+}
+
+.other-input {
+  margin-bottom: 20px;
+}
+
+/* === Buttons === */
+.save-btn {
+  background-color: #f97316;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background-color: #e68900;
+}
+
+/* === Account & Privacy === */
+.account-links-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.link-text {
+  font-size: 16px;
+  color: #007BFF;
+  text-decoration: none;
+}
+
+.link-text:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+.delete-link {
+  color: #e53935;
+}
+
+.delete-link:hover {
+  color: #b71c1c;
+}
+
+/* === Modal === */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.close-btn {
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* === Message/Error Feedback === */
+#profile-msg,
+#password-msg {
+  margin-top: 10px;
+  font-weight: bold;
+}

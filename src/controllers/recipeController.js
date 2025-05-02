@@ -31,12 +31,10 @@ export const getRecipeById = async (req, res) => {
     const recipe = await getRecipeDetails(recipeId);
 
     if (recipe.error) {
-        return res.render("error", {
-            title: "Error",
-            code: 500,
-            message: "Something went wrong fetching recipes",
+        return res.status(500).json({
+          error: "Something went wrong fetching recipes",
         });
-    }
+      }
 
     const formattedIngredients = getIngredientDetails(recipe.extendedIngredients);
     let instructionDetails;

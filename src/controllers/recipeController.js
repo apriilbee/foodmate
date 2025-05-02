@@ -48,7 +48,8 @@ export const getRecipeById = async (req, res) => {
         recipe.extendedIngredients,
         recipe.nutrition?.nutrients || [],
         recipe.dishTypes || [],
-        recipe.diets || []
+        recipe.diets || [],
+        recipe.cuisines || []
     );
 
     const rawRecipe = recipe.toObject();

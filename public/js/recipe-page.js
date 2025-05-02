@@ -23,12 +23,13 @@ async function loadRecipe() {
     }
 
     const { recipe } = await res.json();
-    document.title = recipe.title;
+    const capitalizeWords = str => str.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+    document.title = `${capitalizeWords(recipe.title)} | Foodmate`;
 
     const container = document.getElementById("recipe-container");
     container.innerHTML = `
       <div class="col s12 m7 left-content">
-        <h4>${recipe.title}</h4>
+        <h4>${capitalizeWords(recipe.title)}</h4>
         <div>
           ${recipe.tags.map(tag => `<div class="chip tag-chip">${tag}</div>`).join("")}
         </div>

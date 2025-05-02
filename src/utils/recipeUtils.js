@@ -10,7 +10,7 @@ export const getIngredientDetails = (extededIngredients) => {
     return extededIngredients.map( ingredient => {
         const roundedAmount = parseFloat((ingredient.measures.metric.amount).toFixed(2));
         const displyAmount = FRACTIONS[roundedAmount] || ingredient.measures.metric.amount
-        if (ingredient.unit) return `${displyAmount} ${ingredient.measures.metric.unitShort.toLowerCase()} ${ingredient.name}`
+        if (ingredient.unit) return `${displyAmount} ${ingredient.measures.metric.unitLong.toLowerCase()} ${ingredient.name}`
         return `${displyAmount} ${ingredient.name}`;
     })
 }
@@ -29,7 +29,7 @@ function capitalizeWords(str) {
       .join(' ');
 }
 
-export const getDietTags = (ingredients, nutrition, dishTypes, diets) => {
+export const getDietTags = (ingredients, nutrition, dishTypes, diets, cuisines) => {
     const tags = [];
   
     const ingredientNames = ingredients.map(ingredient => ingredient.name.toLowerCase());
@@ -79,6 +79,7 @@ export const getDietTags = (ingredients, nutrition, dishTypes, diets) => {
 
     const formattedDishTypes = dishTypes.map(capitalizeWords);
     const formattedDiets = diets.map(capitalizeWords);
+    const formattedCuisines = cuisines.map(capitalizeWords);
   
-    return [...tags, ...formattedDiets, ...formattedDishTypes]
+    return [...tags, ...formattedDiets, ...formattedDishTypes, ...formattedCuisines]
 }

@@ -12,60 +12,6 @@ body {
     overflow: hidden;
 }
 
-/* ==== Login Layout ==== */
-.login-container {
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-}
-
-.left-side {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: aliceblue;
-    position: relative;
-    z-index: 2;
-}
-
-.right-side {
-    flex: 1;
-    background-image: url("/img/food.jpg");
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    z-index: 1;
-}
-
-/* ==== Login Card ==== */
-.login-card {
-    width: 100%;
-    max-width: 400px;
-    padding: 30px 40px;
-    border-radius: 16px;
-    background: #fff;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    z-index: 10;
-    transition: all 0.3s ease;
-}
-
-.login-header h5,
-.login-title {
-    font-family: "Bebas Neue", sans-serif;
-    font-size: 28px;
-    margin-bottom: 8px;
-    text-align: center;
-}
-
-.login-footer p {
-    font-size: 14px;
-    color: #666;
-}
-
 /* ==== Category Strip ==== */
 .category-strip {
     display: flex;
@@ -237,52 +183,8 @@ nav {
     color: black;
 }
 
+
 /* ==== Mobile Hero Style ==== */
-@media (max-width: 768px) {
-    .login-container {
-        display: block;
-        height: auto;
-    }
-
-    .right-side {
-        width: 100%;
-        height: 250px;
-        background-image: url("/img/food.jpg");
-        background-size: cover;
-        background-position: center;
-        border-bottom-left-radius: 50% 10%;
-        border-bottom-right-radius: 50% 10%;
-        position: relative;
-        z-index: 1;
-    }
-
-    .right-side::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), transparent);
-        border-bottom-left-radius: 50% 10%;
-        border-bottom-right-radius: 50% 10%;
-        z-index: 2;
-    }
-
-    .left-side {
-        background-color: transparent;
-        margin-top: -80px;
-        position: relative;
-        z-index: 3;
-        display: flex;
-        justify-content: center;
-        padding: 0 16px;
-    }
-
-    .login-card {
-        max-width: 90%;
-        margin: 0 auto;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        z-index: 4;
-    }
-}
 
 @media screen and (max-width: 600px) {
     .brand-logo-img {

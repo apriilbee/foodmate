@@ -21,11 +21,9 @@ export const getRecipeById = async (req, res) => {
 
     const recipeId = req.params.id;
     if (!recipeId) {
-        return res.status(404).render("error", {
-            title: "Error",
-            code: 404,
-            message: "Recipe ID is required.",
-        });
+        return res.status(404).json({
+            error: "Something went wrong fetching recipes"
+        })
     }
 
     const recipe = await getRecipeDetails(recipeId);

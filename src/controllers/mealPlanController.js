@@ -1,6 +1,9 @@
 import MealPlan from "../models/MealPlan.js";
 import { MEAL_TYPES } from "../constants/recipeFilters.js";
 import { Recipe } from "../models/Recipe.js";
+import axios from "axios";
+import { SPOONACULAR } from "../constants/apiEndpoints.js";
+import { ENV } from "../utils/envLoader.js";
 
 // POST /api/mealPlans
 export const createMealPlan = async (req, res) => {
@@ -97,7 +100,7 @@ export const getWeeklyMealPlan = async (req, res) => {
 
                             recipeName = response.data?.title ?? "Unknown Recipe";
                         } catch (apiErr) {
-                            console.warn(`Spoonacular fetch failed for ID ${recipeId}`);
+                            console.warn(`Spoonacular fetch failed for ID ${recipeId}. Error: ${apiErr}`);
                         }
                     }
                 }

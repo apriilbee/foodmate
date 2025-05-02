@@ -74,7 +74,7 @@ async function loadRecipe() {
         </div>
       </div>
     `;
-  } catch (err) {
+  } catch {
     const recipeSection = document.getElementById("recipe-container");
     if (recipeSection) recipeSection.style.display = "none";
     

@@ -2,6 +2,7 @@ import User from '../models/User.js';
 import UserPreferences from '../models/UserPreferences.js';
 import bcrypt from 'bcryptjs';
 
+
 export const getProfile = async (req, res) => {
     try {
       const user = await User.findById(req.user._id);
@@ -11,7 +12,7 @@ export const getProfile = async (req, res) => {
         title: "Profile Settings",
         user: {
           ...user.toObject(),
-          dietaryPreferences: preferences?.dietaryPreferences || [],
+          dietary: preferences?.dietaryPreferences || [],
           allergies: preferences?.allergies || []
         },
         message: null
@@ -79,25 +80,29 @@ export const updateProfile = async (req, res) => {
 
 export const updateDietaryPreferences = async (req, res) => {
   try {
-    const userId = req.user?.id; 
+    const userId = req.user.id;
     if (!userId) {
       return res.status(401).json({ success: false, message: 'Unauthorized. Please login again.' });
     }
 
-    const { dietary, dietaryOther, allergies, allergyOther } = req.body;
+    let { dietary, allergies, dietaryOther, allergyOther } = req.body;
 
-    let updatedDietary = Array.isArray(dietary) ? dietary : dietary ? [dietary] : [];
-    if (dietaryOther?.trim()) updatedDietary.push(dietaryOther.trim());
+    // Normalize to arrays
+    if (!Array.isArray(dietary)) dietary = dietary ? [dietary] : [];
+    if (!Array.isArray(allergies)) allergies = allergies ? [allergies] : [];
 
-    let updatedAllergies = Array.isArray(allergies) ? allergies : allergies ? [allergies] : [];
-    if (allergyOther?.trim()) updatedAllergies.push(allergyOther.trim());
+    // Add "Other" fields if present
+    if (dietaryOther?.trim()) dietary.push(dietaryOther.trim());
+    if (allergyOther?.trim()) allergies.push(allergyOther.trim());
 
+    // Clean the arrays (trim and remove empty strings)
+    const updatedDietary = dietary.map(d => d.trim()).filter(Boolean);
+    const updatedAllergies = allergies.map(a => a.trim()).filter(Boolean);
+
+    // Update or create preferences
     await UserPreferences.findOneAndUpdate(
       { userId },
-      {
-        dietaryPreferences: updatedDietary,
-        allergies: updatedAllergies
-      },
+      { dietary: updatedDietary, allergies: updatedAllergies },
       { upsert: true, new: true }
     );
 
@@ -108,3 +113,28 @@ export const updateDietaryPreferences = async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal server error.' });
   }
 };
+
+
+
+
+export const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    await User.findByIdAndDelete(userId);
+
+    // Optionally destroy session or token (depends on auth method)
+    req.logout?.(); 
+    req.session?.destroy();
+
+    return res.status(200).json({ success: true, message: "Account deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting account:", error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+

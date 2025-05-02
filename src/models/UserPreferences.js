@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const userPreferencesSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, unique: true },
-  dietaryPreferences: [String],
+  dietary: [String],
   allergies: [String]
 });
 

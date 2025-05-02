@@ -1,16 +1,17 @@
 export const getIngredientDetails = (extededIngredients) => {
     const FRACTIONS = {
-        0.33333334 : "1/3",
-        0.5 : "1/2",
-        0.75 : "3/4"
-    }
+      "0.25": "1/4",
+      "0.33": "1/3",
+      "0.5": "1/2",
+      "0.66": "2/3",
+      "0.75": "3/4"
+    };
     
     return extededIngredients.map( ingredient => {
-        if (ingredient.amount === 0.33333334 || ingredient.amount === 0.5 || ingredient.amount === 0.75) {
-            ingredient.amount = FRACTIONS[ingredient.amount];
-        } 
-        if (ingredient.unit) return `${ingredient.amount} ${ingredient.unit.toLowerCase()} ${ingredient.nameClean}`
-        return `${ingredient.amount} ${ingredient.nameClean}`;
+        const roundedAmount = parseFloat((ingredient.measures.metric.amount).toFixed(2));
+        const displyAmount = FRACTIONS[roundedAmount] || ingredient.measures.metric.amount
+        if (ingredient.unit) return `${displyAmount} ${ingredient.measures.metric.unitShort.toLowerCase()} ${ingredient.name}`
+        return `${displyAmount} ${ingredient.name}`;
     })
 }
 
@@ -36,7 +37,7 @@ export const getDietTags = (ingredients, nutrition, dishTypes, diets) => {
     // Allergens and Meats
     const nutAllergens = ['peanut', 'peanuts', 'almond', 'almonds', 'cashew', 'cashews', 'walnut', 'walnuts', 'pecan', 'pecans', 'hazelnut', 'hazelnuts', 'pistachio', 'pistachios', 'macadamia', 'macadamias', 'brazil nut', 'brazil nuts', 'pine nut', 'pine nuts', 'tree nut'];
     const soyAllergens = ['soy', 'soybean', 'soybeans', 'edamame', 'tofu', 'tempeh', 'miso', 'soya', 'soy lecithin', 'soy flour', 'soy protein'];
-    const redMeats = ['beef', 'pork', 'lamb']
+    const redMeats = ['beef', 'pork', 'lamb', 'bacon']
     
     // Check for Nut-Free
     const containsNuts = ingredientNames.some(name => nutAllergens.some(nut => name.includes(nut)));

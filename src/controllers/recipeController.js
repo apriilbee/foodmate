@@ -38,22 +38,29 @@ export const getRecipeById = async (req, res) => {
         });
     }
 
-    recipe["formattedIngredients"] = getIngredientDetails(recipe.extendedIngredients);
+    const formattedIngredients = getIngredientDetails(recipe.extendedIngredients);
+    let instructionDetails;
     if (recipe.analyzedInstructions.length > 0) {
-        recipe["instructionDetails"] = getInstructionDetails(recipe.analyzedInstructions[0].steps);
+        instructionDetails = getInstructionDetails(recipe.analyzedInstructions[0].steps);
     }
-    recipe["tags"] = getDietTags(
+
+    const tags = getDietTags(
         recipe.extendedIngredients,
         recipe.nutrition?.nutrients || [],
         recipe.dishTypes || [],
         recipe.diets || []
     );
 
-    res.render("recipe", {
-        title: recipe.title,
-        user: req.user,
-        recipe,
-    });
+    const rawRecipe = recipe.toObject();
+    
+    const fullRecipe = {
+        ...rawRecipe,
+        formattedIngredients,
+        tags,
+        instructionDetails
+    }
+    
+    res.status(200).json({ recipe: fullRecipe })                                                                                                                     
 };
 
 export const searchRecipes = async (req, res) => {

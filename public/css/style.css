@@ -12,58 +12,58 @@ body {
   overflow: hidden;
 }
 
-
+/* ==== Login Layout ==== */
 .login-container {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .left-side {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: aliceblue;
-  position: relative;
-  z-index: 2;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: aliceblue;
+    position: relative;
+    z-index: 2;
 }
 
 .right-side {
-  flex: 1;
-  background-image: url("/img/food.jpg");
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  z-index: 1;
+    flex: 1;
+    background-image: url("/img/food.jpg");
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 1;
 }
 
-
+/* ==== Login Card ==== */
 .login-card {
-  width: 100%;
-  max-width: 400px;
-  padding: 30px 40px;
-  border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  z-index: 10;
-  transition: all 0.3s ease;
+    width: 100%;
+    max-width: 400px;
+    padding: 30px 40px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 10;
+    transition: all 0.3s ease;
 }
 
 .login-header h5,
 .login-title {
-  font-family: "Bebas Neue", sans-serif;
-  font-size: 28px;
-  margin-bottom: 8px;
-  text-align: center;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 28px;
+    margin-bottom: 8px;
+    text-align: center;
 }
 
 .login-footer p {
-  font-size: 14px;
-  color: #666;
+    font-size: 14px;
+    color: #666;
 }
 
 
@@ -285,21 +285,3 @@ nav {
   }
 }
 
-@media screen and (max-width: 600px) {
-  .brand-logo-img {
-    height: 55px;
-  }
-}
-
-.info-field p {
-  font-size: 16px;
-  font-weight: 500;
-  margin-top: 6px;
-  color: #333;
-}
-
-.success-msg {
-  color: green;
-  font-weight: 500;
-  margin-top: 6px;
-}

@@ -1,6 +1,8 @@
 import { getFilteredRecipes } from "../services/recipeService.js";
 import { getRecipeDetails } from "../services/recipeService.js";
-import { getIngredientDetails, getInstructionDetails } from "../utils/recipeUtils.js";
+import { getIngredientDetails, getInstructionDetails, getDietTags } from "../utils/recipeUtils.js";
+
+
 export const getRecipes = async (req, res) => {
     try {
         const { category, tags } = req.query;
@@ -13,26 +15,25 @@ export const getRecipes = async (req, res) => {
 };
 
 export const getRecipeById = async (req, res) => {
-    const recipeId= req.params.id;
+    const recipeId = req.params.id;
     if (!recipeId) {
-        return res.status(400).json({ error: `Recipe ID is required` })
+        return res.status(404).json({ error: `Recipe ID is required` })
     }
-    try {
-        const recipe = await getRecipeDetails(recipeId);        
-        if (recipe.error) return res.status(400).json({ error: recipe.error })
-        
-        recipe['formattedIngredients'] = getIngredientDetails(recipe.extendedIngredients);
-        if (recipe.analyzedInstructions) {
-            recipe['instructionDetails'] = getInstructionDetails(recipe.analyzedInstructions[0].steps)
-        }
-        res.render("recipe", {
-            title: recipe.title,
-            user: req.user,
-            recipe: recipe
-        });
+    const recipe = await getRecipeDetails(recipeId);        
+    if (recipe.error) return res.render("error", {
+        title: "Error",
+        code: 500,
+        message: "Something went wrong fetching recipes"
+    });
+    
+    recipe['formattedIngredients'] = getIngredientDetails(recipe.extendedIngredients);
+    if (recipe.analyzedInstructions.length > 0) {
+        recipe['instructionDetails'] = getInstructionDetails(recipe.analyzedInstructions[0].steps)
     }
-    catch (error) {
-        console.error("Failed to fetch from Spoonacular:", error.message);
-        res.status(500).json({ error: "Something went wrong fetching recipes" }); //need to change to custom error page
-    }
+    recipe['tags'] = getDietTags(recipe.extendedIngredients, recipe.nutrition.nutrients, recipe.dishTypes, recipe.diets)
+    res.render("recipe", {
+        title: recipe.title,
+        user: req.user,
+        recipe: recipe
+    });
 }

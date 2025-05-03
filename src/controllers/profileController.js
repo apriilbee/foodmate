@@ -160,7 +160,7 @@ export const uploadProfilePicture = async (req, res) => {
       { profilePic: profilePicPath },  
       { new: true } 
     );
-
+    console.log('Updated profile:', updatedUserProfile);
     // Respond with the updated profile picture URL
     res.status(200).json({
       success: true,

@@ -8,7 +8,8 @@ import { ENV } from "../utils/envLoader.js";
 // POST /api/mealPlans
 export const createMealPlan = async (req, res) => {
     try {
-        const { userId, recipeId, date, mealType } = req.body;
+        const { recipeId, date, mealType } = req.body;
+        const userId = req.user._id;
 
         if (!userId || !recipeId || !date || !mealType) {
             return res.status(400).json({ message: "Missing required fields." });

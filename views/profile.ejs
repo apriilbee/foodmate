@@ -5,6 +5,129 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <body>
     <%- include('partials/navbar') %>
+
+    <div class="profile-header-bg">
+      <h1 class="page-title">User Profile</h1>
+    </div>
+
+    <div class="profile-container container">
+      <main>
+        <div class="profile-form-wide">
+          <div class="form-avatar-side">
+            <div class="avatar-wrapper">
+              <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Profile Picture" class="avatar" />
+              <div class="avatar-overlay"><i class="fa fa-camera"></i></div>
+            </div>
+            <button class="edit-pic-btn">Change Profile Picture</button>
+          </div>
+
+          <div class="form-info-side">
+            <div class="info-field">
+              <label>User Name</label>
+              <p><%= user?.name || 'John Doe' %></p>
+            </div>
+            <div class="info-field">
+              <label>Email</label>
+              <p><%= user?.email || 'user@example.com' %></p>
+            </div>
+          </div>
+        </div>
+        
+        <section class="preferences card-section">
+          <h2 class="section-heading">🥗 Dietary Preferences</h2>
+          <form id="dietary-form" action="/profile/preferences" method="POST">
+            <div class="checkbox-wrapper">
+              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Vegan"> Vegan</label>
+              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Gluten-Free"> Gluten-Free</label>
+              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Keto"> Keto</label>
+              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Vegetarian"> Vegetarian</label>
+              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Pescatarian"> Pescatarian</label>
+            </div>
+
+            <div class="other-input">
+              <label>Other Dietary Preference:</label>
+              <input type="text" name="dietaryOther" placeholder="Enter other dietary preference">
+            </div>
+
+            <div class="checkbox-wrapper">
+              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Soy"> Soy Allergy</label>
+              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Nuts"> Nuts Allergy</label>
+              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Dairy"> Dairy Allergy</label>
+            </div>
+
+            <div class="other-input">
+              <label>Other Allergies:</label>
+              <input type="text" name="allergyOther" placeholder="Enter other allergies">
+            </div>
+
+            <div class="actions">
+              <button type="submit" class="save-btn">Save Preferences</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="account-privacy card-section">
+          <h2 class="section-heading">🔐 Account & Privacy</h2>
+          <div class="account-links-vertical">
+            <a href="#" id="openPasswordModal" class="link-text">Change Password</a>
+            <a href="/profile/delete" class="link-text delete-link">Delete My Account</a>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="passwordModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closePasswordModal">&times;</span>
+        <h3>Change Password</h3>
+        <form id="password-form" action="/profile/password" method="POST">
+          <input type="password" name="currentPassword" placeholder="Current Password" required />
+          <input type="password" name="newPassword" placeholder="New Password" required />
+          <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
+          <button type="submit" class="save-btn">Save Changes</button>
+          <div id="password-msg"></div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+
+      const modal = document.getElementById("passwordModal");
+      const openBtn = document.getElementById("openPasswordModal");
+      const closeBtn = document.getElementById("closePasswordModal");
+
+      openBtn.onclick = () => modal.style.display = "block";
+      closeBtn.onclick = () => modal.style.display = "none";
+      window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+
+      document.getElementById('password-form').addEventListener('submit', function(e) {
+        const pwd = this.newPassword.value;
+        const confirm = this.confirmPassword.value;
+        const msg = document.getElementById('password-msg');
+
+        if (pwd.length < 6) {
+          e.preventDefault();
+          msg.innerText = 'Password must be at least 6 characters';
+          msg.style.color = 'red';
+        } else if (pwd !== confirm) {
+          e.preventDefault();
+          msg.innerText = 'Passwords do not match';
+          msg.style.color = 'red';
+        }
+      });
+    </script>
+
+    <%- include('partials/scripts') %>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/head') %>
+  <link rel="stylesheet" href="/css/profile.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <body>
+    <%- include('partials/navbar') %>
  
     <div class="profile-header-bg">
       <h3 class="page-title">User Profile Settings</h3>

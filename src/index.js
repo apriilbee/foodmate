@@ -40,8 +40,6 @@ app.set("views", path.join(__dirname, "../views"));
 
 app.use("/auth", authRoutes);
 app.use("/", homeRoutes);
-app.use('/', profileRoutes);
-app.use("/api", recipeRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/mealPlan", mealPlanRoutes);
 

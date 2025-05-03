@@ -126,7 +126,6 @@ const deleteModal = document.getElementById("deleteAccountModal");
       document.getElementById("preferenceresponse").innerHTML = `
         <div class="error-msg">Something went wrong. Please try again.</div>
       `;
-      console.error(err);
     }
   });
 

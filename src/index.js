@@ -11,9 +11,9 @@ import { ENV } from "./utils/envLoader.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import homeRoutes from "./routes/homeRoutes.js";
-import profileRoutes from './routes/profileRoutes.js'; 
 import recipeRoutes from "./routes/recipeRoutes.js";
 import mealPlanRoutes from "./routes/mealPlanRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
 
 import { logger } from "./utils/logger.js";
 
@@ -30,9 +30,7 @@ mongoose
 
 // Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
-app.use('/uploads', express.static('public/uploads'));
 app.use(cookieParser());
 
 app.set("view engine", "ejs");
@@ -42,6 +40,7 @@ app.use("/auth", authRoutes);
 app.use("/", homeRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/mealPlan", mealPlanRoutes);
+app.use("/profile", profileRoutes);
 
 // Start server
 app.listen(ENV.PORT, () => {

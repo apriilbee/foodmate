@@ -9,7 +9,7 @@ const router = express.Router();
 
 
 // Profile Page
-router.get('/profile', authenticateJWT, getProfile);
+router.get('/', authenticateJWT, getProfile);
 
 //Update Profile
 router.post('/profile/update', authenticateJWT, updateProfile);

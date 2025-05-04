@@ -12,6 +12,8 @@ import { ENV } from "./utils/envLoader.js";
 import authRoutes from "./routes/authRoutes.js";
 import homeRoutes from "./routes/homeRoutes.js";
 import recipeRoutes from "./routes/recipeRoutes.js";
+import mealPlanRoutes from "./routes/mealPlanRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
 
 import { logger } from "./utils/logger.js";
 
@@ -36,7 +38,9 @@ app.set("views", path.join(__dirname, "../views"));
 
 app.use("/auth", authRoutes);
 app.use("/", homeRoutes);
-app.use("/api", recipeRoutes);
+app.use("/api/recipes", recipeRoutes);
+app.use("/api/mealPlan", mealPlanRoutes);
+app.use("/profile", profileRoutes);
 
 // Start server
 app.listen(ENV.PORT, () => {

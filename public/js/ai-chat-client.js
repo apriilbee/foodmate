@@ -1,3 +1,4 @@
+/* global io */
 document.addEventListener("DOMContentLoaded", () => {
     const socket = io();
 

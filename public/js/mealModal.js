@@ -1,5 +1,7 @@
+/* global M */
+
 function openModal(button) {
-    console.log("Clicked + button"); 
+    console.log("Clicked + button");
     const recipeId = button.getAttribute("data-recipe-id");
     document.getElementById("recipeIdInput").value = recipeId;
 
@@ -7,10 +9,10 @@ function openModal(button) {
 
     let modalInstance = M.Modal.getInstance(modalElem);
     if (!modalInstance) {
-        modalInstance = M.Modal.init(modalElem); 
+        modalInstance = M.Modal.init(modalElem);
     }
 
-    modalInstance.open(); 
+    modalInstance.open();
 }
 
 function closeModal() {
@@ -19,11 +21,10 @@ function closeModal() {
     if (!modalInstance) {
         modalInstance = M.Modal.init(modalElem);
     }
-    modalInstance.close(); 
+    modalInstance.close();
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-
     const elems = document.querySelectorAll(".modal");
     M.Modal.init(elems);
 
@@ -36,12 +37,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const data = Object.fromEntries(formData);
         console.log("Static form data (not submitted):", data);
 
-      
         M.toast({ html: "Meal added!" });
 
         closeModal();
     });
-
 
     const selects = document.querySelectorAll("select");
     M.FormSelect.init(selects);

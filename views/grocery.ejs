@@ -2,8 +2,6 @@
 <html lang="en">
   <%- include('partials/head') %>
   <link rel="stylesheet" href="/css/grocery.css?v=<%= Date.now() %>" />
-
-
   <body>
     <%- include('partials/navbar') %>
 
@@ -24,11 +22,13 @@
               <input type="date" id="endDate" />
             </div>
           </div>
+          <button id="generate-list-btn" class="generate-btn">Generate</button>
         </div>
-        <button id="generate-list-btn" class="generate-btn">Generate</button>
       </div>
 
-      <div id="grocery-list-container" class="grocery-list-section"></div>
+      <div id="grocery-list-container" class="grocery-list-section">
+        <!-- List will be populated here dynamically -->
+      </div>
     </div>
 
     <script>
@@ -76,7 +76,7 @@
             item.innerHTML = `
               <label class="checkbox-item">
                 <input type="checkbox" />
-                <span>${i.name}</span>
+                <span>${i.name} - ${i.quantity} ${i.unit}</span>
               </label>
             `;
             section.appendChild(item);

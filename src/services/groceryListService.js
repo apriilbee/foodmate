@@ -61,6 +61,18 @@ export const getAllGroceryLists = async (userId) => {
     return groceryListIds; 
 }
 
+export const getGroceryList = async (userId, groceryListId) => {
+    const groceryList = await GroceryList.findById(groceryListId);
+
+    if (!groceryListId) throw new Error ("Miissing required field");
+
+    if (groceryList.userId.toString() !== userId) throw new Error ("Not Authorized");
+
+    if (!groceryList) throw new Error ("Grocery list does not exist");
+
+    return groceryList;
+}
+
 const getIngredientList = recipes => {
     const ingredientMap = {};
 

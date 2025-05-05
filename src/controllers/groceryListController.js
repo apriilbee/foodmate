@@ -1,8 +1,8 @@
 import { GroceryList } from "../models/GroceryList.js";
-import { generateGroceryList, getAllGroceryLists } from "../services/groceryListService.js";
+import { generateGroceryList, getAllGroceryLists, getGroceryList } from "../services/groceryListService.js";
 
 export const createGroceryList = async (req, res) => {
-    try{
+    try {
         const userId = req.user.id;
         const { start, end } = req.query;
 
@@ -16,7 +16,7 @@ export const createGroceryList = async (req, res) => {
 }
 
 export const retrieveAllGroceryLists = async (req, res) => {
-    try{
+    try {
         const userId = req.user.id;
 
         const lists = await getAllGroceryLists(userId);
@@ -25,5 +25,19 @@ export const retrieveAllGroceryLists = async (req, res) => {
     }
     catch (err) {
         return res.status(400).json( {error : err.message} )
+    }
+}
+
+export const retrieveGroceryListById = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const groceryListId = req.params.id;
+
+        const list = await getGroceryList(userId, groceryListId);
+
+        return res.status(200).json( {list} );
+    }
+    catch (err) {
+        return res.status(400).json( {error: err.message} );
     }
 }

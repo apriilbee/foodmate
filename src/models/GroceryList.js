@@ -16,7 +16,7 @@ const GroceryListSchema = new mongoose.Schema({
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     aisles: [AisleGroupSchema],
-    meals: [{ type: String }]
+    meals: [{ type: Number }]
 }, {
     timestamps: true
 });

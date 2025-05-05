@@ -3,14 +3,7 @@ import mongoose from 'mongoose';
 
 const userProfileSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, unique: true },
-
-  email: {
-    type: String,
-    required: true,
-    lowercase: true,
-    trim: true,
-    match: [/^\S+@\S+\.\S+$/, 'Invalid email format']
-  },
+  email: { type: String, required: true },
 
   profilePic: {
     type: String,

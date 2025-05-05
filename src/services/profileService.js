@@ -12,7 +12,8 @@ export const getUserProfileData = async (userId) => {
     ...user.toObject(),
     dietary: preferences?.dietaryPreferences || [],
     allergies: preferences?.allergies || [],
-    profilePic: profile?.profilePic || '/img/profile.svg'
+    profilePic: profile?.profilePic || '/img/profile.svg',
+    email: profile?.email || ' '
   };
 };
 
@@ -65,8 +66,29 @@ export const updateProfilePic = async (userId, file) => {
   await UserProfile.findOneAndUpdate(
     { userId },
     { profilePic: profilePicPath },
-    { new: true }
+    { new: true,  upsert: true}
   );
 
   return profilePicPath;
 };
+
+export const changeEmailInProfile = async (userId, newEmail, currentPassword) => {
+  const user = await User.findById(userId);
+  if (!user) throw new Error('User not found');
+
+  const isMatch = await bcrypt.compare(currentPassword, user.password);
+  if (!isMatch) throw new Error('Incorrect current password');
+
+  const existingEmailUserProfile = await UserProfile.findOne({ email: newEmail });
+  if (existingEmailUserProfile) throw new Error('Email already in use in user profile');
+
+  const userProfile = await UserProfile.findOne({ userId });
+  if (!userProfile) throw new Error('User profile not found');
+
+  userProfile.email = newEmail;
+  await userProfile.save();
+
+  return userProfile;
+};
+
+

@@ -165,3 +165,71 @@ const deleteModal = document.getElementById("deleteAccountModal");
       `;
     }
   });  
+
+  const emailModal = document.getElementById("emailModal");
+  const openEmailBtn = document.getElementById("openEmailModal");
+  const closeEmailBtn = document.getElementById("closeEmailModal");
+  const emailForm = document.getElementById("emailChangeForm");
+  const emailMessage = document.getElementById("emailMessage");
+
+  // Open modal
+  openEmailBtn.onclick = () => emailModal.style.display = "block";
+
+  // Close modal
+  closeEmailBtn.onclick = () => {
+    emailModal.style.display = "none";
+    emailForm.reset();
+    emailMessage.textContent = "";
+  };
+
+  // Close modal when clicking outside of it
+  window.onclick = (e) => {
+    if (e.target === emailModal) {
+      emailModal.style.display = "none";
+      emailForm.reset();
+      emailMessage.textContent = "";
+    }
+  };
+
+  // Handle form submit
+  emailForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const newEmail = document.getElementById("newEmail").value.trim();
+    const currentPassword = document.getElementById("currentPasswordForEmail").value;
+
+    if (!newEmail || !currentPassword) {
+      emailMessage.style.color = "red";
+      emailMessage.textContent = "Please fill out all fields.";
+      return;
+    }
+
+    try {
+      const response = await fetch("/profile/updateemail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ newEmail, currentPassword })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        emailMessage.style.color = "green";
+        emailMessage.textContent = data.message;
+        emailForm.reset();
+
+        setTimeout(() => {
+          emailModal.style.display = "none";
+          emailMessage.textContent = "";
+        }, 2000);
+      } else {
+        emailMessage.style.color = "red";
+        emailMessage.textContent = data.message;
+      }
+
+    } catch (err) {
+      console.error("Error updating email:", err);
+      emailMessage.style.color = "red";
+      emailMessage.textContent = "Something went wrong. Please try again.";
+    }
+  });

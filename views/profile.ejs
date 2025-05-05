@@ -73,10 +73,25 @@
 
         <section class="account-privacy card-section" >
           <h2>🔐 Account & Privacy</h2>
+          <p><a href="#" id="openEmailModal" class="modal-link">Update Email</a></p>
           <p><a href="#" id="openPasswordModal" class="modal-link">Change Password</a></p>
           <p><a href="#" id="openDeleteModal" class="delete-link">Delete My Account</a></p>
         </section>
       </main>
+    </div>
+    
+     <!-- Inside emailModal -->
+     <div id="emailModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="closeEmailModal">&times;</span>
+        <form id="emailChangeForm">
+          <h3>Change Email</h3>
+          <input type="email" id="newEmail" name="newEmail" placeholder="New Email" required>
+          <input type="password" id="currentPasswordForEmail" name="currentPassword" placeholder="Current Password" required>
+          <div id="emailMessage" style="margin: 10px 0;"></div>
+          <button type="submit" id="saveEmailBtn" class="save-btn">Save Changes</button>
+        </form>
+      </div>
     </div>
  
     <div id="passwordModal" class="modal">

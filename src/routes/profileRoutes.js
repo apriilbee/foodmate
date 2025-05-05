@@ -1,5 +1,5 @@
 import express from 'express';
-import { getProfile, updateProfile, updateDietaryPreferences , deleteAccount, uploadProfilePicture} from '../controllers/profileController.js';
+import { getProfile, updateProfile, updateDietaryPreferences , deleteAccount, uploadProfilePicture, updateEmail} from '../controllers/profileController.js';
 import { authenticateJWT } from '../middleware/authMiddleware.js';
 import multer from 'multer';
 const upload = multer();
@@ -22,6 +22,9 @@ router.delete('/delete', authenticateJWT, deleteAccount);
 
 // Upload Profile Picture
 router.post('/uploadpicture', authenticateJWT, uploadpic.single('profilePic'), uploadProfilePicture);
+
+// update email
+router.post('/updateemail', authenticateJWT, updateEmail);
 
 
 export default router;

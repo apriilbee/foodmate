@@ -67,3 +67,24 @@ export const uploadProfilePicture = async (req, res) => {
     res.status(400).json({ success: false, message: err.message });
   }
 };
+
+export const updateEmail = async (req, res) => {
+  try {
+    const { newEmail, currentPassword } = req.body;
+    const userId = req.user.id;
+
+    const result = await profileService.changeEmailInProfile(userId, newEmail, currentPassword);
+
+    res.status(200).json({
+      success: true,
+      message: 'Email updated successfully',
+      email: result.email,
+    });
+  } catch (err) {
+    console.error('Email update error:', err.message);
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};

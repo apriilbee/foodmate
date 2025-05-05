@@ -13,13 +13,13 @@
           <div class="date-field">
             <label for="startDate">Start Date:</label>
             <div class="date-input-wrapper">
-              <input type="date" id="startDate" />
+              <input type="date" id="startDate" value="2025-05-01" />
             </div>
           </div>
           <div class="date-field">
             <label for="endDate">End Date:</label>
             <div class="date-input-wrapper">
-              <input type="date" id="endDate" />
+              <input type="date" id="endDate" value="2025-05-07" />
             </div>
           </div>
           <button id="generate-list-btn" class="generate-btn">Generate</button>
@@ -27,64 +27,31 @@
       </div>
 
       <div id="grocery-list-container" class="grocery-list-section">
-        <!-- List will be populated here dynamically -->
+        <!-- Dummy data inserted below -->
+        <div class="grocery-category">
+          <h3 class="category-title">Vegetables</h3>
+          <label class="checkbox-item"><input type="checkbox" /><span>Tomatoes</span></label>
+          <label class="checkbox-item"><input type="checkbox" /><span>Spinach</span></label>
+          <label class="checkbox-item"><input type="checkbox" /><span>Broccoli</span></label>
+        </div>
+
+        <div class="grocery-category">
+          <h3 class="category-title">Dairy</h3>
+          <label class="checkbox-item"><input type="checkbox" /><span>Milk</span></label>
+          <label class="checkbox-item"><input type="checkbox" /><span>Cheese</span></label>
+        </div>
+
+        <div class="grocery-category">
+          <h3 class="category-title">Bakery</h3>
+          <label class="checkbox-item"><input type="checkbox" /><span>Whole Wheat Bread</span></label>
+        </div>
+
+        <div class="grocery-category">
+          <h3 class="category-title">Meat</h3>
+          <label class="checkbox-item"><input type="checkbox" /><span>Chicken Breast</span></label>
+          <label class="checkbox-item"><input type="checkbox" /><span>Ground Beef</span></label>
+        </div>
       </div>
     </div>
-
-    <script>
-      document.getElementById("generate-list-btn").addEventListener("click", async () => {
-        const start = document.getElementById("startDate").value;
-        const end = document.getElementById("endDate").value;
-
-        if (!start || !end) {
-          alert("Please select start and end dates");
-          return;
-        }
-
-        try {
-          const res = await fetch("/grocery/generate", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ startDate: start, endDate: end })
-          });
-
-          const data = await res.json();
-          displayGroceryList(data);
-        } catch (err) {
-          console.error("Failed to fetch grocery list:", err);
-        }
-      });
-
-      function displayGroceryList(items) {
-        const container = document.getElementById("grocery-list-container");
-        container.innerHTML = "";
-
-        const grouped = {};
-        items.forEach(item => {
-          const category = item.category || "Others";
-          if (!grouped[category]) grouped[category] = [];
-          grouped[category].push(item);
-        });
-
-        for (let cat in grouped) {
-          const section = document.createElement("div");
-          section.classList.add("grocery-category");
-          section.innerHTML = `<h3 class="category-title">${cat}</h3>`;
-
-          grouped[cat].forEach(i => {
-            const item = document.createElement("div");
-            item.innerHTML = `
-              <label class="checkbox-item">
-                <input type="checkbox" />
-                <span>${i.name} - ${i.quantity} ${i.unit}</span>
-              </label>
-            `;
-            section.appendChild(item);
-          });
-
-          container.appendChild(section);
-        }
-      }
-    </script>
   </body>
 </html>

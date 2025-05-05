@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const GroceryItemSchema = new mongoose.Schema({
     name: { type: String, required: true },
     amount: { type: Number, required: true },
-    unit: { type: String, required: true },
+    unit: { type: String, required: false },
     purchased: { type: Boolean, default: false }
 });
 

@@ -1,5 +1,4 @@
-import { GroceryList } from "../models/GroceryList.js";
-import { generateGroceryList, getAllGroceryLists, getGroceryList } from "../services/groceryListService.js";
+import { generateGroceryList, getAllGroceryLists, getGroceryList, updateGroceryList } from "../services/groceryListService.js";
 
 export const createGroceryList = async (req, res) => {
     try {
@@ -36,6 +35,21 @@ export const retrieveGroceryListById = async (req, res) => {
         const list = await getGroceryList(userId, groceryListId);
 
         return res.status(200).json( {list} );
+    }
+    catch (err) {
+        return res.status(400).json( {error: err.message} );
+    }
+}
+
+export const editGroceryList = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const groceryListId = req.params.id;
+        const updates = req.body.updates;
+
+        const updatedList = await updateGroceryList(groceryListId, updates, userId);
+
+        return res.status(200).json( {updatedList} );
     }
     catch (err) {
         return res.status(400).json( {error: err.message} );

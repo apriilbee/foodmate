@@ -1,6 +1,7 @@
 import MealPlan from "../models/MealPlan.js";
 import { GroceryList } from "../models/GroceryList.js";
 import { getRecipeDetails } from "../services/recipeService.js";
+import pluralize from "pluralize";
 
 export const generateGroceryList = async (userId, start, end) => {
     
@@ -73,25 +74,74 @@ export const getGroceryList = async (userId, groceryListId) => {
     return groceryList;
 }
 
+/**
+ * Updates items in a grocery list.
+ *
+ * @param {String} groceryListId - The ID of the grocery list to update.
+ * @param {Array} updates - An array of updates, each formatted as:
+ * [
+ *   {
+ *     aisle: "produce",
+ *     item: {
+ *       _id: "itemObjectId",
+ *       amount: Number,        // optional
+ *       unit: String,          // optional
+ *       purchased: Boolean     // optional
+ *     }
+ *   },
+ *   ...
+ * ]
+ *
+ * Each update must specify the aisle and an item with a valid _id.
+ * Only the provided fields (amount, unit, purchased) will be updated.
+ *
+ * @param {String} userId - The ID of the user making the update (for authorization).
+ * @returns {Object} - The updated grocery list.
+ */
+
+export const updateGroceryList = async (groceryListId, updates, userId) => {
+    const list = await GroceryList.findById(groceryListId);
+
+    if(!list) throw new Error ("Grocery list not found");
+    if(list.userId.toString() !== userId) throw new Error ("Not authorized to edit this list");
+
+    updates.forEach(({aisle, item: updateItem}) => {
+        const aisleGroup = list.aisles.find(group => group.aisle === aisle);
+        if (!aisleGroup) return;
+
+        const item = aisleGroup.items.id(updateItem._id);
+        if (!item) return;
+
+        if (updateItem.amount) item.amount = updateItem.amount
+        if (updateItem.unit) item.unit = updateItem.unit;
+        if (updateItem.purchased) item.purchased = updateItem.purchased;
+    });
+
+    await list.save();
+    return list;
+}
+
 const getIngredientList = recipes => {
     const ingredientMap = {};
 
     recipes.forEach( recipe => {
         recipe.extendedIngredients.forEach(ingredient=>{
+            const pluralizedName =  pluralize(ingredient.name.toLowerCase()); 
             const name = ingredient.name.toLowerCase();
             const aisle = ingredient.aisle.toLowerCase();
             const amount = ingredient.measures.metric.amount || 0;
             const unit = ingredient.measures.metric.unitLong.toLowerCase() || "";
 
-            if (!ingredientMap[name]) {
-                ingredientMap[name] = {
+            //maps the items in pluralized form but stores item using original name
+            if (!ingredientMap[pluralizedName]) {
+                ingredientMap[pluralizedName] = {
                     name,
                     aisle,
                     amount,
                     unit
                 }
             } else {
-                ingredientMap[name].amount += amount;
+                ingredientMap[pluralizedName].amount += amount;
             }
         })
     })

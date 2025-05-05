@@ -1,4 +1,4 @@
-import { createGroceryList } from "../controllers/groceryListController.js";
+import { createGroceryList, retrieveAllGroceryLists } from "../controllers/groceryListController.js";
 import { authenticateJWT } from "../middleware/authMiddleware.js";
 import express from "express";
  
@@ -8,6 +8,6 @@ router.get('/generate', authenticateJWT, createGroceryList);
 // router.get('/:id', authenticateJWT, retrieveGroceryListById);
 // router.patch('/:id', authenticateJWT, editGroceryList);
 // router.delete('/:id', authenticateJWT, removeGroceryList);
-// router.get('/', authenticateJWT, retrieveAllGroceryLists);
+router.get('/all', authenticateJWT, retrieveAllGroceryLists);
  
 export default router;

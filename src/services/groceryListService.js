@@ -50,6 +50,16 @@ export const generateGroceryList = async (userId, start, end) => {
     return {recipeIds, updatedList};
 }
 
+export const getAllGroceryLists = async (userId) => {
+    if (!userId) throw new Error ('Not Authorized');
+    
+    const groceryLists = await GroceryList.find( {userId: userId} );
+    
+    const groceryListIds = groceryLists.map(list => list._id);
+    
+    return groceryListIds; 
+}
+
 const getIngredientList = recipes => {
     const ingredientMap = {};
 

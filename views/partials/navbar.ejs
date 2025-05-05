@@ -1,7 +1,7 @@
 <nav class="nav-extended foodmate-navbar z-depth-1">
     <div class="nav-wrapper container">
-        <a href="/auth/login" class="brand-logo bebas">
-            <img src="/img/logo.svg" alt="" class="brand-logo-img" />
+        <a href="/" class="brand-logo bebas">
+            <img src="/img/logo.svg" alt="FoodMate Logo" class="brand-logo-img" />
         </a>
 
         <!-- Hamburger Menu for Mobile -->
@@ -10,8 +10,8 @@
         </a>
 
         <ul class="right hide-on-med-and-down">
-            <li><a href="#" class="nav-link white-text">Meal Plan</a></li>
-            <li><a href="#" class="nav-link white-text">Grocery List</a></li>
+            <li><a href="/meal-plan" class="nav-link white-text">Meal Plan</a></li>
+            <li><a href="/grocery-list" class="nav-link white-text">Grocery List</a></li>
 
             <% if (user) { %>
             <li>
@@ -32,7 +32,6 @@
     </div>
 </nav>
 
-<!-- Profile Dropdown Menu -->
 <!-- Profile Dropdown Menu -->
 <ul id="profile-dropdown" class="dropdown-content">
     <li><a href="/profile">Profile</a></li>
@@ -66,7 +65,14 @@
             Grocery List
         </a>
     </li>
+
     <% if (user) { %>
+    <li>
+        <a href="/profile">
+            <i class="material-icons">account_circle</i>
+            Profile
+        </a>
+    </li>
     <li>
         <a href="/settings">
             <i class="material-icons">settings</i>

@@ -7,6 +7,10 @@ import path from "path";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
 
+import http from "http";
+import { Server as SocketIOServer } from "socket.io";
+import { setupAIChatSocket } from "./socket/aiChat.js";
+
 import { ENV } from "./utils/envLoader.js";
 
 import authRoutes from "./routes/authRoutes.js";
@@ -21,6 +25,10 @@ const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const server = http.createServer(app);
+const io = new SocketIOServer(server);
+setupAIChatSocket(io);
 
 // MongoDB connection
 mongoose
@@ -43,6 +51,6 @@ app.use("/api/mealPlan", mealPlanRoutes);
 app.use("/profile", profileRoutes);
 
 // Start server
-app.listen(ENV.PORT, () => {
-    logger.info(`Server running at http://localhost:${ENV.PORT}`);
+server.listen(ENV.PORT, () => {
+    logger.info(`✅ Server running at http://localhost:${ENV.PORT}`);
 });

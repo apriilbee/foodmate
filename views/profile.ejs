@@ -12,6 +12,7 @@
 
     <div class="profile-container container">
       <main>
+        <!-- Profile Info -->
         <div class="profile-form-wide">
           <div class="form-avatar-side">
             <div class="avatar-wrapper">
@@ -32,16 +33,17 @@
             </div>
           </div>
         </div>
-        
+
+        <!-- Dietary Preferences -->
         <section class="preferences card-section">
           <h2 class="section-heading">🥗 Dietary Preferences</h2>
           <form id="dietary-form" action="/profile/preferences" method="POST">
             <div class="checkbox-wrapper">
-              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Vegan"> Vegan</label>
-              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Gluten-Free"> Gluten-Free</label>
-              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Keto"> Keto</label>
-              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Vegetarian"> Vegetarian</label>
-              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Pescatarian"> Pescatarian</label>
+              <p><label><input type="checkbox" class="filled-in" name="dietary" value="Vegan" /><span>Vegan</span></label></p>
+              <p><label><input type="checkbox" class="filled-in" name="dietary" value="Gluten-Free" /><span>Gluten-Free</span></label></p>
+              <p><label><input type="checkbox" class="filled-in" name="dietary" value="Keto" /><span>Keto</span></label></p>
+              <p><label><input type="checkbox" class="filled-in" name="dietary" value="Vegetarian" /><span>Vegetarian</span></label></p>
+              <p><label><input type="checkbox" class="filled-in" name="dietary" value="Pescatarian" /><span>Pescatarian</span></label></p>
             </div>
 
             <div class="other-input">
@@ -50,9 +52,10 @@
             </div>
 
             <div class="checkbox-wrapper">
-              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Soy"> Soy Allergy</label>
-              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Nuts"> Nuts Allergy</label>
-              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Dairy"> Dairy Allergy</label>
+              <p><label><input type="checkbox" class="filled-in" name="allergies" value="Soy" /><span>Soy</span></label></p>
+              <p><label><input type="checkbox" class="filled-in" name="allergies" value="Nuts" /><span>Nuts</span></label></p>
+              <p><label><input type="checkbox" class="filled-in" name="allergies" value="Dairy" /><span>Dairy</span></label></p>
+              <p><label><input type="checkbox" class="filled-in" name="allergies" value="Shrimps" /><span>Shrimps</span></label></p>
             </div>
 
             <div class="other-input">
@@ -66,6 +69,7 @@
           </form>
         </section>
 
+        <!-- Account & Privacy -->
         <section class="account-privacy card-section">
           <h2 class="section-heading">🔐 Account & Privacy</h2>
           <div class="account-links-vertical">
@@ -76,6 +80,7 @@
       </main>
     </div>
 
+    <!-- Password Modal -->
     <div id="passwordModal" class="modal">
       <div class="modal-content">
         <span class="close-btn" id="closePasswordModal">&times;</span>
@@ -91,7 +96,6 @@
     </div>
 
     <script>
-
       const modal = document.getElementById("passwordModal");
       const openBtn = document.getElementById("openPasswordModal");
       const closeBtn = document.getElementById("closePasswordModal");
@@ -118,5 +122,6 @@
     </script>
 
     <%- include('partials/scripts') %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   </body>
 </html>

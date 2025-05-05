@@ -1,0 +1,26 @@
+<!-- Add To Meal Modal -->
+<div id="addMealModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">X</span>
+        <h5>ADD TO MEAL PLAN</h5>
+
+        <form id="addMealForm">
+            <div class="input-field">
+                <label for="mealDate">Date:</label><br />
+                <input type="date" id="mealDate" name="date" required />
+            </div>
+
+            <div class="input-field">
+                <label for="mealType">Meal Type:</label><br />
+                <select id="mealType" name="type" required>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                </select>
+            </div>
+
+            <input type="hidden" id="recipeIdInput" name="recipe_id" />
+            <button class="btn" type="submit">Add</button>
+        </form>
+    </div>
+</div>

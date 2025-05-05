@@ -39,7 +39,8 @@ export const generateGroceryList = async (userId, start, end) => {
             userId,
             startDate,
             endDate,
-            aisles: groupedIngredients
+            aisles: groupedIngredients,
+            meals: recipeIds
         },
         {
             new: true,
@@ -47,7 +48,7 @@ export const generateGroceryList = async (userId, start, end) => {
             setDefaultsOnInsert: true
         }
     )
-    return {recipeIds, updatedList};
+    return updatedList;
 }
 
 export const getAllGroceryLists = async (userId) => {

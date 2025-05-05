@@ -3,7 +3,7 @@ import { generateGroceryList, getAllGroceryLists, getGroceryList, updateGroceryL
 export const createGroceryList = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { start, end } = req.query;
+        const { start, end } = req.body;
 
         const list = await generateGroceryList(userId, start, end);
 

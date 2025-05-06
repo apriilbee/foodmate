@@ -17,7 +17,17 @@ document.getElementById("passwordchange").addEventListener("submit", async funct
   const newPassword = form.newPassword.value;
   const confirmPassword = form.confirmPassword.value;
   const messageEl = document.getElementById("passwordMessage");
-  
+
+  if (newPassword.length < 8) {
+    messageEl.innerText = 'Password must be at least 8 characters';
+    messageEl.style.color = 'red';
+    return;
+  } else if (newPassword !== confirmPassword) {
+    messageEl.innerText = 'Passwords do not match';
+    messageEl.style.color = 'red';
+    return;
+  }
+
   try {
     const res = await fetch("/profile/update", {
       method: "POST",

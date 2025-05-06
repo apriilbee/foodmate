@@ -18,8 +18,8 @@ document.getElementById("passwordchange").addEventListener("submit", async funct
   const confirmPassword = form.confirmPassword.value;
   const messageEl = document.getElementById("passwordMessage");
 
-  if (newPassword.length < 6) {
-    messageEl.innerText = 'Password must be at least 6 characters';
+  if (newPassword.length < 8) {
+    messageEl.innerText = 'Password must be at least 8 characters';
     messageEl.style.color = 'red';
     return;
   } else if (newPassword !== confirmPassword) {

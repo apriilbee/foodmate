@@ -2,6 +2,7 @@ const recipeId = window.location.pathname.split("/").pop();
 const token = localStorage.getItem("token");
 
 const container = document.getElementById("recipe-container");
+if (!container) return;
 
 container.innerHTML = `
   <div class="loading">
@@ -18,39 +19,26 @@ async function loadRecipe() {
       }
     });
 
-    if (!res.ok) {
-      throw new Error(`Failed to fetch recipe: ${res.status}`);
-    }
+    if (!res.ok) throw new Error(`Failed to fetch recipe: ${res.status}`);
 
     const { recipe } = await res.json();
-    const capitalizeWords = str => str.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+
+    const capitalizeWords = str =>
+      str
+        .split(" ")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+
     document.title = `${capitalizeWords(recipe.title)} | Foodmate`;
 
-    const container = document.getElementById("recipe-container");
     container.innerHTML = `
       <div class="col s12 m7 left-content">
         <h4>${capitalizeWords(recipe.title)}</h4>
         <div>
-          ${recipe.tags.map(tag => `<div class="chip tag-chip">${tag}</div>`).join("")}
+          ${recipe.tags?.map(tag => `<div class="chip tag-chip">${tag}</div>`).join("") || ""}
         </div>
         <div class="info-icons">
-          <p><i class="material-icons">schedule</i> ${recipe.readyInMinutes} minutes</p>
-          <p><i class="material-icons">restaurant</i> Serves ${recipe.servings}</p>
-          ${
-            recipe.nutrition?.nutrients
-              .map(n => {
-                if (n.name === "Calories")
-                  return `<p><i class="material-icons">local_fire_department</i> ${n.amount} kcal</p>`;
-                if (n.name === "Protein")
-                  return `<p><i class="material-icons">fitness_center</i> ${n.amount} g Protein</p>`;
-                if (n.name === "Sugar")
-                  return `<p><i class="material-icons">icecream</i> ${n.amount} g Sugar</p>`;
-                if (n.name === "Carbohydrates")
-                  return `<p><i class="material-icons">bakery_dining</i> ${n.amount} g Carbs</p>`;
-                return "";
-              })
-              .join("") || ""
-          }
+          ${renderNutrients(recipe.nutrition?.nutrients || [])}
         </div>
         <button style="background-color: orange; color: white; padding: 10px 16px; border: none; border-radius: 8px;">
           Add to Meal Plan
@@ -60,7 +48,7 @@ async function loadRecipe() {
         </a>
         <h5>Ingredients</h5>
         <ul class="collection">
-          ${recipe.formattedIngredients.map(i => `<li class="collection-item">${i}</li>`).join("")}
+          ${recipe.formattedIngredients?.map(i => `<li class="collection-item">${i}</li>`).join("") || "<li>No ingredients listed.</li>"}
         </ul>
         ${
           recipe.instructionDetails?.length
@@ -74,10 +62,11 @@ async function loadRecipe() {
         </div>
       </div>
     `;
-  } catch {
-    const recipeSection = document.getElementById("recipe-container");
-    if (recipeSection) recipeSection.style.display = "none";
-    
+  } catch (err) {
+    console.error(err);
+
+    container.style.display = "none";
+
     const errorContainer = document.createElement("div");
     errorContainer.id = "error-container";
     errorContainer.innerHTML = `
@@ -91,6 +80,24 @@ async function loadRecipe() {
     `;
     document.body.appendChild(errorContainer);
   }
+}
+
+function renderNutrients(nutrients) {
+  const icons = {
+    Calories: "local_fire_department",
+    Protein: "fitness_center",
+    Sugar: "icecream",
+    Carbohydrates: "bakery_dining"
+  };
+
+  return nutrients
+    .map(n => {
+      if (icons[n.name]) {
+        return `<p><i class="material-icons">${icons[n.name]}</i> ${n.amount} ${n.unit} ${n.name}</p>`;
+      }
+      return "";
+    })
+    .join("");
 }
 
 loadRecipe();

@@ -7,16 +7,17 @@ export const getUserProfileData = async (userId) => {
   const user = await User.findById(userId);
   const preferences = await UserPreferences.findOne({ userId });
   const profile = await UserProfile.findOne({ userId });
-
+  
   return {
     ...user.toObject(),
     dietary: preferences?.dietaryPreferences || [],
     allergies: preferences?.allergies || [],
-    profilePic: profile?.profilePic || '/img/profile.svg',
-    email: profile?.email || ' '
+    profilePic: profile?.profilePic ,
+    email: profile?.email 
   };
 };
 
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
 export const updateUserPassword = async (userId, currentPassword, newPassword, confirmPassword) => {
   const user = await User.findById(userId);
   if (!user) throw new Error('User not found');
@@ -28,7 +29,10 @@ export const updateUserPassword = async (userId, currentPassword, newPassword, c
   const isMatch = await bcrypt.compare(currentPassword, user.password);
   if (!isMatch) throw new Error('Current password is incorrect');
   if (newPassword !== confirmPassword) throw new Error('New passwords do not match');
-  if (newPassword.length < 6) throw new Error('Password must be at least 6 characters');
+  if (newPassword.length < 8) throw new Error('Password must be at least 8 characters');
+  if (!passwordRegex.test(newPassword)) {
+    throw new Error('Password must be at least 8 characters and include at least one uppercase letter, one lowercase letter, and one symbol');
+  }
 
   user.password = newPassword;
   await user.save();

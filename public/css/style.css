@@ -7,13 +7,8 @@ body {
 }
 
 .card {
-<<<<<<< HEAD
-  border-radius: 12px;
-  overflow: hidden;
-=======
     border-radius: 12px;
     overflow: hidden;
->>>>>>> origin/release-sprint-2
 }
 
 .category-strip {

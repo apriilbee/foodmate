@@ -2,7 +2,6 @@ const recipeId = window.location.pathname.split("/").pop();
 const token = localStorage.getItem("token");
 
 const container = document.getElementById("recipe-container");
-if (!container) return;
 
 container.innerHTML = `
   <div class="loading">

@@ -17,9 +17,9 @@ document.getElementById("passwordchange").addEventListener("submit", async funct
   const newPassword = form.newPassword.value;
   const confirmPassword = form.confirmPassword.value;
   const messageEl = document.getElementById("passwordMessage");
-
-  if (newPassword.length < 6) {
-    messageEl.innerText = 'Password must be at least 6 characters';
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
+  if (newPassword.length < 8 || !passwordRegex.test(newPassword)) {
+    messageEl.innerText = 'Password must be at least 8 characters and include at least one uppercase letter, one lowercase letter, and one symbol';
     messageEl.style.color = 'red';
     return;
   } else if (newPassword !== confirmPassword) {

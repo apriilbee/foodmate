@@ -2,18 +2,19 @@ import User from '../models/User.js';
 import UserPreferences from '../models/UserPreferences.js';
 import UserProfile from '../models/UserProfile.js';
 import bcrypt from 'bcryptjs';
+import validator from "validator";
 
 export const getUserProfileData = async (userId) => {
   const user = await User.findById(userId);
   const preferences = await UserPreferences.findOne({ userId });
   const profile = await UserProfile.findOne({ userId });
-
+  
   return {
     ...user.toObject(),
     dietary: preferences?.dietaryPreferences || [],
     allergies: preferences?.allergies || [],
-    profilePic: profile?.profilePic || '/img/profile.svg',
-    email: profile?.email || ' '
+    profilePic: profile?.profilePic ,
+    email: profile?.email 
   };
 };
 
@@ -28,7 +29,16 @@ export const updateUserPassword = async (userId, currentPassword, newPassword, c
   const isMatch = await bcrypt.compare(currentPassword, user.password);
   if (!isMatch) throw new Error('Current password is incorrect');
   if (newPassword !== confirmPassword) throw new Error('New passwords do not match');
-  if (newPassword.length < 6) throw new Error('Password must be at least 6 characters');
+  const isStrong = validator.isStrongPassword(newPassword, {
+    minLength: 8,
+    minLowercase: 1,
+    minUppercase: 1,
+    minNumbers: 1,
+    minSymbols: 1,
+  });
+  if (!isStrong) {
+    throw new Error('Password must be at least 8 characters and include at least one uppercase letter, one lowercase letter, and one symbol');
+  }
 
   user.password = newPassword;
   await user.save();

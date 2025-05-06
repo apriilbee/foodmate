@@ -5,6 +5,10 @@
   <body>
     <%- include('partials/navbar') %>
 
+    <!-- Save Button -->
+    <button class="save-changes-btn">Save Changes</button>
+    <div id="save-popup" class="save-popup hidden">Changes saved successfully ✅</div>
+
     <div class="grocery-page">
       <h1 class="grocery-title">Grocery List</h1>
 
@@ -27,31 +31,138 @@
       </div>
 
       <div id="grocery-list-container" class="grocery-list-section">
-        <!-- Dummy data inserted below -->
+        <!-- VEGETABLES -->
         <div class="grocery-category">
           <h3 class="category-title">Vegetables</h3>
-          <label class="checkbox-item"><input type="checkbox" /><span>Tomatoes</span></label>
-          <label class="checkbox-item"><input type="checkbox" /><span>Spinach</span></label>
-          <label class="checkbox-item"><input type="checkbox" /><span>Broccoli</span></label>
+          <div class="item-header-row">
+            <span class="item-header">Item</span>
+            <span class="quantity-header">Quantity</span>
+            <span class="edit-header">Action</span>
+          </div>
+          <label class="checkbox-item" data-default-unit="Kg">
+            <input type="checkbox" />
+            <span>Tomatoes</span>
+            <span class="quantity-display">2 Kg</span>
+            <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
+          </label>
+          <label class="checkbox-item" data-default-unit="Bunch">
+            <input type="checkbox" />
+            <span>Spinach</span>
+            <span class="quantity-display">1 Bunch</span>
+            <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
+          </label>
+          <label class="checkbox-item" data-default-unit="Kg">
+            <input type="checkbox" />
+            <span>Broccoli</span>
+            <span class="quantity-display">1 Kg</span>
+            <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
+          </label>
         </div>
 
+        <!-- DAIRY -->
         <div class="grocery-category">
           <h3 class="category-title">Dairy</h3>
-          <label class="checkbox-item"><input type="checkbox" /><span>Milk</span></label>
-          <label class="checkbox-item"><input type="checkbox" /><span>Cheese</span></label>
+          <div class="item-header-row">
+            <span class="item-header">Item</span>
+            <span class="quantity-header">Quantity</span>
+            <span class="edit-header">Action</span>
+          </div>
+          <label class="checkbox-item" data-default-unit="Liters">
+            <input type="checkbox" />
+            <span>Milk</span>
+            <span class="quantity-display">1 Liters</span>
+            <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
+          </label>
+          <label class="checkbox-item" data-default-unit="Grams">
+            <input type="checkbox" />
+            <span>Cheese</span>
+            <span class="quantity-display">1 Grams</span>
+            <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
+          </label>
         </div>
 
+        <!-- BAKERY -->
         <div class="grocery-category">
           <h3 class="category-title">Bakery</h3>
-          <label class="checkbox-item"><input type="checkbox" /><span>Whole Wheat Bread</span></label>
-        </div>
-
-        <div class="grocery-category">
-          <h3 class="category-title">Meat</h3>
-          <label class="checkbox-item"><input type="checkbox" /><span>Chicken Breast</span></label>
-          <label class="checkbox-item"><input type="checkbox" /><span>Ground Beef</span></label>
+          <div class="item-header-row">
+            <span class="item-header">Item</span>
+            <span class="quantity-header">Quantity</span>
+            <span class="edit-header">Action</span>
+          </div>
+          <label class="checkbox-item" data-default-unit="Loaf">
+            <input type="checkbox" />
+            <span>Whole Wheat Bread</span>
+            <span class="quantity-display">1 Loaf</span>
+            <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
+          </label>
         </div>
       </div>
     </div>
+
+    <!-- Modal -->
+    <div id="editModal" class="modal hidden">
+      <div class="modal-content">
+        <h4 id="modalItemName">Edit Item</h4>
+        <div class="qty-controls editable">
+          <input type="number" id="modalQtyInput" min="1" value="1" />
+          <span id="unitDisplayText">Unit</span>
+          <button onclick="decreaseModalQty()">−</button>
+          <button onclick="increaseModalQty()">+</button>
+        </div>
+        <div class="modal-buttons">
+          <button onclick="saveChanges()">Save</button>
+          <button onclick="closeModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentItemElement = null;
+
+      function openEditModal(btn) {
+        const label = btn.closest('.checkbox-item');
+        const itemName = label.querySelector('span').textContent;
+        currentItemElement = label;
+
+        document.getElementById('modalItemName').textContent = `Edit "${itemName}"`;
+        document.getElementById('unitDisplayText').textContent =
+          label.getAttribute('data-unit') || label.getAttribute('data-default-unit') || '';
+        document.getElementById('modalQtyInput').value = label.getAttribute('data-qty') || '1';
+
+        document.getElementById('editModal').classList.remove('hidden');
+      }
+
+      function closeModal() {
+        document.getElementById('editModal').classList.add('hidden');
+        currentItemElement = null;
+      }
+
+      function increaseModalQty() {
+        const input = document.getElementById('modalQtyInput');
+        input.value = parseInt(input.value) + 1;
+      }
+
+      function decreaseModalQty() {
+        const input = document.getElementById('modalQtyInput');
+        if (parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+      }
+
+      function saveChanges() {
+        const qty = document.getElementById('modalQtyInput').value;
+        const unit = document.getElementById('unitDisplayText').textContent.trim();
+        if (currentItemElement) {
+          currentItemElement.setAttribute('data-qty', qty);
+          currentItemElement.setAttribute('data-unit', unit);
+          currentItemElement.querySelector('.quantity-display').textContent = `${qty} ${unit}`;
+        }
+        closeModal();
+      }
+
+      document.querySelector('.save-changes-btn').addEventListener('click', () => {
+        const popup = document.getElementById('save-popup');
+        popup.classList.remove('hidden');
+        setTimeout(() => popup.classList.add('hidden'), 2000);
+      });
+    </script>
   </body>
 </html>

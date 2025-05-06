@@ -9,7 +9,6 @@
  
     <div class="profile-header-bg">
       <h3 class="page-title">User Profile Settings</h3>
-      <h3 class="page-title">User Profile Settings</h3>
     </div>
  
  
@@ -20,11 +19,8 @@
             <div class="avatar-wrapper">
               <img src="<%= user.profilePic || '/img/profile.svg' %>" alt="Profile Picture" class="avatar" id="profilePic">
               <input type="file" id="profilePicInput" name="profilePic" accept="image/*" style="display: none;">
-              <img src="<%= user.profilePic || '/img/profile.svg' %>" alt="Profile Picture" class="avatar" id="profilePic">
-              <input type="file" id="profilePicInput" name="profilePic" accept="image/*" style="display: none;">
               <div class="avatar-overlay"><i class="fa fa-camera"></i></div>
             </div>
-            <button type="button" class="edit-pic-btn">Change Profile Picture</button>
             <button type="button" class="edit-pic-btn">Change Profile Picture</button>
           </div>
           
@@ -33,13 +29,11 @@
             <div class="info-field">
               <label>User Name</label>
               <p><%= user?.username || 'Username ' %></p>
-              <p><%= user?.username || 'Username ' %></p>
             </div>
             <div class="info-field">
               <label>Email</label>
               <p><%= user?.email || 'user@example.com' %></p>
             </div>
-            <div id="imageresponse" ></div>
             <div id="imageresponse" ></div>
           </div>
         </div>
@@ -48,13 +42,7 @@
         <section class="preferences card-section">
           <h2 class="section-heading">🥗 Dietary Preferences</h2>
           <form id="dietary-form" >
-          <form id="dietary-form" >
             <div class="checkbox-wrapper">
-              <p><label><input type="checkbox" class="filled-in" name="dietary" value="Vegan" /><span>Vegan</span></label></p>
-              <p><label><input type="checkbox" class="filled-in" name="dietary" value="Gluten-Free" /><span>Gluten-Free</span></label></p>
-              <p><label><input type="checkbox" class="filled-in" name="dietary" value="Keto" /><span>Keto</span></label></p>
-              <p><label><input type="checkbox" class="filled-in" name="dietary" value="Vegetarian" /><span>Vegetarian</span></label></p>
-              <p><label><input type="checkbox" class="filled-in" name="dietary" value="Pescatarian" /><span>Pescatarian</span></label></p>
               <p><label><input type="checkbox" class="filled-in" name="dietary" value="Vegan" /><span>Vegan</span></label></p>
               <p><label><input type="checkbox" class="filled-in" name="dietary" value="Gluten-Free" /><span>Gluten-Free</span></label></p>
               <p><label><input type="checkbox" class="filled-in" name="dietary" value="Keto" /><span>Keto</span></label></p>
@@ -74,10 +62,6 @@
               <p><label><input type="checkbox" class="filled-in" name="allergies" value="Nuts" /><span>Nuts</span></label></p>
               <p><label><input type="checkbox" class="filled-in" name="allergies" value="Dairy" /><span>Dairy</span></label></p>
               <p><label><input type="checkbox" class="filled-in" name="allergies" value="Shrimps" /><span>Shrimps</span></label></p>
-              <p><label><input type="checkbox" class="filled-in" name="allergies" value="Soy" /><span>Soy</span></label></p>
-              <p><label><input type="checkbox" class="filled-in" name="allergies" value="Nuts" /><span>Nuts</span></label></p>
-              <p><label><input type="checkbox" class="filled-in" name="allergies" value="Dairy" /><span>Dairy</span></label></p>
-              <p><label><input type="checkbox" class="filled-in" name="allergies" value="Shrimps" /><span>Shrimps</span></label></p>
             </div>
  
  
@@ -92,14 +76,6 @@
             </div>
           </form>
         </section>
- 
-        <!-- Account Privacy Section -->
-
-        <section class="account-privacy card-section" >
-          <h2>🔐 Account & Privacy</h2>
-          <p><a href="#" id="openEmailModal" class="modal-link">Update Email</a></p>
-          <p><a href="#" id="openPasswordModal" class="modal-link">Change Password</a></p>
-          <p><a href="#" id="openDeleteModal" class="delete-link">Delete My Account</a></p>
  
         <!-- Account Privacy Section -->
 
@@ -161,7 +137,6 @@
       </div>
     </div>
     <%- include('partials/scripts') %>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   </body>
 </html>

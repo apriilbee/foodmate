@@ -5,9 +5,7 @@
   <body>
     <%- include('partials/navbar') %>
 
-    <!-- Save Button -->
-    <button class="save-changes-btn">Save Changes</button>
-    <div id="save-popup" class="save-popup hidden">Changes saved successfully ✅</div>
+
 
     <div class="grocery-page">
       <h1 class="grocery-title">Grocery List</h1>
@@ -16,22 +14,20 @@
         <div class="date-generate-card">
           <div class="date-field">
             <label for="startDate">Start Date:</label>
-            <div class="date-input-wrapper">
-              <input type="date" id="startDate" value="2025-05-01" />
-            </div>
+            <input type="date" id="startDate" value="2025-05-01" />
           </div>
+
           <div class="date-field">
             <label for="endDate">End Date:</label>
-            <div class="date-input-wrapper">
-              <input type="date" id="endDate" value="2025-05-07" />
-            </div>
+            <input type="date" id="endDate" value="2025-05-07" />
           </div>
+
           <button id="generate-list-btn" class="generate-btn">Generate</button>
         </div>
       </div>
 
       <div id="grocery-list-container" class="grocery-list-section">
-        <!-- VEGETABLES -->
+        
         <div class="grocery-category">
           <h3 class="category-title">Vegetables</h3>
           <div class="item-header-row">
@@ -59,7 +55,6 @@
           </label>
         </div>
 
-        <!-- DAIRY -->
         <div class="grocery-category">
           <h3 class="category-title">Dairy</h3>
           <div class="item-header-row">
@@ -81,7 +76,7 @@
           </label>
         </div>
 
-        <!-- BAKERY -->
+       
         <div class="grocery-category">
           <h3 class="category-title">Bakery</h3>
           <div class="item-header-row">
@@ -99,7 +94,6 @@
       </div>
     </div>
 
-    <!-- Modal -->
     <div id="editModal" class="modal hidden">
       <div class="modal-content">
         <h4 id="modalItemName">Edit Item</h4>
@@ -158,11 +152,7 @@
         closeModal();
       }
 
-      document.querySelector('.save-changes-btn').addEventListener('click', () => {
-        const popup = document.getElementById('save-popup');
-        popup.classList.remove('hidden');
-        setTimeout(() => popup.classList.add('hidden'), 2000);
-      });
+      
     </script>
   </body>
 </html>

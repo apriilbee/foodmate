@@ -5,23 +5,55 @@ body {
   background-color: #fffdfc;
 }
 
-
 .grocery-page {
-  padding: 30px;
+  padding: 60px 30px 30px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
+/* --- Grocery List Title & History Button Row --- */
+.grocery-header-row {
+  position: relative;
+  margin-bottom: 30px;
+  text-align: center;
+}
 
 .grocery-title {
   font-size: 42px;
   font-weight: 800;
   color: #f97316;
-  text-align: center;
-  margin-bottom: 40px;
+  margin: 0 auto;
+  display: inline-block;
 }
 
+.history-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f97316;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+}
 
+.history-btn:hover {
+  background-color: #e56707;
+}
+
+.history-btn i {
+  font-size: 16px;
+}
+
+/* --- Date Selector --- */
 .date-generate-row {
   display: flex;
   justify-content: center;
@@ -48,7 +80,6 @@ body {
   flex-direction: column;
   gap: 6px;
   font-weight: 600;
-
 }
 
 .date-field label {
@@ -57,8 +88,6 @@ body {
   color: #555;
   margin-bottom: 4px;
 }
-
-
 
 .date-field input[type="date"] {
   border: 1px solid #ccc;
@@ -71,7 +100,6 @@ body {
   width: 200px;
   box-sizing: border-box;
 }
-
 
 .generate-btn {
   background-color: #f97316;
@@ -91,8 +119,7 @@ body {
   background-color: #e56707;
 }
 
-
-
+/* --- Grocery List --- */
 .grocery-list-section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -106,7 +133,6 @@ body {
   background-color: #fffefb;
 }
 
-
 .category-title {
   font-size: 18px;
   font-weight: 700;
@@ -115,7 +141,6 @@ body {
   border-bottom: 1px dashed #f97316;
   padding-bottom: 6px;
 }
-
 
 .item-header-row {
   display: flex;
@@ -142,7 +167,7 @@ body {
   left: -3px;
 }
 
-
+/* --- List Items --- */
 .checkbox-item {
   display: flex;
   align-items: center;
@@ -200,7 +225,7 @@ body {
   background-color: #e56707;
 }
 
-
+/* --- Edit Modal --- */
 .modal {
   position: fixed;
   top: 10%;
@@ -225,7 +250,7 @@ body {
   width: 300px;
   text-align: center;
   border: 2px solid #f97316;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .modal-content h4 {
@@ -233,7 +258,6 @@ body {
   margin-bottom: 20px;
   font-size: 20px;
 }
-
 
 .qty-controls.editable {
   display: flex;
@@ -270,7 +294,6 @@ body {
   cursor: pointer;
 }
 
-
 .modal-buttons button {
   padding: 8px 16px;
   margin: 0 8px;
@@ -287,4 +310,49 @@ body {
 
 .modal-buttons button:last-child {
   background-color: #ddd;
+}
+
+@media (max-width: 600px) {
+  .grocery-page {
+    padding: 40px 15px 20px;
+  }
+
+  .date-generate-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .generate-btn {
+    width: 100%;
+  }
+
+  .modal {
+    width: 90%;
+    max-width: 400px;
+    height: auto;
+  }
+
+  .edit-btn {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .grocery-header-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: static;
+  }
+
+  .history-btn {
+    position: static;
+    width: auto;
+    padding: 8px 20px;
+    font-size: 13px;
+    border-radius: 8px;
+    align-self: center;
+    text-align: center;
+  }
 }

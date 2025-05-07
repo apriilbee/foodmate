@@ -1,33 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('partials/head') %>
-  <link rel="stylesheet" href="/css/grocery.css?v=<%= Date.now() %>" />
+  <head>
+    <%- include('partials/head') %>
+    <!-- Font Awesome (for clock icon) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <!-- Page-specific styles -->
+    <link rel="stylesheet" href="/css/grocery.css?v=<%= Date.now() %>" />
+  </head>
+
   <body>
     <%- include('partials/navbar') %>
 
-
-
     <div class="grocery-page">
-      <h1 class="grocery-title">Grocery List</h1>
+      <!-- Header Row -->
+      <div class="grocery-header-row">
+        <h1 class="grocery-title">Grocery List</h1>
+        <a href="/grocery-history" class="history-btn">
+          <i class="fas fa-clock"></i> View History
+        </a>
+      </div>
 
+      <!-- Date Range & Generate -->
       <div class="date-generate-row">
         <div class="date-generate-card">
           <div class="date-field">
             <label for="startDate">Start Date:</label>
             <input type="date" id="startDate" value="2025-05-01" />
           </div>
-
           <div class="date-field">
             <label for="endDate">End Date:</label>
             <input type="date" id="endDate" value="2025-05-07" />
           </div>
-
           <button id="generate-list-btn" class="generate-btn">Generate</button>
         </div>
       </div>
 
+      <!-- Grocery List -->
       <div id="grocery-list-container" class="grocery-list-section">
-        
+        <!-- Vegetables -->
         <div class="grocery-category">
           <h3 class="category-title">Vegetables</h3>
           <div class="item-header-row">
@@ -55,6 +68,7 @@
           </label>
         </div>
 
+        <!-- Dairy -->
         <div class="grocery-category">
           <h3 class="category-title">Dairy</h3>
           <div class="item-header-row">
@@ -76,7 +90,7 @@
           </label>
         </div>
 
-       
+        <!-- Bakery -->
         <div class="grocery-category">
           <h3 class="category-title">Bakery</h3>
           <div class="item-header-row">
@@ -92,8 +106,9 @@
           </label>
         </div>
       </div>
-    </div>
+    </div> <!-- end .grocery-page -->
 
+    <!-- Modal -->
     <div id="editModal" class="modal hidden">
       <div class="modal-content">
         <h4 id="modalItemName">Edit Item</h4>
@@ -110,6 +125,7 @@
       </div>
     </div>
 
+    <!-- Scripts -->
     <script>
       let currentItemElement = null;
 
@@ -151,8 +167,6 @@
         }
         closeModal();
       }
-
-      
     </script>
   </body>
 </html>

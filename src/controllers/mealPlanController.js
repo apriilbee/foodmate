@@ -17,3 +17,19 @@ export const getWeeklyMealPlan = async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 };
+export const deleteMealPlan = async (req, res) => {
+    try {
+        const userId = req.user.id; 
+        const { mealId } = req.body;
+
+        if (!mealId) {
+            return res.status(400).json({ message: "Meal ID is required." });
+        }
+
+        await deleteMeal({ userId, mealId });
+
+        res.status(200).json({ message: "Meal deleted successfully." });
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+};

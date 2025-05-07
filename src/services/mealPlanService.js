@@ -4,6 +4,7 @@ import { Recipe } from "../models/Recipe.js";
 import axios from "axios";
 import { SPOONACULAR } from "../constants/apiEndpoints.js";
 import { ENV } from "../utils/envLoader.js";
+import DeletedMeal from "../models/DeletedMeal.js";
 
 export const createOrUpdateMeal = async ({ userId, recipeId, date, mealType }) => {
     if (!userId || !recipeId || !date || !mealType) {
@@ -92,4 +93,28 @@ export const getWeeklyMeals = async ({ userId, start }) => {
     }
 
     return weekMeals;
+};
+
+export const deleteMeal = async ({ userId, mealId }) => {
+    const mealPlan = await MealPlan.findOne({ userId });
+    if (!mealPlan) throw new Error("Meal plan not found.");
+
+    const mealIndex = mealPlan.meals.findIndex((meal) => meal._id.toString() === mealId);
+    if (mealIndex === -1) throw new Error("Meal not found.");
+
+    const mealToDelete = mealPlan.meals[mealIndex];
+
+    // Save to DeletedMeals collection
+    await DeletedMeal.create({
+        userId,
+        recipeId: mealToDelete.recipeId,
+        mealType: mealToDelete.mealType,
+        date: mealToDelete.date,
+    });
+
+    // Remove from meals array
+    //mealPlan.meals.splice(mealIndex, 1);
+    //await mealPlan.save();
+
+    return { success: true };
 };

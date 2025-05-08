@@ -81,7 +81,7 @@ export const updateProfilePic = async (userId, file) => {
 
   const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
   if (!allowedTypes.includes(file.mimetype)) throw new Error('Invalid image format');
-
+  
   const profilePicPath = `/uploads/${file.filename}`;
 
   await UserProfile.findOneAndUpdate(

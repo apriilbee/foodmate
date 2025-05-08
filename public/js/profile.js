@@ -95,6 +95,7 @@ const deleteModal = document.getElementById("deleteAccountModal");
     }
   };
 
+/*
   document.getElementById("dietary-form").addEventListener("submit", async function (e) {
     e.preventDefault();  // Prevent the default form submission
   
@@ -122,6 +123,74 @@ const deleteModal = document.getElementById("deleteAccountModal");
           ${data.message}
         </div>
       `;
+    } catch (err) {
+      document.getElementById("preferenceresponse").innerHTML = `
+        <div class="error-msg">Something went wrong. Please try again.</div>
+      `;
+      console.error(err);
+    }
+  });
+  */
+
+  const createCheckbox = (name, value) => {
+    const wrapper = document.createElement("p");
+    wrapper.innerHTML = `
+      <label>
+        <input type="checkbox" class="filled-in" name="${name}" value="${value}" checked />
+        <span>${value}</span>
+      </label>
+    `;
+    return wrapper;
+  };
+  
+  document.getElementById("dietary-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const dietary = Array.from(form.querySelectorAll('input[name="dietary"]:checked')).map(el => el.value);
+    const allergies = Array.from(form.querySelectorAll('input[name="allergies"]:checked')).map(el => el.value);
+    const dietaryOther = form.querySelector('input[name="dietaryOther"]').value;
+    const allergyOther = form.querySelector('input[name="allergyOther"]').value;
+  
+    const payload = { dietary, allergies, dietaryOther, allergyOther };
+  
+    try {
+      const response = await fetch("/profile/dietpreferences", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+  
+      const data = await response.json();
+  
+      // ✅ Insert new checkbox if dietaryOther was added and is not already in form
+      if (dietaryOther.trim()) {
+        const exists = [...form.querySelectorAll('input[name="dietary"]')].some(cb => cb.value === dietaryOther.trim());
+        if (!exists) {
+          const checkboxWrapper = form.querySelector('.checkbox-wrapper'); 
+          checkboxWrapper.appendChild(createCheckbox("dietary", dietaryOther.trim()));
+        }
+      }
+  
+      if (allergyOther.trim()) {
+        const allergyBoxes = form.querySelectorAll('input[name="allergies"]');
+        const exists = [...allergyBoxes].some(cb => cb.value === allergyOther.trim());
+        if (!exists) {
+          const wrappers = form.querySelectorAll('.checkbox-wrapper');
+          const allergyWrapper = wrappers[1]; 
+          allergyWrapper.appendChild(createCheckbox("allergies", allergyOther.trim()));
+        }
+      }
+  
+      document.getElementById("preferenceresponse").innerHTML = `
+        <div class="${data.success ? 'success-msg' : 'error-msg'}">
+          ${data.message}
+        </div>
+      `;
+  
+      // clear inputs after adding
+      form.querySelector('input[name="dietaryOther"]').value = '';
+      form.querySelector('input[name="allergyOther"]').value = '';
     } catch (err) {
       document.getElementById("preferenceresponse").innerHTML = `
         <div class="error-msg">Something went wrong. Please try again.</div>

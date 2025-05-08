@@ -51,7 +51,7 @@ export const updateUserPreferences = async (userId, dietary, allergies, dietaryO
   if (dietaryOther?.trim()) formattedDietary.push(dietaryOther.trim());
   if (allergyOther?.trim()) formattedAllergies.push(allergyOther.trim());
 
-  return await UserPreferences.findOneAndUpdate(
+  const updatedPrefs = await UserPreferences.findOneAndUpdate(
     { userId },
     {
       dietary: formattedDietary.map(d => d.trim()).filter(Boolean),
@@ -59,10 +59,21 @@ export const updateUserPreferences = async (userId, dietary, allergies, dietaryO
     },
     { upsert: true, new: true }
   );
+
+  return {
+    success: true,
+    message: "Preferences saved.",
+    updatedPrefs,
+  };
 };
 
 export const deleteUserAccount = async (userId) => {
-  return await User.findByIdAndDelete(userId);
+  //return await User.findByIdAndDelete(userId);
+  return await User.findByIdAndUpdate(
+    userId,
+    { isDeleted: true },
+    { new: true }
+  );
 };
 
 export const updateProfilePic = async (userId, file) => {

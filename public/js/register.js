@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 errorMessage.textContent = data.message || "Registration failed.";
             }
         } catch (error) {
+            console.error("Registration error:", error);
             errorMessage.textContent = "Server error. Please try again.";
         }
     });

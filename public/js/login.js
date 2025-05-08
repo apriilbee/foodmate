@@ -1,3 +1,4 @@
+/* global M */
 document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
     const verified = urlParams.get("verified");
@@ -46,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 errorMessage.textContent = data.message || "Login failed.";
             }
         } catch (error) {
+            console.error("Registration error:", error);
             errorMessage.textContent = "Server error. Please try again.";
         }
     });

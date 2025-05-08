@@ -1,5 +1,5 @@
 import express from "express";
-import { getRegister, postRegister, postLogin } from "../controllers/authController.js";
+import { getRegister, postRegister, postLogin, verifyEmail } from "../controllers/authController.js";
 
 const router = express.Router();
 
@@ -11,6 +11,9 @@ router.get("/logout", (req, res) => {
     res.clearCookie("token");
     res.redirect("/");
 });
+
+// VERIFY EMAIL
+router.get("/verify", verifyEmail);
 
 // REGISTER
 router.get("/register", getRegister);

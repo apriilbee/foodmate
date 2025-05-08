@@ -1,42 +1,30 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
     const registerForm = document.getElementById("registerForm");
     const errorMessage = document.getElementById("registerErrorMessage");
 
-    if (registerForm) {
-        registerForm.addEventListener("submit", async function (event) {
-            event.preventDefault();
+    registerForm?.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        errorMessage.textContent = "";
 
-            if (errorMessage) errorMessage.textContent = "";
+        const formData = new FormData(registerForm);
+        const formObject = Object.fromEntries(formData.entries());
 
-            const formData = new FormData(registerForm);
-            const formObject = Object.fromEntries(formData.entries());
+        try {
+            const response = await fetch("/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(formObject),
+            });
 
-            try {
-                const response = await fetch("/auth/register", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    credentials: "include",
-                    body: JSON.stringify(formObject),
-                });
-
-                const data = await response.json();
-
-                if (response.ok && data.redirectUrl) {
-                    console.log(data.redirectUrl);
-                    window.location.href = data.redirectUrl;
-                } else {
-                    if (errorMessage) {
-                        errorMessage.textContent = data.message || "Registration failed.";
-                    }
-                }
-            } catch (error) {
-                console.error("Registration error:", error);
-                if (errorMessage) {
-                    errorMessage.textContent = "Server error. Please try again.";
-                }
+            const data = await response.json();
+            if (response.ok && data.redirectUrl) {
+                window.location.href = data.redirectUrl;
+            } else {
+                errorMessage.textContent = data.message || "Registration failed.";
             }
-        });
-    }
+        } catch (error) {
+            errorMessage.textContent = "Server error. Please try again.";
+        }
+    });
 });

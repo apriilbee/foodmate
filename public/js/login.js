@@ -52,3 +52,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+document.querySelectorAll(".toggle-password").forEach((icon) => {
+    icon.addEventListener("click", () => {
+        const selector = icon.getAttribute("toggle");
+        const inputs = document.querySelectorAll(selector);
+        const isHidden = inputs[0]?.type === "password";
+        inputs[0]?.type === isHidden ? "text" : "password";
+        icon.textContent = isHidden ? "visibility_off" : "visibility";
+    });
+});

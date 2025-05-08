@@ -9,6 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const formData = new FormData(registerForm);
         const formObject = Object.fromEntries(formData.entries());
 
+        // ✅ Check if passwords match
+        if (formObject.password !== formObject.confirmPassword) {
+            errorMessage.textContent = "Passwords do not match.";
+            return;
+        }
+
         try {
             const response = await fetch("/auth/register", {
                 method: "POST",
@@ -27,5 +33,19 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Registration error:", error);
             errorMessage.textContent = "Server error. Please try again.";
         }
+    });
+});
+
+document.querySelectorAll(".toggle-password").forEach((icon) => {
+    icon.addEventListener("click", () => {
+        const selector = icon.getAttribute("toggle");
+        const inputs = document.querySelectorAll(selector);
+
+        inputs.forEach((input) => {
+            const isHidden = input.type === "password";
+            input.type = isHidden ? "text" : "password";
+        });
+
+        icon.textContent = inputs[0]?.type === "password" ? "visibility" : "visibility_off";
     });
 });

@@ -33,6 +33,7 @@ export const getRegister = (req, res) => {
 
 export const postRegister = async (req, res) => {
     const { email, password } = req.body;
+    const username = email.split("@")[0];
 
     try {
         const isStrong = validator.isStrongPassword(password, {
@@ -49,7 +50,7 @@ export const postRegister = async (req, res) => {
             });
         }
 
-        await registerUser(email, password);
+        await registerUser(email, password, username);
         res.status(201).json({ redirectUrl: "/?registered=true" });
     } catch (error) {
         logger.error("Register error:", error);

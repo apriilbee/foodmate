@@ -16,21 +16,31 @@ export const loginUser = async (email, password) => {
         throw new Error("Please verify your email before logging in.");
     }
 
-    const token = jwt.sign({ id: user._id, email: user.email }, ENV.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign(
+        {
+            id: user._id,
+            email: user.email,
+            username: user.username,
+        },
+        ENV.JWT_SECRET,
+        { expiresIn: "1h" }
+    );
 
     return { user, token };
 };
-export const registerUser = async (email, password) => {
+export const registerUser = async (email, password, username) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) throw new Error("Email is already registered");
 
-    const verificationToken = crypto.randomBytes(32).toString("hex");
-    await sendVerificationEmail(email, verificationToken);
-
-    const newUser = new User({ email, password, verificationToken });
-    await newUser.save();
-
-    return newUser;
+    const user = new User({
+        email,
+        password,
+        username,
+        verificationToken: crypto.randomBytes(32).toString("hex"),
+        isVerified: false,
+    });
+    await user.save();
+    await sendVerificationEmail(email, user.verificationToken);
 };
 
 export const verifyEmailToken = async (token) => {

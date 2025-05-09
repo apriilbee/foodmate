@@ -1,4 +1,5 @@
 <div class="diet-tags">
+    <!-- Static diet tags -->
     <div class="tag">Vegan</div>
     <div class="tag">Vegetarian</div>
     <div class="tag">Dairy-Free</div>
@@ -19,52 +20,75 @@
     <div class="tag">Low Calorie</div>
     <div class="tag">Plant-Based</div>
 
-    <!-- Allergy Tag -->
-    <div class="tag" id="allergy-dropdown-trigger" style="position: relative">
+    <!-- Allergy Tag w/ Dropdown -->
+    <div class="tag" id="allergy-dropdown-trigger" style="position: relative; cursor: pointer">
         Allergies
         <i class="material-icons" style="font-size: 18px; vertical-align: middle">arrow_drop_down</i>
 
-        <!-- Allergy Dropdown -->
-        <div id="allergy-dropdown" class="allergy-dropdown" style="display: none">
-            <div class="checkbox-option">
-                <input type="checkbox" id="peanuts" name="allergies" value="Peanuts" />
-                <label for="peanuts">Peanuts</label>
-            </div>
-
-            <div class="checkbox-option">
-                <input type="checkbox" id="shellfish" name="allergies" value="Shellfish" />
-                <label for="shellfish">Shellfish</label>
-            </div>
-
-            <div class="checkbox-option">
-                <input type="checkbox" id="eggs" name="allergies" value="Eggs" />
-                <label for="eggs">Eggs</label>
-            </div>
-
-            <div class="checkbox-option">
-                <input type="checkbox" id="milk" name="allergies" value="Milk" />
-                <label for="milk">Milk</label>
-            </div>
-
-            <div class="checkbox-option">
-                <input type="checkbox" id="tree-nuts" name="allergies" value="Tree Nuts" />
-                <label for="tree-nuts">Tree Nuts</label>
-            </div>
-
-            <div class="checkbox-option">
-                <input type="checkbox" id="wheat" name="allergies" value="Wheat" />
-                <label for="wheat">Wheat</label>
-            </div>
-
-            <div class="checkbox-option">
-                <input type="checkbox" id="soy" name="allergies" value="Soy" />
-                <label for="soy">Soy</label>
-            </div>
-
-            <div class="checkbox-option">
-                <input type="checkbox" id="fish" name="allergies" value="Fish" />
-                <label for="fish">Fish</label>
-            </div>
+        <!-- Dropdown Menu -->
+        <div
+            id="allergy-dropdown"
+            class="allergy-dropdown z-depth-1"
+            style="
+                display: none;
+                background: white;
+                padding: 10px;
+                position: absolute;
+                top: 30px;
+                left: 0;
+                z-index: 10;
+                width: 200px;
+            "
+        >
+            <p>
+                <label>
+                    <input type="checkbox" class="filled-in" name="allergies" value="Peanuts" />
+                    <span>Peanuts</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="checkbox" class="filled-in" name="allergies" value="Shellfish" />
+                    <span>Shellfish</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="checkbox" class="filled-in" name="allergies" value="Eggs" />
+                    <span>Eggs</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="checkbox" class="filled-in" name="allergies" value="Milk" />
+                    <span>Milk</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="checkbox" class="filled-in" name="allergies" value="Tree Nuts" />
+                    <span>Tree Nuts</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="checkbox" class="filled-in" name="allergies" value="Wheat" />
+                    <span>Wheat</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="checkbox" class="filled-in" name="allergies" value="Soy" />
+                    <span>Soy</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="checkbox" class="filled-in" name="allergies" value="Fish" />
+                    <span>Fish</span>
+                </label>
+            </p>
         </div>
     </div>
 </div>
+ 

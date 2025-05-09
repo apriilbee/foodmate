@@ -11,4 +11,7 @@ export const ENV = {
     get JWT_SECRET() {
         return process.env.JWT_SECRET;
     },
+    get GEMINI_API_KEY() {
+        return process.env.GEMINI_API_KEY;
+    },
 };

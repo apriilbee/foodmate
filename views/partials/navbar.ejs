@@ -10,6 +10,7 @@
         </a>
 
         <ul class="right hide-on-med-and-down">
+            <li><a href="/home" class="nav-link white-text">Home</a></li>
             <li><a href="/meal-plan" class="nav-link white-text">Meal Plan</a></li>
             <li><a href="/grocery-list" class="nav-link white-text">Grocery List</a></li>
 
@@ -21,7 +22,10 @@
                     data-target="profile-dropdown"
                     style="display: flex; align-items: center"
                 >
-                    <i class="material-icons white-text" style="margin-right: 6px">account_circle</i>
+                    <!--i class="material-icons white-text" style="margin-right: 6px">account_circle</i-->
+                    <img src="<%= user.profilePic || 'https://cdn-icons-png.flaticon.com/512/847/847969.png' %>" 
+                        style="width: 32px; height: 32px; border-radius: 50%; margin-right: 8px;" />
+                    
                     <span class="white-text" style="font-weight: 500"><%= user.username %></span>
                 </a>
             </li>
@@ -52,7 +56,12 @@
             <% } %>
         </div>
     </li>
-
+    <li>
+        <a href="/home">
+            <i class="material-icons">home</i>
+            Home
+        </a>
+    </li>
     <li>
         <a href="/meal-plan">
             <i class="material-icons">restaurant_menu</i>
@@ -71,12 +80,6 @@
         <a href="/profile">
             <i class="material-icons">account_circle</i>
             Profile
-        </a>
-    </li>
-    <li>
-        <a href="/settings">
-            <i class="material-icons">settings</i>
-            Settings
         </a>
     </li>
     <li><div class="divider"></div></li>

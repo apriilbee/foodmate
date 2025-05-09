@@ -1,15 +1,31 @@
 import * as profileService from '../services/profileService.js';
+import UserPreferences from '../models/UserPreferences.js';
 
 export const getProfile = async (req, res) => {
   try {
     const userData = await profileService.getUserProfileData(req.user.id);
-    res.render('profile', { title: 'Profile Settings', user: userData, message: null });
+
+    // Fetch saved dietary and allergy preferences
+    const preferences = await UserPreferences.findOne({ userId: req.user.id });
+
+    const dietaryPrefs = preferences?.dietary || [];
+    const allergyPrefs = preferences?.allergies || [];
+
+    res.render('profile', {
+      title: 'Profile Settings',
+      user: userData,
+      message: null,
+      dietaryPrefs,
+      allergyPrefs
+    });
   } catch (error) {
     console.error('Error loading profile:', error);
     res.render('profile', {
       title: 'Profile Settings',
       user: req.user,
-      message: 'Failed to load profile settings'
+      message: 'Failed to load profile settings',
+      dietaryPrefs: [],
+      allergyPrefs: []
     });
   }
 };
@@ -28,17 +44,11 @@ export const updateProfile = async (req, res) => {
 export const updateDietaryPreferences = async (req, res) => {
   try {
     const { dietary, allergies, dietaryOther, allergyOther } = req.body;
-    const preferences = await profileService.updateUserPreferences(
-      req.user.id,
-      dietary,
-      allergies,
-      dietaryOther,
-      allergyOther
-    );
-    res.status(200).json({ success: true, message: 'Preferences updated successfully.', data: preferences });
+    const userId = req.user.id;
+    const result = await profileService.updateUserPreferences(userId, dietary, allergies, dietaryOther, allergyOther);
+    res.status(200).json(result);
   } catch (err) {
-    console.error('Error updating preferences:', err.message);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    res.status(400).json({ success: false, message: err.message });
   }
 };
 

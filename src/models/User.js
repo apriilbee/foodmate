@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 const userSchema = new mongoose.Schema({
     username: String,
     password: String,
+    isDeleted: { type: Boolean, default: false } // soft delete flag
+
 });
 
 userSchema.pre("save", async function (next) {

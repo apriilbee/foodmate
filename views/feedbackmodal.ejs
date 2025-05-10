@@ -13,6 +13,7 @@
         <span class="star" data-value="<%= i %>">★</span>
       <% } %>
     </div>
+    <h6>Any Suggestions?</h6>
     <input type="hidden" name="rating" id="ratingInput" />
     <textarea name="message" placeholder="Optional comments (max 250 chars)" maxlength="250"></textarea>
     
@@ -23,82 +24,129 @@
 </div>
 
 <style>
-.feedback-toggle {
-  position: fixed;
-  top: 80px;
-  left: 20px;
-  background-color: #fe8641;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: bold;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s;
-  z-index: 9999;
-}
-
-.feedback-toggle.view-feedback {
-  top: 130px;
-}
-
-.feedback-toggle:hover {
-  background-color: #e76e34;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  max-width: 90%;
-  background: white;
-  border-radius: 16px;
-  padding: 25px;
-  z-index: 10000;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-#stars {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-  user-select: none;
-}
-
-.star {
-  font-size: 30px;
-  color: lightgray;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.star:hover,
-.star.selected {
-  color: orange;
-}
-.toast-message {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  background-color: #fe8641;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-weight: bold;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  animation: fadeInOut 3s;
-}
-
-@keyframes fadeInOut {
-  0% { opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { opacity: 0; }
-}
-</style>
+  .feedback-toggle {
+    position: fixed;
+    top: 80px;
+    left: 20px;
+    background-color: #fe8641;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+    z-index: 9999;
+  }
+  
+  .feedback-toggle.view-feedback {
+    top: 130px;
+  }
+  
+  .feedback-toggle:hover {
+    background-color: #e76e34;
+  }
+  
+  .modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 320px; 
+    max-width: 90%;
+    background: #fe8641; 
+    color: white; 
+    border-radius: 16px;
+    padding: 15px 20px;
+    z-index: 10000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    font-family: Arial, sans-serif;
+  }
+  
+  .modal h5 {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: rgb(7, 6, 6);
+  }
+  .modal h6 {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: rgb(7, 6, 6);
+  }
+  #stars {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    user-select: none;
+  }
+  
+  .star {
+    font-size: 30px;
+    color: lightgray;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  
+  .star:hover,
+  .star.selected {
+    color: rgb(10, 8, 8); 
+  }
+  
+  textarea {
+    width: 100%;
+    background: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    color: #333;
+    resize: none;
+    min-height: 60px;
+    outline: none;
+  }
+  
+  .submit-btn {
+    display: block;
+    width: 100%;
+    background-color: #ffffff;
+    color: #fe8641;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-btn:hover {
+    background-color: #ffcc99;
+    color: #fe8641;
+  }
+  .toast-message {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: #fe8641;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeInOut 3s;
+  }
+  
+  @keyframes fadeInOut {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  </style>
 
 <script>
  
@@ -155,7 +203,7 @@
       showToast("Thanks for the feedback!");
       closeFeedback();
     } else {
-      showToast("T1 Failed to submit feedback. Try again.");
+      showToast(" Failed to submit feedback. Try again.");
     } 
     } catch (error) {
     alert('Something went wrong when submitting feedback')

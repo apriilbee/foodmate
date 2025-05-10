@@ -1,0 +1,174 @@
+
+<div id="feedback-toggle" class="feedback-toggle">📝 Give Feedback</div>
+<div id="view-feedback-toggle" class="feedback-toggle view-feedback">📄 View Feedback</div>
+
+<div id="feedbackModal" class="modal" style="display: none;">
+  <div style="text-align: right;">
+    <button onclick="closeFeedback()" class="close-btn">&times;</button>
+  </div>
+  <h5>How would you rate your experience?</h5>
+  <form id="feedbackForm" style="padding: 20px;">
+    <div id="stars" style="text-align: center;">
+      <% for (let i = 1; i <= 5; i++) { %>
+        <span class="star" data-value="<%= i %>">★</span>
+      <% } %>
+    </div>
+    <input type="hidden" name="rating" id="ratingInput" />
+    <textarea name="message" placeholder="Optional comments (max 250 chars)" maxlength="250"></textarea>
+    
+    <div style="text-align: center; margin-top: 20px;">
+      <button type="submit" class="btn orange">Submit</button>
+    </div>
+  </form>
+</div>
+
+<style>
+.feedback-toggle {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  background-color: #fe8641;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s;
+  z-index: 9999;
+}
+
+.feedback-toggle.view-feedback {
+  top: 130px;
+}
+
+.feedback-toggle:hover {
+  background-color: #e76e34;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  max-width: 90%;
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  z-index: 10000;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+#stars {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  user-select: none;
+}
+
+.star {
+  font-size: 30px;
+  color: lightgray;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.star:hover,
+.star.selected {
+  color: orange;
+}
+.toast-message {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #fe8641;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeInOut 3s;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+</style>
+
+<script>
+ 
+  document.getElementById("feedback-toggle").addEventListener("click", function() {
+    document.getElementById("feedbackModal").style.display = "block";
+  });
+  document.getElementById("view-feedback-toggle").addEventListener("click", function() {
+    window.location.href = "/feedback-management";
+  });
+
+
+  document.querySelectorAll(".star").forEach((star) => {
+    star.addEventListener("click", function () {
+      const rating = this.getAttribute("data-value");
+      document.getElementById("ratingInput").value = rating;
+      updateStars(rating);
+    });
+  });
+
+  function updateStars(rating) {
+    document.querySelectorAll(".star").forEach((star, index) => {
+      star.classList.toggle("selected", index < rating);
+    });
+  }
+
+
+  function closeFeedback() {
+    document.getElementById("feedbackModal").style.display = "none";
+    document.getElementById("ratingInput").value = "";
+    document.querySelector("textarea[name='message']").value = "";
+    updateStars(0);
+  }
+
+  document.getElementById("feedbackForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const rating = document.getElementById("ratingInput").value;
+    const message = document.querySelector("textarea[name='message']").value;
+
+    if (!rating) {
+      showToast("Please select a rating!");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: 'include',
+      body: JSON.stringify({ rating, message })
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      showToast("Thanks for the feedback!");
+      closeFeedback();
+    } else {
+      showToast("T1 Failed to submit feedback. Try again.");
+    } 
+    } catch (error) {
+    alert('Something went wrong when submitting feedback')
+    }
+
+  });
+
+ 
+  function showToast(message) {
+    const toast = document.createElement("div");
+    toast.textContent = message;
+    toast.className = "toast-message";
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+</script>

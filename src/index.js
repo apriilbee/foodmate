@@ -19,7 +19,7 @@ import recipeRoutes from "./routes/recipeRoutes.js";
 import mealPlanRoutes from "./routes/mealPlanRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import groceryListRoutes from "./routes/groceryListRoutes.js";
-
+import feedbackRoutes from "./routes/feedbackRoutes.js"
 import { logger } from "./utils/logger.js";
 
 const app = express();
@@ -51,7 +51,11 @@ app.use("/api/recipes", recipeRoutes);
 app.use("/api/mealPlan", mealPlanRoutes);
 app.use("/profile", profileRoutes);
 app.use("/api/groceryList", groceryListRoutes);
-
+app.use("/api/feedback", feedbackRoutes); 
+//feedback management
+app.get("/feedback-management", (req, res) => {
+    res.render("feedbackManagement", { user: req.user });
+});
 // Start server
 server.listen(ENV.PORT, () => {
     logger.info(`✅ Server running at http://localhost:${ENV.PORT}`);

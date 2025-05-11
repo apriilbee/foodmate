@@ -2,12 +2,7 @@
 <html lang="en">
   <head>
     <%- include('partials/head') %>
-
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="/css/grocery.css?v=<%= Date.now() %>" />
   </head>
 
@@ -17,7 +12,7 @@
     <div class="grocery-page">
       
       <div class="grocery-header-row">
-        <h1 class="grocery-title">Grocery List</h1>
+        <h1 class="grocery-title"><%= title %></h1>
         <a href="/grocery-history" class="history-btn">
           <i class="fas fa-clock"></i> View History
         </a>
@@ -38,75 +33,28 @@
         </div>
       </div>
 
-      
+     
       <div id="grocery-list-container" class="grocery-list-section">
-        
-        <div class="grocery-category">
-          <h3 class="category-title">Vegetables</h3>
-          <div class="item-header-row">
-            <span class="item-header">Item</span>
-            <span class="quantity-header">Quantity</span>
-            <span class="edit-header">Action</span>
+        <% groceryData.forEach(category => { %>
+          <div class="grocery-category">
+            <h3 class="category-title"><%= category.category %></h3>
+            <div class="item-header-row">
+              <span class="item-header">Item</span>
+              <span class="quantity-header">Quantity</span>
+              <span class="edit-header">Action</span>
+            </div>
+            <% category.items.forEach(item => { %>
+              <label class="checkbox-item" data-default-unit="<%= item.unit %>">
+                <input type="checkbox" />
+                <span><%= item.name %></span>
+                <span class="quantity-display"><%= item.quantity %> <%= item.unit %></span>
+                <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
+              </label>
+            <% }); %>
           </div>
-          <label class="checkbox-item" data-default-unit="Kg">
-            <input type="checkbox" />
-            <span>Tomatoes</span>
-            <span class="quantity-display">2 Kg</span>
-            <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
-          </label>
-          <label class="checkbox-item" data-default-unit="Bunch">
-            <input type="checkbox" />
-            <span>Spinach</span>
-            <span class="quantity-display">1 Bunch</span>
-            <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
-          </label>
-          <label class="checkbox-item" data-default-unit="Kg">
-            <input type="checkbox" />
-            <span>Broccoli</span>
-            <span class="quantity-display">1 Kg</span>
-            <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
-          </label>
-        </div>
-
-        
-        <div class="grocery-category">
-          <h3 class="category-title">Dairy</h3>
-          <div class="item-header-row">
-            <span class="item-header">Item</span>
-            <span class="quantity-header">Quantity</span>
-            <span class="edit-header">Action</span>
-          </div>
-          <label class="checkbox-item" data-default-unit="Liters">
-            <input type="checkbox" />
-            <span>Milk</span>
-            <span class="quantity-display">1 Liters</span>
-            <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
-          </label>
-          <label class="checkbox-item" data-default-unit="Grams">
-            <input type="checkbox" />
-            <span>Cheese</span>
-            <span class="quantity-display">1 Grams</span>
-            <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
-          </label>
-        </div>
-
-        
-        <div class="grocery-category">
-          <h3 class="category-title">Bakery</h3>
-          <div class="item-header-row">
-            <span class="item-header">Item</span>
-            <span class="quantity-header">Quantity</span>
-            <span class="edit-header">Action</span>
-          </div>
-          <label class="checkbox-item" data-default-unit="Loaf">
-            <input type="checkbox" />
-            <span>Whole Wheat Bread</span>
-            <span class="quantity-display">1 Loaf</span>
-            <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
-          </label>
-        </div>
+        <% }); %>
       </div>
-    </div> 
+    </div>
 
     
     <div id="editModal" class="modal hidden">
@@ -125,7 +73,6 @@
       </div>
     </div>
 
-    
     <script>
       let currentItemElement = null;
 

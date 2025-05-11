@@ -17,7 +17,7 @@
         <div class="profile-form-wide">
           <div class="form-avatar-side">
             <div class="avatar-wrapper">
-              <img src="<%= user.profilePic || '/img/profile.svg' %>" alt="Profile Picture" class="avatar" id="profilePic">
+              <img src="<%= user.profilePic || 'https://cdn-icons-png.flaticon.com/512/847/847969.png' %>" alt="Profile Picture" class="avatar" id="profilePic">
               <input type="file" id="profilePicInput" name="profilePic" accept="image/*" style="display: none;">
               <div class="avatar-overlay"><i class="fa fa-camera"></i></div>
             </div>
@@ -43,23 +43,42 @@
           <h2 class="section-heading">🥗 Dietary Preferences</h2>
           <form id="dietary-form" >
             <div class="checkbox-wrapper">
-              <p><label><input type="checkbox" class="filled-in" name="dietary" value="Vegan" /><span>Vegan</span></label></p>
-              <p><label><input type="checkbox" class="filled-in" name="dietary" value="Gluten-Free" /><span>Gluten-Free</span></label></p>
-              <p><label><input type="checkbox" class="filled-in" name="dietary" value="Keto" /><span>Keto</span></label></p>
-              <p><label><input type="checkbox" class="filled-in" name="dietary" value="Vegetarian" /><span>Vegetarian</span></label></p>
-              <p><label><input type="checkbox" class="filled-in" name="dietary" value="Pescatarian" /><span>Pescatarian</span></label></p>
+              <% 
+    const defaultDietary = ["Vegan", "Gluten-Free", "Keto", "Vegetarian", "Pescatarian"];
+    const allDietary = Array.from(new Set([...defaultDietary, ...dietaryPrefs]));
+    allDietary.forEach(pref => { 
+  %>
+    <p>
+      <label>
+        <input type="checkbox" class="filled-in" name="dietary" value="<%= pref %>" 
+          <%= dietaryPrefs.includes(pref) ? 'checked' : '' %> />
+        <span><%= pref %></span>
+      </label>
+    </p>
+  <% }) %>
             </div>
             <div class="other-input">
               <label>Other Dietary Preference:</label>
               <input type="text" name="dietaryOther" placeholder="Enter other dietary preference">
             </div>
- 
- 
+
+            
+            <h2 class="section-heading">🏥 Allergies</h2>
             <div class="checkbox-wrapper">
-              <p><label><input type="checkbox" class="filled-in" name="allergies" value="Soy" /><span>Soy</span></label></p>
-              <p><label><input type="checkbox" class="filled-in" name="allergies" value="Nuts" /><span>Nuts</span></label></p>
-              <p><label><input type="checkbox" class="filled-in" name="allergies" value="Dairy" /><span>Dairy</span></label></p>
-              <p><label><input type="checkbox" class="filled-in" name="allergies" value="Shrimps" /><span>Shrimps</span></label></p>
+              
+            <% 
+    const defaultAllergies = ["Soy", "Nuts", "Dairy", "Shrimps"];
+    const allAllergies = Array.from(new Set([...defaultAllergies, ...allergyPrefs]));
+    allAllergies.forEach(allergy => { 
+  %>
+    <p>
+      <label>
+        <input type="checkbox" class="filled-in" name="allergies" value="<%= allergy %>" 
+          <%= allergyPrefs.includes(allergy) ? 'checked' : '' %> />
+        <span><%= allergy %></span>
+      </label>
+    </p>
+  <% }) %>
             </div> 
             <div class="other-input">
               <label>Other Allergies:</label>
@@ -76,7 +95,7 @@
         <!-- Account Privacy Section -->
 
         <section class="account-privacy card-section" >
-          <h2>🔐 Account & Privacy</h2>
+          <h2 class="section-heading">🔐 Account & Privacy</h2>
           <p><a href="#" id="openEmailModal" class="modal-link">Update Email</a></p>
           <p><a href="#" id="openPasswordModal" class="modal-link">Change Password</a></p>
           <p><a href="#" id="openDeleteModal" class="delete-link">Delete My Account</a></p>
@@ -123,11 +142,11 @@
      <div id="deleteAccountModal" class="modal">
       <div class="modal-content">
         <span class="close-btn" id="closeDeleteModal">&times;</span>
-        <h4>Are you sure you want to delete your account?</h4>
+        <h5 class ="delete-warning ">Are you sure you want to delete your account?</h5>
         <p>This action is irreversible. All your data will be permanently deleted.</p>
         <div style="margin-top: 20px;">
-          <p><button id="confirmDeleteBtn" class="delete-btn">Yes, Delete My Account</button></p>
-          <p><button id="cancelDeleteBtn" class="cancel-btn">Cancel</button></p>
+          <p><button type="submit" id="confirmDeleteBtn" class="delete-button">Yes, Delete My Account</button></p>
+          <p><button  type="submit" id="cancelDeleteBtn" class="cancel-button">Cancel</button></p>
         </div>
         <div id="deleteMessage" style="margin-top: 10px;"></div>
       </div>

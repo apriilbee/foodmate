@@ -1,6 +1,5 @@
 /* global M */
 
-
 window.openModal = function (button) {
     const recipeId = button.getAttribute("data-recipe-id");
     document.getElementById("recipeIdInput").value = recipeId;
@@ -41,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             try {
-                const response = await fetch("/api/mealPlan", {
+                const response = await fetch("/mealPlan", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

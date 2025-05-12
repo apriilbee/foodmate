@@ -19,6 +19,7 @@ import recipeRoutes from "./routes/recipeRoutes.js";
 import mealPlanRoutes from "./routes/mealPlanRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import groceryListRoutes from "./routes/groceryListRoutes.js";
+import groceryRoutes from "./routes/groceryRoutes.js";
 
 import { logger } from "./utils/logger.js";
 
@@ -51,6 +52,7 @@ app.use("/api/recipes", recipeRoutes);
 app.use("/mealPlan", mealPlanRoutes);
 app.use("/profile", profileRoutes);
 app.use("/api/groceryList", groceryListRoutes);
+app.use("/grocery", groceryRoutes);
 
 // Start server
 server.listen(ENV.PORT, () => {

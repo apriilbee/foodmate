@@ -28,6 +28,9 @@ const userSchema = new mongoose.Schema({
     verificationToken: {
         type: String,
     },
+    isDeleted: { 
+      type: Boolean, default: false 
+    } // soft delete flag
 });
 
 userSchema.pre("save", async function (next) {

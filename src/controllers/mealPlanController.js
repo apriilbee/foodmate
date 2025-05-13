@@ -1,4 +1,5 @@
 import { createOrUpdateMeal, getWeeklyMeals } from "../services/mealPlanService.js";
+import { softDeleteMealsByDate } from "../services/mealPlanService.js";
 
 export const createMealPlan = async (req, res) => {
     try {
@@ -34,5 +35,18 @@ export const getMealPlan = async (req, res) => {
     } catch (error) {
         console.error("Failed to fetch meal plan:", error.message);
         res.status(500).json({ message: "Error retrieving meal plan" });
+    }
+};
+
+export const deleteMealsByDate = async (req, res) => {
+    try {
+        const { date } = req.body;
+        const userId = req.user.id;
+
+        await softDeleteMealsByDate({ userId, date });
+
+        res.status(200).json({ message: "Meals deleted." });
+    } catch (err) {
+        res.status(400).json({ message: err.message });
     }
 };

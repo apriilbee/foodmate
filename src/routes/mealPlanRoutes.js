@@ -3,6 +3,7 @@ import { createMealPlan, getWeeklyMealPlan, getMealPlan  } from "../controllers/
 import { authenticateJWT } from "../middleware/authMiddleware.js";
 import { getWeeklyMeals } from "../services/mealPlanService.js";
 import moment from "moment";
+import { deleteMealsByDate } from "../controllers/mealPlanController.js";
 
 const router = express.Router();
 
@@ -37,5 +38,6 @@ router.get("/", authenticateJWT, async (req, res) => {
 
 router.get("/week", authenticateJWT, getWeeklyMealPlan);
 router.get("/api", authenticateJWT, getMealPlan);
+router.delete("/", authenticateJWT, deleteMealsByDate);
 
 export default router;

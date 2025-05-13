@@ -122,6 +122,17 @@ html, body {
   margin: 16px auto;
 }
 
+.delete-meal-btn {
+  background-color: #ffe0e0;
+  border: 1px solid red;
+  border-radius: 5px;
+  padding: 6px 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading p {
   text-align: center; color: #555; margin-top: 8px;

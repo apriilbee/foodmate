@@ -15,6 +15,10 @@ const MealEntrySchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
+    deleted: {
+        type: Boolean,
+        default: false,
+    }
 });
 
 const MealPlanSchema = new mongoose.Schema(

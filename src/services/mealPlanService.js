@@ -64,7 +64,9 @@ export const getWeeklyMeals = async ({ userId, start }) => {
         for (const mealType of MEAL_TYPES) {
             const meal =
                 mealPlan?.meals.find(
-                    (m) => m.mealType === mealType && new Date(m.date).toDateString() === date.toDateString()
+                    (m) => !m.deleted &&
+                        m.mealType === mealType &&
+                        new Date(m.date).toDateString() === date.toDateString()
                 ) || null;
 
             let recipeId = meal?.recipeId ?? null;
@@ -92,4 +94,27 @@ export const getWeeklyMeals = async ({ userId, start }) => {
     }
 
     return weekMeals;
+};
+
+export const softDeleteMealsByDate = async ({ userId, date }) => {
+    if (!userId || !date) {
+        throw new Error("Missing userId or date.");
+    }
+
+    const targetDate = new Date(date);
+    targetDate.setHours(0, 0, 0, 0);
+
+    const mealPlan = await MealPlan.findOne({ userId });
+    if (!mealPlan) return;
+
+    mealPlan.meals.forEach((meal) => {
+        const mealDate = new Date(meal.date);
+        mealDate.setHours(0, 0, 0, 0);
+
+        if (mealDate.getTime() === targetDate.getTime()) {
+            meal.deleted = true;
+        }
+    });
+
+    await mealPlan.save();
 };

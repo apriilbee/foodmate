@@ -8,5 +8,6 @@ router.post('/generate', authenticateJWT, createGroceryList);
 router.get('/:id', authenticateJWT, retrieveGroceryListById);
 router.patch('/:id', authenticateJWT, editGroceryList);
 router.get('/all', authenticateJWT, retrieveAllGroceryLists);
+
  
 export default router;

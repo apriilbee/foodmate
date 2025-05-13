@@ -1,4 +1,4 @@
-/* global M */
+/* global M, closeModal */
 
 window.openModal = function (button) {
     const recipeId = button.getAttribute("data-recipe-id");

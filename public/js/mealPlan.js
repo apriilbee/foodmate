@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       container.innerHTML = `<p class="error">Failed to load meal plan.</p>`;
     }
   }
+/* global loadMealPlan */
 
   window.loadMealPlan = loadMealPlan;
 

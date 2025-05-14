@@ -1,20 +1,17 @@
-import { loginUser, registerUser } from "../services/authService.js";
+import { loginUser, registerUser, verifyEmailToken } from "../services/authService.js";
 import { logger } from "../utils/logger.js";
 import validator from "validator";
 
 export const postLogin = async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     try {
-        const result = await loginUser(username, password);
-
+        const result = await loginUser(email, password);
         if (!result) {
-            return res.status(400).json({ message: "Invalid username or password" });
+            return res.status(400).json({ message: "Invalid email or password" });
         }
 
-        const { token } = result;
-
-        res.cookie("token", token, {
+        res.cookie("token", result.token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             maxAge: 15 * 60 * 1000,
@@ -24,18 +21,19 @@ export const postLogin = async (req, res) => {
     } catch (error) {
         logger.error("Login error:", error);
 
-        return res
-            .status(500)
-            .render("index", { title: "Login", error: "An unexpected error occurred. Please try again." });
+        // Send the actual error message back to the frontend as JSON
+        return res.status(400).json({
+            message: error.message || "Login failed.",
+        });
     }
 };
-
 export const getRegister = (req, res) => {
     res.render("register", { title: "Register" });
 };
 
 export const postRegister = async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
+    const username = email.split("@")[0];
 
     try {
         const isStrong = validator.isStrongPassword(password, {
@@ -52,11 +50,22 @@ export const postRegister = async (req, res) => {
             });
         }
 
-        await registerUser(username, password);
-
-        res.status(201).json({ redirectUrl: "/" });
+        await registerUser(email, password, username);
+        res.status(201).json({ redirectUrl: "/?registered=true" });
     } catch (error) {
-        console.error("Register error:", error);
+        logger.error("Register error:", error);
         res.status(400).json({ message: error.message || "Registration failed." });
+    }
+};
+
+export const verifyEmail = async (req, res) => {
+    const { token } = req.query;
+
+    try {
+        const verifiedEmail = await verifyEmailToken(token);
+        res.redirect(`/?verified=true&email=${encodeURIComponent(verifiedEmail)}`);
+    } catch (err) {
+        logger.error("Email verification error:", err);
+        res.status(400).send(err.message || "Server error.");
     }
 };

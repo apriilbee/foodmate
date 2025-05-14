@@ -1,6 +1,6 @@
 <nav class="nav-extended foodmate-navbar z-depth-1">
     <div class="nav-wrapper container">
-        <a href="/" class="brand-logo bebas">
+        <a href="/home" class="brand-logo bebas">
             <img src="/img/logo.svg" alt="FoodMate Logo" class="brand-logo-img" />
         </a>
 
@@ -26,7 +26,7 @@
                     <img src="<%= user.profilePic || 'https://cdn-icons-png.flaticon.com/512/847/847969.png' %>" 
                         style="width: 32px; height: 32px; border-radius: 50%; margin-right: 8px;" />
                     
-                    <span class="white-text" style="font-weight: 500"><%= user.username %></span>
+                    <span class="white-text" style="font-weight: 500"><%= user?.username %></span>
                 </a>
             </li>
             <% } else { %>
@@ -48,9 +48,9 @@
     <li class="sidenav-header">
         <div class="user-view">
             <div class="background" style="background: linear-gradient(135deg, #fe8641, #ffa726)"></div>
-            <a href="/"><img src="/img/logo.svg" alt="FoodMate Logo" /></a>
+            <a href="/home"><img src="/img/logo.svg" alt="FoodMate Logo" /></a>
             <% if (user) { %>
-            <a href="#"><span class="white-text name"><%= user.username %></span></a>
+            <a href="#"><span class="white-text name"><%= user?.username %></span></a>
             <% } else { %>
             <a href="#"><span class="white-text name">Welcome!</span></a>
             <% } %>

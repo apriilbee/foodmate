@@ -1,0 +1,93 @@
+<!-- grocery-history.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('partials/head') %>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/grocery-history.css?v=<%= Date.now() %>" />
+  </head>
+ 
+  <body>
+    <%- include('partials/navbar') %>
+ 
+    <div class="grocery-page">
+      <div class="grocery-header-row">
+        <h1 class="grocery-title">Grocery History</h1>
+      </div>
+ 
+      <div class="history-container">
+        <!-- Left: Date Range Buttons -->
+        <div class="date-list">
+          <% groceryHistory.forEach((entry, idx) => { %>
+            <button
+              <% if (idx === 0) { %> class="date-btn active"
+              <% } else { %> class="date-btn"
+              <% } %>
+              onclick="showHistory(<%= idx %>)"
+            >
+              <%= entry.dateRange %>
+            </button>
+          <% }) %>
+        </div>
+ 
+        <!-- Right: History Details -->
+        <div class="history-details">
+          <% groceryHistory.forEach((entry, idx) => { %>
+            <div class="history-content<%= idx === 0 ? '' : ' hidden' %>" id="history-<%= idx %>">
+              <!-- Date Title + Edit -->
+              <div class="history-header-inline">
+                <h2 class="range-date"><%= entry.dateRange %></h2>
+                <a href="#" class="edit-link">Edit</a>
+              </div>
+ 
+              <div class="item-log-wrapper">
+                <!-- Grocery Items -->
+                <div class="item-list">
+                  <h3 class="section-heading">Items</h3>
+                  <ul class="grocery-items">
+                    <% entry.items.forEach(item => { %>
+                      <li>
+                        <label class="checkbox-label">
+                          <input type="checkbox" class="checkbox" />
+                          <span><%= item %></span>
+                        </label>
+                      </li>
+                    <% }) %>
+                  </ul>
+                </div>
+ 
+                <!-- Activity Log -->
+                <div class="log-box">
+                  <h3>Activity Log</h3>
+                  <ul class="log-timeline">
+                    <% entry.logs.forEach(log => { %>
+                      <li class="log-entry">
+                        <div class="dot"></div>
+                        <p><%= log %></p>
+                      </li>
+                    <% }) %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+ 
+    <script>
+      function showHistory(index) {
+        const buttons = document.querySelectorAll('.date-btn');
+        const contents = document.querySelectorAll('.history-content');
+ 
+        buttons.forEach((btn, i) => {
+          btn.classList.toggle('active', i === index);
+          contents[i].classList.toggle('hidden', i !== index);
+        });
+      }
+    </script>
+  </body>
+</html>

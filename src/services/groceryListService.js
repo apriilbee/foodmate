@@ -1,0 +1,173 @@
+import MealPlan from "../models/MealPlan.js";
+import { GroceryList } from "../models/GroceryList.js";
+import { getRecipeDetails } from "../services/recipeService.js";
+import pluralize from "pluralize";
+
+export const generateGroceryList = async (userId, start, end) => {
+    
+    if (!start || !end) throw new Error ('Start and end dates are required');
+    
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    if (endDate < startDate) throw new Error ('End date cannot be earlier than start date');
+    
+    const mealPlans = await MealPlan.find( {userId : userId} )
+
+    const filteredMealPlans = mealPlans.flatMap(plan => 
+        plan.meals.filter(meal => {
+            const mealDate = new Date(meal.date);
+            return !isNaN(mealDate) && mealDate >= startDate && mealDate <= endDate;
+        })
+    )
+
+    if (filteredMealPlans.length < 1) throw new Error ('There must be at least one meal to generate grocery list')
+
+    const recipeIds = filteredMealPlans.map(meal => meal.recipeId);
+    const recipes = await Promise.all(
+      recipeIds.map(id => getRecipeDetails(id))
+    );
+    const ingredients = getIngredientList(recipes)
+    const groupedIngredients = groupIngredientByAisle(ingredients);
+    
+    //edits existing grocery list if exists, creates a new one if grocery list has not been generated
+    const updatedList = await GroceryList.findOneAndUpdate(
+        {
+            userId,
+            startDate,
+            endDate
+        },
+        {
+            userId,
+            startDate,
+            endDate,
+            aisles: groupedIngredients,
+            meals: recipeIds
+        },
+        {
+            new: true,
+            upsert : true,
+            setDefaultsOnInsert: true
+        }
+    )
+    return updatedList;
+}
+
+export const getAllGroceryLists = async (userId) => {
+    if (!userId) throw new Error ('Not Authorized');
+    
+    const groceryLists = await GroceryList.find( {userId: userId} );
+    
+    const groceryListIds = groceryLists.map(list => list._id);
+    
+    return groceryListIds; 
+}
+
+export const getGroceryList = async (userId, groceryListId) => {
+    const groceryList = await GroceryList.findById(groceryListId);
+
+    if (!groceryListId) throw new Error ("Miissing required field");
+
+    if (groceryList.userId.toString() !== userId) throw new Error ("Not Authorized");
+
+    if (!groceryList) throw new Error ("Grocery list does not exist");
+
+    return groceryList;
+}
+
+/**
+ * Updates items in a grocery list.
+ *
+ * @param {String} groceryListId - The ID of the grocery list to update.
+ * @param {Array} updates - An array of updates, each formatted as:
+ * [
+ *   {
+ *     aisle: "produce",
+ *     item: {
+ *       _id: "itemObjectId",
+ *       amount: Number,        // optional
+ *       unit: String,          // optional
+ *       purchased: Boolean     // optional
+ *     }
+ *   },
+ *   ...
+ * ]
+ *
+ * Each update must specify the aisle and an item with a valid _id.
+ * Only the provided fields (amount, unit, purchased) will be updated.
+ *
+ * @param {String} userId - The ID of the user making the update (for authorization).
+ * @returns {Object} - The updated grocery list.
+ */
+
+export const updateGroceryList = async (groceryListId, updates, userId) => {
+    const list = await GroceryList.findById(groceryListId);
+
+    if(!list) throw new Error ("Grocery list not found");
+    if(list.userId.toString() !== userId) throw new Error ("Not authorized to edit this list");
+
+    updates.forEach(({aisle, item: updateItem}) => {
+        const aisleGroup = list.aisles.find(group => group.aisle === aisle);
+        if (!aisleGroup) return;
+
+        const item = aisleGroup.items.id(updateItem._id);
+        if (!item) return;
+
+        if (updateItem.amount) item.amount = updateItem.amount
+        if (updateItem.unit) item.unit = updateItem.unit;
+        if (updateItem.purchased) item.purchased = updateItem.purchased;
+    });
+
+    await list.save();
+    return list;
+}
+
+const getIngredientList = recipes => {
+    const ingredientMap = {};
+
+    recipes.forEach( recipe => {
+        recipe.extendedIngredients.forEach(ingredient=>{
+            const pluralizedName =  pluralize(ingredient.name.toLowerCase()); 
+            const name = ingredient.name.toLowerCase();
+            const aisle = ingredient.aisle.toLowerCase();
+            const amount = ingredient.measures.metric.amount || 0;
+            const unit = ingredient.measures.metric.unitLong.toLowerCase() || "";
+
+            //maps the items in pluralized form but stores item using original name
+            if (!ingredientMap[pluralizedName]) {
+                ingredientMap[pluralizedName] = {
+                    name,
+                    aisle,
+                    amount,
+                    unit
+                }
+            } else {
+                ingredientMap[pluralizedName].amount += amount;
+            }
+        })
+    })
+
+    
+    return Object.values(ingredientMap);
+}
+
+const groupIngredientByAisle = (ingredients) => {
+    const grouped = {};
+
+    ingredients.forEach(ingredient => {
+        const aisle = ingredient.aisle || 'Other';
+        if (!grouped[aisle]) {
+            grouped[aisle] = [];
+        }
+        grouped[aisle].push({
+            name: ingredient.name,
+            amount: ingredient.amount,
+            unit: ingredient.unit,
+            purchased: false
+        })
+    })
+
+    return Object.entries(grouped).map(([aisle, items])=> ({
+        aisle,
+        items
+    }));
+};

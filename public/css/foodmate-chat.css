@@ -1,0 +1,158 @@
+/* Floating toggle button */
+.ai-chat-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #000;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+/* Chat window */
+.ai-chatbox {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    bottom: 90px;
+    right: 24px;
+    width: 360px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    z-index: 999;
+    padding: 0; /* ✅ No unexpected spacing */
+}
+
+/* Header */
+.ai-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+}
+
+.ai-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.ai-title {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.ai-subtitle {
+    font-size: 12px;
+    color: #888;
+}
+
+.ai-close {
+    margin-left: auto;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Messages */
+.ai-messages {
+    padding: 12px; /* ✅ Symmetrical padding */
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    max-height: 260px;
+}
+
+.ai-bubble {
+    max-width: 80%;
+    margin-bottom: 8px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    line-height: 1.4;
+}
+
+.ai-bubble.user {
+    background: #e05104;
+    color: white;
+    align-self: flex-end;
+    border-radius: 12px;
+    border-bottom-right-radius: 2px;
+    position: relative;
+    margin-right: 10px;
+}
+
+.ai-bubble.user::before {
+    content: "";
+    position: absolute;
+    right: -8px;
+    top: 10px;
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-left: 8px solid #e05104;
+    border-bottom: 6px solid transparent;
+}
+
+.ai-bubble.gemini {
+    background: #eee;
+    color: #000;
+    align-self: flex-start;
+    border-radius: 12px;
+    border-bottom-left-radius: 2px;
+    position: relative;
+    margin-left: 10px;
+}
+
+.ai-bubble.gemini::before {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: 10px;
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-right: 8px solid #eee;
+    border-bottom: 6px solid transparent;
+}
+
+.ai-input-container {
+    display: flex;
+    align-items: center;
+    padding: 12px; /* ✅ Match left/right */
+    gap: 8px;
+    border-top: 1px solid #eee;
+}
+
+#ai-msg-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    height: 40px;
+}
+
+.ai-send-btn {
+    background: #e05104;
+    color: white;
+    border: none;
+    margin-left: 8px;
+    padding: 0 16px;
+    border-radius: 8px;
+    font-size: 18px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

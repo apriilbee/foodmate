@@ -47,5 +47,10 @@ userSchema.methods.comparePassword = function (inputPassword) {
     return bcrypt.compare(inputPassword, this.password);
 };
 
+userSchema.pre(/^find/, function (next) {
+    this.where({ isDeleted: false });
+    next();
+  });
+
 const User = mongoose.model("User", userSchema);
 export default User;

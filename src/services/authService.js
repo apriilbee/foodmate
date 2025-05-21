@@ -4,6 +4,7 @@ import { ENV } from "../utils/envLoader.js";
 import { sendVerificationEmail } from "./mailService.js";
 import crypto from "crypto";
 import { logger } from "../utils/logger.js";
+import { sendResetPasswordEmail } from "./mailService.js";
 
 export const loginUser = async (email, password) => {
     const user = await User.findOne({ email });
@@ -62,4 +63,42 @@ export const verifyEmailToken = async (token) => {
 
     logger.info(`✅ Email verified for user: ${user.email}`);
     return user.email;
+};
+
+
+//  Handle Forgot Password (Send reset email)
+export const requestPasswordReset = async (email) => {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        throw new Error("No account found with this email.");
+    }
+
+    // Generate secure token and expiry
+    const token = crypto.randomBytes(32).toString("hex");
+    const expiration = Date.now() + 15 * 60 * 1000; // 15 minutes
+
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = expiration;
+    await user.save();
+
+    await sendResetPasswordEmail(user.email, token);
+};
+
+//  Handle Password Reset (Validate token & update password)
+export const resetPassword = async (token, newPassword) => {
+    const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+        throw new Error("Invalid or expired reset token.");
+    }
+    user.password = newPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    logger.info(` Password reset successful for ${user.email}`);
 };

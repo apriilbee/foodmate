@@ -30,7 +30,11 @@ const userSchema = new mongoose.Schema({
     },
     isDeleted: { 
       type: Boolean, default: false 
-    } // soft delete flag
+    }, // soft delete flag
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
+
+    
 });
 
 userSchema.pre("save", async function (next) {

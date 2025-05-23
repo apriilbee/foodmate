@@ -52,7 +52,7 @@ app.use("/api/recipes", recipeRoutes);
 app.use("/api/mealPlan", mealPlanRoutes);
 app.use("/profile", profileRoutes);
 app.use("/api/groceryList", groceryListRoutes);
-app.use("/grocery", groceryRoutes);
+app.use("/grocery-list", groceryRoutes);
 
 // Start server
 server.listen(ENV.PORT, () => {

@@ -160,7 +160,7 @@ const groupIngredientByAisle = (ingredients) => {
         }
         grouped[aisle].push({
             name: ingredient.name,
-            amount: ingredient.amount,
+            amount: roundIfMoreThanTwoDecimals(ingredient.amount),
             unit: ingredient.unit,
             purchased: false
         })
@@ -171,3 +171,11 @@ const groupIngredientByAisle = (ingredients) => {
         items
     }));
 };
+
+function roundIfMoreThanTwoDecimals(amount) {
+  const decimalPart = amount.toString().split('.')[1];
+  if (decimalPart && decimalPart.length > 2) {
+    return Math.ceil(amount);
+  }
+  return amount;
+}

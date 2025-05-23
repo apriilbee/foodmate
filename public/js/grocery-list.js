@@ -236,3 +236,5 @@ document.getElementById('confirmOverwriteBtn').addEventListener('click', async (
     closeOverwriteModal();
   }
 })
+
+window.groceryList_openEditModal = openEditModal;

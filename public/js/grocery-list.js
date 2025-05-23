@@ -2,59 +2,6 @@ const token = localStorage.getItem("token");
 let currentItemElement = null;
 let pendingGeneration = null;
 
-// document.getElementById('generate-list-btn').addEventListener('click', async () => {
-//   const startDate = document.getElementById('startDate').value;
-//   const endDate = document.getElementById('endDate').value;
-//   try {
-//     const response = await fetch('/api/groceryList/generate', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': `Bearer ${token}`,
-//         'Accept': 'application/json'
-//       },
-//       body: JSON.stringify({ start: startDate, end: endDate })
-//     });
-//     const data = await response.json();
-//     if (!response.ok) throw new Error(data.error || 'Failed to generate list');
-//     renderGroceryList(data.groceryList);
-//   } catch (err) {
-//         showError(err.message);
-//   }
-// });
-
-document.addEventListener("change", async (e) => {
-  if (e.target.classList.contains("purchase-checkbox")) {
-    const checkbox = e.target;
-    const itemId = checkbox.dataset.itemId;
-    const aisle = checkbox.dataset.aisle;
-    const groceryListId = checkbox.dataset.groceryListId;
-    const purchased = checkbox.checked;
-
-    try {
-      const response = await fetch(`/api/groceryList/${groceryListId}`, {
-        method: 'PATCH',
-        headers: { 
-            'Content-Type': 'application/json', 
-            'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          updates: [{ aisle, item: { _id: itemId, purchased } }]
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update item.");
-      }
-
-    } catch (err) {
-      console.error("Error updating item:", err);
-      document.getElementById('error-message').textContent = err.message;
-      document.getElementById('error-alert').classList.remove('hidden');
-    }
-  }
-});
-
 function openEditModal(btn) {
         const label = btn.closest('.checkbox-item');
         const itemName = label.querySelector('span').textContent;
@@ -159,28 +106,6 @@ async function generateGroceryList() {
   }
 }
 
-document.getElementById('confirmOverwriteBtn').addEventListener('click', async ()=>{
-  if (!pendingGeneration) return;
-
-  try {
-    const res = await fetch('/api/groceryList/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({ ...pendingGeneration, force: true })
-    });
-    const data = await res.json()
-    renderGroceryList(data.groceryList);
-  } catch (err) {
-    showError(err.message);
-  } finally {
-    closeOverwriteModal();
-  }
-})
-
 function renderGroceryList(groceryList) {
   const container = document.getElementById('grocery-list-container');
   container.innerHTML = '';
@@ -247,3 +172,67 @@ function closeOverwriteModal () {
 }
 
 document.getElementById('generate-list-btn').addEventListener('click', generateGroceryList);
+
+document.getElementById('dismissError').addEventListener('click', dismissError);
+
+document.getElementById('decreaseModalQty').addEventListener('click', decreaseModalQty);
+
+document.getElementById('increaseModalQty').addEventListener('click', increaseModalQty);
+
+document.getElementById('saveChanges').addEventListener('click', saveChanges);
+
+document.getElementById('closeModal').addEventListener('click', closeModal);
+
+document.addEventListener("change", async (e) => {
+  if (e.target.classList.contains("purchase-checkbox")) {
+    const checkbox = e.target;
+    const itemId = checkbox.dataset.itemId;
+    const aisle = checkbox.dataset.aisle;
+    const groceryListId = checkbox.dataset.groceryListId;
+    const purchased = checkbox.checked;
+
+    try {
+      const response = await fetch(`/api/groceryList/${groceryListId}`, {
+        method: 'PATCH',
+        headers: { 
+            'Content-Type': 'application/json', 
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          updates: [{ aisle, item: { _id: itemId, purchased } }]
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update item.");
+      }
+
+    } catch (err) {
+      console.error("Error updating item:", err);
+      document.getElementById('error-message').textContent = err.message;
+      document.getElementById('error-alert').classList.remove('hidden');
+    }
+  }
+});
+
+document.getElementById('confirmOverwriteBtn').addEventListener('click', async ()=>{
+  if (!pendingGeneration) return;
+
+  try {
+    const res = await fetch('/api/groceryList/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ ...pendingGeneration, force: true })
+    });
+    const data = await res.json()
+    renderGroceryList(data.groceryList);
+  } catch (err) {
+    showError(err.message);
+  } finally {
+    closeOverwriteModal();
+  }
+})

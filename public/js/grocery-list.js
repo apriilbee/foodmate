@@ -1,25 +1,27 @@
 const token = localStorage.getItem("token");
+let currentItemElement = null;
+let pendingGeneration = null;
 
-document.getElementById('generate-list-btn').addEventListener('click', async () => {
-  const startDate = document.getElementById('startDate').value;
-  const endDate = document.getElementById('endDate').value;
-  try {
-    const response = await fetch('/api/groceryList/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({ start: startDate, end: endDate })
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'Failed to generate list');
-    renderGroceryList(data.groceryList);
-  } catch (err) {
-        showError(err.message);
-  }
-});
+// document.getElementById('generate-list-btn').addEventListener('click', async () => {
+//   const startDate = document.getElementById('startDate').value;
+//   const endDate = document.getElementById('endDate').value;
+//   try {
+//     const response = await fetch('/api/groceryList/generate', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': `Bearer ${token}`,
+//         'Accept': 'application/json'
+//       },
+//       body: JSON.stringify({ start: startDate, end: endDate })
+//     });
+//     const data = await response.json();
+//     if (!response.ok) throw new Error(data.error || 'Failed to generate list');
+//     renderGroceryList(data.groceryList);
+//   } catch (err) {
+//         showError(err.message);
+//   }
+// });
 
 document.addEventListener("change", async (e) => {
   if (e.target.classList.contains("purchase-checkbox")) {
@@ -52,13 +54,11 @@ document.addEventListener("change", async (e) => {
     }
   }
 });
-      let currentItemElement = null;
 
 function openEditModal(btn) {
         const label = btn.closest('.checkbox-item');
         const itemName = label.querySelector('span').textContent;
         currentItemElement = label;
-        console.log(label)
         document.getElementById('modalItemName').textContent = `Edit "${itemName}"`;
         document.getElementById('unitDisplayText').textContent =
           label.getAttribute('data-unit') || label.getAttribute('data-default-unit') || '';
@@ -125,6 +125,62 @@ async function saveChanges() {
   closeModal();
 }
 
+async function generateGroceryList() {
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+
+  try {
+    const res = await fetch('/api/groceryList/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ start: startDate, end: endDate })
+    });
+
+    if (res.status === 400) {
+      const data = await res.json();
+      if (data.error === "A grocery list for this date range already exists.") {
+        pendingGeneration = { start: startDate,  end: endDate };
+        document.getElementById('overwriteModalText').innerHTML =  
+        `A grocery list already exists for <strong>${startDate}</strong> to <strong>${endDate}</strong>.<br>Do you want to overwrite it?`;
+        showOverwriteModal();
+        return;
+      }
+      else throw new Error(data.error || 'Failed to generate list');
+    }
+
+    const data = await res.json()
+    renderGroceryList(data.groceryList);
+  } catch (err) {
+        showError(err.message);
+  }
+}
+
+document.getElementById('confirmOverwriteBtn').addEventListener('click', async ()=>{
+  if (!pendingGeneration) return;
+
+  try {
+    const res = await fetch('/api/groceryList/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ ...pendingGeneration, force: true })
+    });
+    const data = await res.json()
+    renderGroceryList(data.groceryList);
+  } catch (err) {
+    showError(err.message);
+  } finally {
+    closeOverwriteModal();
+  }
+})
+
 function renderGroceryList(groceryList) {
   const container = document.getElementById('grocery-list-container');
   container.innerHTML = '';
@@ -178,3 +234,16 @@ function showError(message) {
 function dismissError() {
   document.getElementById("error-alert").classList.add("hidden");
 }
+
+function showOverwriteModal() {
+  document.getElementById('overwriteModal').classList.add('show');
+  document.getElementById('overwriteModal').classList.remove('hidden');
+}
+
+function closeOverwriteModal () {
+  document.getElementById('overwriteModal').classList.remove('show');
+  document.getElementById('overwriteModal').classList.add('hidden');
+  pendingGeneration = null;
+}
+
+document.getElementById('generate-list-btn').addEventListener('click', generateGroceryList);

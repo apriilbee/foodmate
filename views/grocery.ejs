@@ -40,8 +40,7 @@
       <div id="grocery-list-container" class="grocery-list-section">
       </div>
     </div>
-
-    
+        
     <div id="editModal" class="modal hidden">
       <div class="modal-content">
         <h4 id="modalItemName">Edit Item</h4>
@@ -57,6 +56,18 @@
         </div>
       </div>
     </div>
+
+    <div id="overwriteModal" class="modal hidden">
+      <div class="modal-content">
+        <h4 id="overwriteModalTitle">Grocery List Exists</h4>
+        <p id="overwriteModalText">A grocery list already exists for the selected dates.<br>Do you want to overwrite it?</p>
+        <div class="modal-buttons">
+          <button id="confirmOverwriteBtn">Yes, Overwrite</button>
+          <button onclick="closeOverwriteModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+    
     <script src="/js/grocery-list.js"></script>
   </body>
 </html>

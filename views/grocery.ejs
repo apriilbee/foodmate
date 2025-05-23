@@ -57,49 +57,6 @@
         </div>
       </div>
     </div>
-
-    <script>
-      let currentItemElement = null;
-
-      function openEditModal(btn) {
-        const label = btn.closest('.checkbox-item');
-        const itemName = label.querySelector('span').textContent;
-        currentItemElement = label;
-
-        document.getElementById('modalItemName').textContent = `Edit "${itemName}"`;
-        document.getElementById('unitDisplayText').textContent =
-          label.getAttribute('data-unit') || label.getAttribute('data-default-unit') || '';
-        document.getElementById('modalQtyInput').value = label.getAttribute('data-qty') || '1';
-
-        document.getElementById('editModal').classList.remove('hidden');
-      }
-
-      function closeModal() {
-        document.getElementById('editModal').classList.add('hidden');
-        currentItemElement = null;
-      }
-
-      function increaseModalQty() {
-        const input = document.getElementById('modalQtyInput');
-        input.value = parseInt(input.value) + 1;
-      }
-
-      function decreaseModalQty() {
-        const input = document.getElementById('modalQtyInput');
-        if (parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
-      }
-
-      function saveChanges() {
-        const qty = document.getElementById('modalQtyInput').value;
-        const unit = document.getElementById('unitDisplayText').textContent.trim();
-        if (currentItemElement) {
-          currentItemElement.setAttribute('data-qty', qty);
-          currentItemElement.setAttribute('data-unit', unit);
-          currentItemElement.querySelector('.quantity-display').textContent = `${qty} ${unit}`;
-        }
-        closeModal();
-      }
-    </script>
     <script src="/js/grocery-list.js"></script>
   </body>
 </html>

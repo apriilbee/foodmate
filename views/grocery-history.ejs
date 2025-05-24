@@ -1,93 +1,114 @@
-<!-- grocery-history.ejs -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <%- include('partials/head') %>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="/css/grocery-history.css?v=<%= Date.now() %>" />
-  </head>
- 
+  <%- include('partials/head') %>
+  <link rel="stylesheet" href="/css/grocery-history.css" />
   <body>
     <%- include('partials/navbar') %>
- 
-    <div class="grocery-page">
-      <div class="grocery-header-row">
-        <h1 class="grocery-title">Grocery History</h1>
-      </div>
- 
-      <div class="history-container">
-        <!-- Left: Date Range Buttons -->
-        <div class="date-list">
-          <% groceryHistory.forEach((entry, idx) => { %>
-            <button
-              <% if (idx === 0) { %> class="date-btn active"
-              <% } else { %> class="date-btn"
-              <% } %>
-              onclick="showHistory(<%= idx %>)"
-            >
-              <%= entry.dateRange %>
-            </button>
-          <% }) %>
+    <div class="container">
+      <div class="row">
+        <!-- Column 1: Dates -->
+        <div class="col s12 m3">
+          <h5>Dates:</h5>
+          <ul class="gh-list-container">
+            <% lists.forEach(item => { %>
+              <li 
+                class="gh-list-item"
+                data-grocery-list-id="<%= item.id %>" 
+                data-startdate="<%= item.startDate %>" 
+                data-enddate="<%= item.endDate%>">
+                <%= item.startDate %> - <%= item.endDate%>
+              </li>
+            <% }) %>
+          </ul>
         </div>
- 
-        <!-- Right: History Details -->
-        <div class="history-details">
-          <% groceryHistory.forEach((entry, idx) => { %>
-            <div class="history-content<%= idx === 0 ? '' : ' hidden' %>" id="history-<%= idx %>">
-              <!-- Date Title + Edit -->
-              <div class="history-header-inline">
-                <h2 class="range-date"><%= entry.dateRange %></h2>
-                <a href="#" class="edit-link">Edit</a>
-              </div>
- 
-              <div class="item-log-wrapper">
-                <!-- Grocery Items -->
-                <div class="item-list">
-                  <h3 class="section-heading">Items</h3>
-                  <ul class="grocery-items">
-                    <% entry.items.forEach(item => { %>
-                      <li>
-                        <label class="checkbox-label">
-                          <input type="checkbox" class="checkbox" />
-                          <span><%= item %></span>
-                        </label>
-                      </li>
-                    <% }) %>
-                  </ul>
-                </div>
- 
-                <!-- Activity Log -->
-                <div class="log-box">
-                  <h3>Activity Log</h3>
-                  <ul class="log-timeline">
-                    <% entry.logs.forEach(log => { %>
-                      <li class="log-entry">
-                        <div class="dot"></div>
-                        <p><%= log %></p>
-                      </li>
-                    <% }) %>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          <% }) %>
+
+        <!-- Column 2: Grocery List -->
+        <div class="col s12 m6">
+          <h5>Grocery List</h5>
+          <div id="grocery-details">Select a list to view details</div>
+        </div>
+
+        <!-- Column 3: Logs -->
+        <div class="col s12 m3">
+          <h5>Logs</h5>
+          <div id="log-details">Activity logs will show here</div>
         </div>
       </div>
     </div>
- 
+    <%- include('partials/scripts') %>
+
+    <!-- JS logic to manage active item selection -->
     <script>
-      function showHistory(index) {
-        const buttons = document.querySelectorAll('.date-btn');
-        const contents = document.querySelectorAll('.history-content');
- 
-        buttons.forEach((btn, i) => {
-          btn.classList.toggle('active', i === index);
-          contents[i].classList.toggle('hidden', i !== index);
+      document.querySelectorAll('.gh-list-item').forEach(item => {
+        item.addEventListener('click', async () => {
+          // Remove active class from all items
+          document.querySelectorAll('.gh-list-item').forEach(i => i.classList.remove('active-list'));
+          // Add active class to the clicked item
+          item.classList.add('active-list');
+
+          // You can also populate grocery list/logs here if needed
+          const startDate = item.dataset.startdate;
+          const endDate = item.dataset.enddate;
+          const id = item.dataset.groceryListId;
+
+          try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(`/api/groceryList/${id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            })
+            if(!response.ok) throw new Error('Failed to fetch grocery list');
+            const data = await response.json();
+
+            document.getElementById('grocery-details').innerHTML = 
+            `
+              <h6>${startDate} - ${endDate}</h6>
+              <ul>${generateAisleCards(data.list)}</ul>
+            `;
+            document.getElementById('log-details').textContent = `Logs for list ID: ${id}`;
+
+          } catch (err) {
+            console.error(err);
+          }
         });
-      }
-    </script>
+      });
+
+      function generateAisleCards(groceryList) {
+        if (!groceryList || !Array.isArray(groceryList.aisles)) {
+          return '<p>No grocery list data available.</p>';
+        }
+      
+        return groceryList.aisles.map(aisle => {
+          const itemsHtml = aisle.items.map((item, index) => `
+            <div class="row gh-item-row valign-wrapper" data-item-index="${index}">
+              <!-- Item + Checkbox -->
+              <div class="col s12 m6">
+                <label>
+                  <input type="checkbox" class="filled-in" />
+                  <span>${item.name}</span>
+                </label>
+              </div>
+  
+              <div class="col s6 m4">
+                ${item.amount} ${item.unit}
+              </div>
+            
+              <div class="col s6 m2">
+                <button class="gh-edit-btn" data-item-name="${item.name}">
+                  Edit
+                </button>
+              </div>
+            </div>
+          `).join('');
+          
+          return `
+            <div class="gh-aisle-card card white" style="margin-bottom: 24px; padding: 16px;">
+              <h6 class="orange-text text-darken-3" style="margin-bottom: 12px;">${aisle.aisle}</h6>
+              ${itemsHtml}
+            </div>
+          `;
+        }).join('');
+      }    </script>
   </body>
 </html>

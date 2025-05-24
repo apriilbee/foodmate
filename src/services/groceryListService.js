@@ -64,8 +64,20 @@ export const getAllGroceryLists = async (userId) => {
     if (!userId) throw new Error ('Not Authorized');
     
     const groceryLists = await GroceryList.find( {userId: userId} );
-    
-    const groceryListIds = groceryLists.map(list => list._id);
+    const formatDate = date => {
+        const dateToBeFormatted = new Date(date);
+        const day = String(dateToBeFormatted.getDate()).padStart(2, '0');
+        const month = String(dateToBeFormatted.getMonth() + 1).padStart(2,'0');
+        const year = dateToBeFormatted.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+    const groceryListIds = groceryLists.map(list => {
+        return {
+            id : list._id,
+            startDate : formatDate(list.startDate),
+            endDate : formatDate(list.endDate)
+        }
+    });
     
     return groceryListIds; 
 }

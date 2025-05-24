@@ -11,12 +11,19 @@ const AisleGroupSchema = new mongoose.Schema({
     aisle: {type: String, required: true},
     items: [GroceryItemSchema]
 })
+
+const LogSchema = new mongoose.Schema({
+    message: { type: String, required: true },
+    timestamp: { type: Date, default: Date.now }
+})
+
 const GroceryListSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     aisles: [AisleGroupSchema],
-    meals: [{ type: Number }]
+    meals: [{ type: Number }],
+    logs: [LogSchema],
 }, {
     timestamps: true
 });

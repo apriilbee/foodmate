@@ -2,6 +2,7 @@
 <html lang="en">
   <%- include('partials/head') %>
   <link rel="stylesheet" href="/css/grocery-history.css" />
+  <link rel="stylesheet" href="/css/grocery.css" />
   <body>
     <%- include('partials/navbar') %>
     <div class="container">
@@ -35,18 +36,15 @@
         </div>
       </div>
     </div>
+    <%- include('partials/groceryListEditModal') %>
     <%- include('partials/scripts') %>
 
-    <!-- JS logic to manage active item selection -->
     <script>
       document.querySelectorAll('.gh-list-item').forEach(item => {
         item.addEventListener('click', async () => {
-          // Remove active class from all items
           document.querySelectorAll('.gh-list-item').forEach(i => i.classList.remove('active-list'));
-          // Add active class to the clicked item
           item.classList.add('active-list');
 
-          // You can also populate grocery list/logs here if needed
           const startDate = item.dataset.startdate;
           const endDate = item.dataset.enddate;
           const id = item.dataset.groceryListId;
@@ -64,8 +62,8 @@
             document.getElementById('grocery-details').innerHTML = 
             `
               <h6>${startDate} - ${endDate}</h6>
-              <ul>${generateAisleCards(data.list)}</ul>
             `;
+            renderGroceryList(data.list)
             document.getElementById('log-details').textContent = `Logs for list ID: ${id}`;
 
           } catch (err) {
@@ -74,41 +72,49 @@
         });
       });
 
-      function generateAisleCards(groceryList) {
-        if (!groceryList || !Array.isArray(groceryList.aisles)) {
-          return '<p>No grocery list data available.</p>';
-        }
-      
-        return groceryList.aisles.map(aisle => {
-          const itemsHtml = aisle.items.map((item, index) => `
-            <div class="row gh-item-row valign-wrapper" data-item-index="${index}">
-              <!-- Item + Checkbox -->
-              <div class="col s12 m6">
-                <label>
-                  <input type="checkbox" class="filled-in" />
-                  <span>${item.name}</span>
-                </label>
-              </div>
-  
-              <div class="col s6 m4">
-                ${item.amount} ${item.unit}
-              </div>
-            
-              <div class="col s6 m2">
-                <button class="gh-edit-btn" data-item-name="${item.name}">
-                  Edit
-                </button>
-              </div>
-            </div>
-          `).join('');
-          
-          return `
-            <div class="gh-aisle-card card white" style="margin-bottom: 24px; padding: 16px;">
-              <h6 class="orange-text text-darken-3" style="margin-bottom: 12px;">${aisle.aisle}</h6>
-              ${itemsHtml}
-            </div>
-          `;
-        }).join('');
-      }    </script>
+function renderGroceryList(groceryList) {
+  const container = document.getElementById('grocery-details');
+  container.innerHTML = '';
+  groceryList.aisles.forEach(aisle => {
+    const categoryDiv = document.createElement('div');
+    categoryDiv.classList.add('grocery-category');
+    const title = document.createElement('h3');
+    title.classList.add('category-title');
+    title.textContent = aisle.aisle;
+    categoryDiv.appendChild(title);
+    const headerRow = document.createElement('div');
+    headerRow.classList.add('item-header-row');
+    headerRow.innerHTML = `
+      <span class="item-header">Item</span>
+      <span class="quantity-header">Quantity</span>
+      <span class="edit-header">Action</span>
+    `;
+    categoryDiv.appendChild(headerRow);
+    aisle.items.forEach(item => {
+      const label = document.createElement('label');
+      label.classList.add('checkbox-item');
+      label.setAttribute('data-qty', item.amount);
+      label.setAttribute('data-unit', item.unit);
+      label.setAttribute('data-default-unit', item.amount);
+      label.setAttribute('data-aisle', aisle.aisle);
+      label.innerHTML = `
+        <input  type="checkbox"
+                class="purchase-checkbox"
+                data-item-id="${item._id}"
+                data-aisle="${aisle.aisle}"
+                data-grocery-list-id="${groceryList._id}"
+                ${item.purchased ? 'checked' : ''}
+        />
+        <span>${item.name}</span>
+        <span class="quantity-display">${item.amount} ${item.unit}</span>
+        <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
+      `;
+      categoryDiv.appendChild(label);
+    });
+    container.appendChild(categoryDiv);
+  });
+} 
+      </script>
+      <script src="/js/groceryListEditModal.js"></script>
   </body>
 </html>

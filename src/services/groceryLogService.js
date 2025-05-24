@@ -1,5 +1,7 @@
 import { GroceryList } from "../models/GroceryList.js";
-import { ioSocket } from "../index.js";
+import { getSocketIO } from "../utils/socketContext.js";
+
+
 
 export const addGroceryLog = async (groceryId, message) => {
     const logEntry = {message, timestamp: new Date() };
@@ -11,7 +13,8 @@ export const addGroceryLog = async (groceryId, message) => {
     )
 
     if (updatedList) {
-        ioSocket.to(groceryId).emit("logMessage", logEntry);
+        const io = getSocketIO();
+        io.to(groceryId).emit("logMessage", logEntry);
     }
 
     return updatedList;

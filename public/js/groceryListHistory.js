@@ -1,11 +1,10 @@
 /* global io */
 
-let socket = io(); // connect once when the script loads
+let socket = io();
 let currentListId = null;
 
 document.querySelectorAll('.gh-list-item').forEach(item => {
   item.addEventListener('click', async () => {
-    // UI: highlight active list
     document.querySelectorAll('.gh-list-item').forEach(i => i.classList.remove('active-list'));
     item.classList.add('active-list');
 
@@ -24,26 +23,21 @@ document.querySelectorAll('.gh-list-item').forEach(item => {
       if (!response.ok) throw new Error('Failed to fetch grocery list');
       const data = await response.json();
 
-      // Update dates UI
       document.getElementById('grocery-details-dates').innerHTML = `
         <h6>${startDate} - ${endDate}</h6>
       `;
       renderGroceryList(data.list);
       console.log(data.list.logs);
 
-      // Log section title
       document.getElementById('log-details').textContent = `Logs for list ID: ${startDate} - ${endDate}`;
 
-      // Leave previous room if any
       if (currentListId) {
         socket.emit("leaveGroceryRoom", currentListId);
       }
 
-      // Join new room
       socket.emit("joinGroceryRoom", id);
       currentListId = id;
 
-      // Clear log display
       const logContainer = document.getElementById("log-container");
       logContainer.innerHTML = "";
       renderPreviousLogs(data.list.logs);
@@ -54,7 +48,6 @@ document.querySelectorAll('.gh-list-item').forEach(item => {
   });
 });
 
-// Handle real-time logs
 socket.on("logMessage", (log) => {
   const logContainer = document.getElementById("log-container");
   createLogElement(log, logContainer);
@@ -119,7 +112,7 @@ function renderPreviousLogs(logs) {
 
 function createLogElement (log, logContainer) {
   const logEl = document.createElement("div");
-  
+  logEl.classList.add("log-entry");
   const ts = new Date(log.timestamp);
   const day = String(ts.getDate()).padStart(2, '0');
   const month = String(ts.getMonth() + 1).padStart(2, '0');

@@ -11,6 +11,7 @@ import http from "http";
 import { Server as SocketIOServer } from "socket.io";
 import { setupAIChatSocket } from "./socket/aiChat.js";
 import { setUpGroceryLogSocket } from "./socket/groceryLog.js";
+import { setSocketIO } from "./utils/socketContext.js";
 
 import { ENV } from "./utils/envLoader.js";
 
@@ -37,6 +38,8 @@ const __dirname = path.dirname(__filename);
 
 const server = http.createServer(app);
 const io = new SocketIOServer(server);
+
+setSocketIO(io);
 setupAIChatSocket(io);
 setUpGroceryLogSocket(io);
 
@@ -75,5 +78,3 @@ app.use("/", groceryhistoryRoutes);
 server.listen(ENV.PORT, () => {
     logger.info(`✅ Server running at http://localhost:${ENV.PORT}`);
 });
-
-export const ioSocket = io

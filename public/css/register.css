@@ -5,67 +5,66 @@
     align-items: center;
     min-height: 100vh;
     background-color: #f9f9f9;
-  }
-  
-  .auth-card {
+}
+
+.auth-card {
     background: white;
     padding: 30px;
     border-radius: 16px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     width: 100%;
     max-width: 400px;
-  }
-  
-  .auth-card h5 {
+}
+
+.auth-card h5 {
     font-size: 22px;
     color: #fe8641;
     font-weight: 600;
     margin-bottom: 6px;
     text-align: center;
-  }
-  
-  .auth-card p {
+}
+
+.auth-card p {
     text-align: center;
     font-size: 14px;
     margin-bottom: 20px;
     color: #555;
-  }
-  
-  .auth-card .input-field {
+}
+
+.auth-card .input-field {
     margin-bottom: 20px;
-  }
-  
-  .auth-card button {
+}
+
+.auth-card button {
     width: 100%;
     background-color: #fe8641;
     color: white;
     border-radius: 8px;
-  }
-  
-  .auth-card .footer-link {
+}
+
+.auth-card .footer-link {
     margin-top: 20px;
     text-align: center;
     font-size: 13px;
-  }
-  
-  .auth-card .footer-link a {
+}
+
+.auth-card .footer-link a {
     color: #4285f4;
     text-decoration: none;
-  }
-  
-  /* ============ MOBILE FRIENDLY ============ */
-  @media screen and (max-width: 600px) {
+}
+
+/* ============ MOBILE FRIENDLY ============ */
+@media screen and (max-width: 600px) {
     .auth-card {
-      margin: 0 16px;
-      padding: 24px;
+        margin: 0 16px;
+        padding: 24px;
     }
-  
+
     .auth-card h5 {
-      font-size: 20px;
+        font-size: 20px;
     }
-  
+
     .auth-card p {
-      font-size: 13px;
+        font-size: 13px;
     }
-  }
-  
+}

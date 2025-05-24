@@ -7,9 +7,13 @@
             <div class="left-side">
                 <div class="card login-card z-depth-2">
                     <div class="login-header center-align">
-                        <img src="/img/logo-brand.svg" alt="FoodMate" class="login-logo" />
+                        <img
+                            src="/img/logo-brand.svg"
+                            alt="FoodMate"
+                            style="margin-top: -100px; margin-bottom: -150px"
+                        />
                     </div>
-
+                    <br />
                     <form id="loginForm">
                         <div class="input-field" style="position: relative">
                             <input id="email" name="email" type="email" class="validate" placeholder="Email" required />
@@ -56,13 +60,12 @@
 
                         <button type="submit" class="btn full-btn" style="background-color: #fe8641">Login</button>
 
-                        <p class="center-align" style="margin-top: 0.5rem">
-                            <a href="/auth/forgot-password">Forgot Password</a>
-                        </p>
-
-                        <p class="center-align" style="margin-top: 1rem">
+                        <p class="center-align" style="margin-top: 2rem">
                             Don’t have an account?
                             <a href="/auth/register">Sign up</a>
+                            <br />
+
+                            <a href="/auth/forgot-password">Forgot Password</a>
                         </p>
                     </form>
                 </div>

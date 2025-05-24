@@ -57,7 +57,7 @@
 
 1. Clone the repository  
    ```bash
-   git clone https://github.com/your-username/foodmate.git
+   git clone https://github.com/apriilbee/foodmate.git
    cd foodmate
    ```
 
@@ -99,3 +99,51 @@
     ```
     npm start 
     ```
+
+## Screenshots
+### User Authentication
+<table>
+  <tr>
+    <td align="center">
+      <img src="./public/img/read-me/login.png" width="350"/>
+    </td>
+    <td align="center">
+      <img src="./public/img/read-me/register.png" width="350"/>
+    </td>
+  </tr>
+</table>
+
+### Recipe Filtering
+<table>
+  <tr>
+    <td align="center">
+      <img src="./public/img/read-me/filtering.png" width="450"/>
+    </td>
+    <td align="center">
+      <img src="./public/img/read-me/filtering-2.png" width="450"/>
+    </td>
+  </tr>
+</table>
+
+
+
+### Recipe Search
+<table>
+  <tr>
+    <td align="center">
+      <img src="./public/img/read-me/search.png" width="450"/>
+    </td>
+  </tr>
+</table>
+
+### Real-time Chat
+<table>
+  <tr>
+    <td align="center">
+      <img src="./public/img/read-me/chatbot2.png" width="450"/>
+    </td>
+    <td align="center">
+      <img src="./public/img/read-me/chatbot.png" width="450"/>
+    </td>
+  </tr>
+</table>

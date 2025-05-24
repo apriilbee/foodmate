@@ -3,6 +3,22 @@ let currentItemElement = null;
 let pendingGeneration = null;
 const groceryListContainer = document.getElementById('grocery-list-container');
 
+const today = new Date();
+const endDate = new Date();
+endDate.setDate(today.getDate() + 7);
+
+function getLocalDate (today) {
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  const localDateString = `${year}-${month}-${day}`;
+
+  return localDateString
+}
+
+document.getElementById('startDate').value = getLocalDate(today);
+document.getElementById('endDate').value = getLocalDate(endDate);
+
 async function generateGroceryList() {
   const startDate = document.getElementById('startDate').value;
   const endDate = document.getElementById('endDate').value;

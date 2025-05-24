@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import http from "http";
 import { Server as SocketIOServer } from "socket.io";
 import { setupAIChatSocket } from "./socket/aiChat.js";
+import { setUpGroceryLogSocket } from "./socket/groceryLog.js";
 
 import { ENV } from "./utils/envLoader.js";
 
@@ -37,6 +38,7 @@ const __dirname = path.dirname(__filename);
 const server = http.createServer(app);
 const io = new SocketIOServer(server);
 setupAIChatSocket(io);
+setUpGroceryLogSocket(io);
 
 // MongoDB connection
 mongoose
@@ -73,3 +75,5 @@ app.use("/", groceryhistoryRoutes);
 server.listen(ENV.PORT, () => {
     logger.info(`✅ Server running at http://localhost:${ENV.PORT}`);
 });
+
+export const ioSocket = io

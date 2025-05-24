@@ -2,6 +2,8 @@ import MealPlan from "../models/MealPlan.js";
 import { GroceryList } from "../models/GroceryList.js";
 import { getRecipeDetails } from "../services/recipeService.js";
 import pluralize from "pluralize";
+import { addGroceryLog } from "./groceryLogService.js";
+import User from "../models/User.js";
 
 export const generateGroceryList = async (userId, start, end, force) => {
     
@@ -49,7 +51,8 @@ export const generateGroceryList = async (userId, start, end, force) => {
             startDate,
             endDate,
             aisles: groupedIngredients,
-            meals: recipeIds
+            meals: recipeIds,
+            logs: []
         },
         {
             new: true,
@@ -125,16 +128,31 @@ export const updateGroceryList = async (groceryListId, updates, userId) => {
     if(!list) throw new Error ("Grocery list not found");
     if(list.userId.toString() !== userId) throw new Error ("Not authorized to edit this list");
 
-    updates.forEach(({aisle, item: updateItem}) => {
+    const user = await User.findById(userId);
+
+    updates.forEach(async ({aisle, item: updateItem}) => {
         const aisleGroup = list.aisles.find(group => group.aisle === aisle);
         if (!aisleGroup) return;
 
         const item = aisleGroup.items.id(updateItem._id);
         if (!item) return;
 
-        if (updateItem.amount) item.amount = updateItem.amount
+        if (updateItem.amount) {
+            item.amount = updateItem.amount
+            const log = `${user.username} edited ${item.name} value to ${updateItem.amount} ${updateItem.unit}`;
+            await addGroceryLog(groceryListId, log)
+        }
         if (updateItem.unit) item.unit = updateItem.unit;
-        if (updateItem.purchased) item.purchased = updateItem.purchased;
+        if (updateItem.purchased === true) {
+            item.purchased = true;
+            const log = `${user.username} marked ${item.name} as purchased`;
+            await addGroceryLog(groceryListId, log)           
+        }
+        else if (updateItem.purchased === false) {
+            item.purchased = false;
+            const log = `${user.username} marked ${item.name} as not purchased`;
+            await addGroceryLog(groceryListId, log)
+        }
     });
 
     await list.save();

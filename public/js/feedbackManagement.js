@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       feedbackList.innerHTML = '<div class="no-feedback">No feedback found.</div>';
     }
   } catch (err) {
+    console.error(err); 
     feedbackList.innerHTML = '<div class="no-feedback">Error loading feedback. Please try again.</div>';
   }
 });

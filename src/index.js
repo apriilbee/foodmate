@@ -19,8 +19,12 @@ import recipeRoutes from "./routes/recipeRoutes.js";
 import mealPlanRoutes from "./routes/mealPlanRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import groceryListRoutes from "./routes/groceryListRoutes.js";
+
+import feedbackRoutes from "./routes/feedbackRoutes.js"
+
 import groceryRoutes from "./routes/groceryRoutes.js";
 import groceryhistoryRoutes from "./routes/groceryhistoryRoutes.js";
+
 
 
 import { logger } from "./utils/logger.js";
@@ -54,7 +58,13 @@ app.use("/", homeRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/mealPlan", mealPlanRoutes);
 app.use("/profile", profileRoutes);
-app.use("/api/groceryList", groceryListRoutes);
+app.use("/api/groceryList", groceryListRoutes);// Feedback routes
+app.use("/api/feedback", feedbackRoutes); 
+app.get("/feedback-management", (req, res) => {
+    res.render("feedbackManagement", { user: req.user });
+});
+
+// Grocery route from release-sprint-2
 app.use("/grocery-list", groceryRoutes);
 app.use("/", groceryhistoryRoutes);
 

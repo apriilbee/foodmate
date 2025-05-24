@@ -18,15 +18,15 @@
     display: none;
     flex-direction: column;
     position: fixed;
-    bottom: 90px;
-    right: 24px;
-    width: 360px;
+    bottom: 80px;
+    right: 20px;
+    width: 370px;
     background: #fff;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     overflow: hidden;
-    z-index: 999;
-    padding: 0; /* ✅ No unexpected spacing */
+    z-index: 10001;
+    padding: 0;
 }
 
 /* Header */

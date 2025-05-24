@@ -44,6 +44,7 @@ mongoose
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(cookieParser());
 
@@ -55,15 +56,14 @@ app.use("/", homeRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/mealPlan", mealPlanRoutes);
 app.use("/profile", profileRoutes);
-app.use("/api/groceryList", groceryListRoutes);
-
+app.use("/api/groceryList", groceryListRoutes);// Feedback routes
 app.use("/api/feedback", feedbackRoutes); 
-//feedback management
 app.get("/feedback-management", (req, res) => {
     res.render("feedbackManagement", { user: req.user });
 });
 
-app.use("/grocery", groceryRoutes);
+// Grocery route from release-sprint-2
+app.use("/grocery-list", groceryRoutes);
 
 // Start server
 server.listen(ENV.PORT, () => {

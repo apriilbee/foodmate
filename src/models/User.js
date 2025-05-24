@@ -30,7 +30,11 @@ const userSchema = new mongoose.Schema({
     },
     isDeleted: { 
       type: Boolean, default: false 
-    } // soft delete flag
+    }, // soft delete flag
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
+
+    
 });
 
 userSchema.pre("save", async function (next) {
@@ -42,6 +46,11 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.comparePassword = function (inputPassword) {
     return bcrypt.compare(inputPassword, this.password);
 };
+
+userSchema.pre(/^find/, function (next) {
+    this.where({ isDeleted: false });
+    next();
+  });
 
 const User = mongoose.model("User", userSchema);
 export default User;

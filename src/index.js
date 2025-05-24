@@ -42,6 +42,7 @@ mongoose
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(cookieParser());
 
@@ -54,7 +55,7 @@ app.use("/api/recipes", recipeRoutes);
 app.use("/api/mealPlan", mealPlanRoutes);
 app.use("/profile", profileRoutes);
 app.use("/api/groceryList", groceryListRoutes);
-app.use("/grocery", groceryRoutes);
+app.use("/grocery-list", groceryRoutes);
 app.use("/", groceryhistoryRoutes);
 
 

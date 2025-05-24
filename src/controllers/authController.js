@@ -1,6 +1,9 @@
 import { loginUser, registerUser, verifyEmailToken } from "../services/authService.js";
 import { logger } from "../utils/logger.js";
 import validator from "validator";
+import { requestPasswordReset, resetPassword } from "../services/authService.js";
+import User from "../models/User.js";
+
 
 export const postLogin = async (req, res) => {
     const { email, password } = req.body;
@@ -67,5 +70,79 @@ export const verifyEmail = async (req, res) => {
     } catch (err) {
         logger.error("Email verification error:", err);
         res.status(400).send(err.message || "Server error.");
+    }
+};
+
+export const getForgotPassword = (req, res) => {
+    res.render("forgotpassword", {
+        message: null,
+        messageType: null,
+    });
+};
+//  Send password reset email
+export const postForgotPassword = async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        return  res.render("forgotpassword", {
+            message: "Email is required",
+            messageType: "error",
+          });
+      }
+      await requestPasswordReset(email);
+      res.render("forgotpassword", {
+        message: "Password reset email sent if email is registered",
+        messageType: "success",
+    });
+    } catch (error) {
+        res.render("forgotpassword", {
+            message: error.message || "Something went wrong",
+            messageType: "error",
+          });
+    }
+  };
+
+//  Handle actual password reset
+export const getResetPassword = async (req, res) => {
+    const { token } = req.params;
+  
+    try {
+      // Find user by reset token and make sure token is not expired
+      const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() },
+      });
+  
+      if (!user) {
+        // Token invalid or expired
+        return res.render("resetpassword", {
+          token: null,
+          message: "Password reset token is invalid or has expired.",
+          messageType: "error"
+        });
+      }
+  
+      // Token is valid, render the reset password form with the token
+      res.render("resetpassword", { token, message: null 
+      });
+    } catch (error) {
+        logger.error("Error in getResetPassword:", error);
+      res.status(500).render("resetpassword", {
+        token: null,
+        message: "Something went wrong. Please try again later.",
+        messageType: "error"
+      });
+    }
+  };
+export const postResetPassword = async (req, res) => {
+    const { token } = req.params;
+    const { newPassword } = req.body;
+
+    try {
+        await resetPassword(token, newPassword);
+        return res.status(200).redirect("/"); // Redirect to login page
+    } catch (err) {
+        logger.error("Reset password error:", err);
+        return res.status(400).json({ message: err.message || "Password reset failed." });
     }
 };

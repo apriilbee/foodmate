@@ -1,6 +1,4 @@
 import Feedback from "../models/feedbackModel.js";
-
-// Submit Feedback (Create)
 export const submitFeedback = async (req, res) => {
   try {
     const { rating, message } = req.body;
@@ -27,15 +25,15 @@ export const submitFeedback = async (req, res) => {
   
 };
 
-// Get All Feedback 
+
 export const getAllFeedback = async (req, res) => {
   try {
     const userId = req.user.id;
     const showAll = req.query.all === 'true';
 
     const query = showAll
-      ? { user: userId }               // Include soft-deleted if all=true
-      : { user: userId, isDeleted: false }; // Default: show only active feedback
+      ? { user: userId }               
+      : { user: userId, isDeleted: false }; 
 
     const feedbacks = await Feedback.find(query).populate("user", "username");
     res.status(200).json({ success: true, data: feedbacks });
@@ -72,8 +70,6 @@ export const updateFeedback = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
-
-// Soft Delete Feedback 
 export const deleteFeedback = async (req, res) => {
   const feedbackId = req.params.id;
   const userId = req.user.id;
@@ -99,7 +95,6 @@ export const deleteFeedback = async (req, res) => {
   }
 };
 
-// Restore Feedback 
 export const restoreFeedback = async (req, res) => {
   const feedbackId = req.params.id;
   const userId = req.user.id;

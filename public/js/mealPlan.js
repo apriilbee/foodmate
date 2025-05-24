@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const deleteButtons = document.querySelectorAll(".delete-meal-btn"); // ✅ correct class name
+    const deleteButtons = document.querySelectorAll(".delete-meal-btn"); 
 
     deleteButtons.forEach(button => {
         button.addEventListener("click", async () => {
@@ -19,8 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (res.ok) {
                     showToast("Meal deleted!");
-
-                    // ✅ Remove the deleted meal only from UI
                     const mealSlot = button.closest(".meal-recipe");
                     if (mealSlot) {
                         mealSlot.innerHTML = `<div class="empty">No meal</div>`;

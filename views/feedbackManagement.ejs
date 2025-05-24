@@ -75,7 +75,9 @@
 
     .feedback-item .edit-btn,
     .feedback-item .delete-btn,
-    .feedback-item .restore-btn {
+    .feedback-item .restore-btn,
+    .edit-btn,
+    .delete-btn {
         font-size: 14px;
         padding: 6px 12px;
         background-color: white;
@@ -342,7 +344,7 @@
             placeholder="Edit your message..."
         ></textarea>
         <div style="margin-top: 10px; text-align: right">
-            <button onclick="submitEdit()" class="edit-btn">💾 Save</button>
+            <button onclick="submitEdit()" class="edit-btn">Save</button>
             <button onclick="closeEditModal()" class="delete-btn">Cancel</button>
         </div>
     </div>

@@ -16,6 +16,7 @@
 - **Frontend**: EJS templates, Materialize CSS  
 - **Database**: MongoDB  
 - **Authentication**: JWT, Email verification  
+- **Logging**: Winston – centralized logging for debugging and error tracking
 
 - **API Integrations**:  
   - **Spoonacular** – for recipe data  

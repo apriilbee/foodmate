@@ -1,5 +1,3 @@
-const token = localStorage.getItem("token");
-let currentItemElement = null;
 let pendingGeneration = null;
 const groceryListContainer = document.getElementById('grocery-list-container');
 
@@ -24,6 +22,7 @@ async function generateGroceryList() {
   const endDate = document.getElementById('endDate').value;
 
   try {
+    const token = localStorage.getItem("token");
     const res = await fetch('/api/groceryList/generate', {
       method: 'POST',
       headers: {
@@ -125,6 +124,7 @@ document.getElementById('confirmOverwriteBtn').addEventListener('click', async (
   if (!pendingGeneration) return;
 
   try {
+    const token = localStorage.getItem("token");
     const res = await fetch('/api/groceryList/generate', {
       method: 'POST',
       headers: {

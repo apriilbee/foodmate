@@ -1,3 +1,5 @@
+let currentItemElement = null;
+
 function openEditModal(btn) {
         const label = btn.closest('.checkbox-item');
         const itemName = label.querySelector('span').textContent;
@@ -39,6 +41,7 @@ async function saveChanges() {
     currentItemElement.querySelector('.quantity-display').textContent = `${qty} ${unit}`;
   
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(`/api/groceryList/${groceryListId}`, {
         method: 'PATCH',
         headers: {
@@ -85,6 +88,7 @@ document.addEventListener("change", async (e) => {
     const purchased = checkbox.checked;
 
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(`/api/groceryList/${groceryListId}`, {
         method: 'PATCH',
         headers: { 

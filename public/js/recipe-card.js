@@ -40,7 +40,7 @@ export function renderRecipes(recipes) {
                             🍽️ <a href="/recipes/${recipe.id}" class="show-more-link" style="text-decoration: none; color: #FE8641;">Show more...</a>
                         </p>
                         <!--button-->
-                 <button class="add-to-meal-btn" onclick="openModal(this)" data-recipe-id="12345">+</button>
+                        <button class="add-to-meal-btn" onclick="openModal(this)" data-recipe-id="${recipe.id}">+</button>
                     </div>
                 </div>
             </div>

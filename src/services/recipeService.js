@@ -8,20 +8,20 @@ import { logger } from "../utils/logger.js";
 
 // ----- PUBLIC FUNCTIONS -----
 
-export const getFilteredRecipes = async (category, tags) => {
-    logger.info(`Filtering Recipes: ${category || "None"} | ${tags || "None"}`);
+export const getFilteredRecipes = async (category, tags, allergies) => {
+    logger.info(`Filtering Recipes: ${category || "None"} | ${tags || "None"} | ${allergies || "None"}`);
 
-    if (!category && !tags) return await getRandomRecipes();
+    if (!category && !tags && !allergies) return await getRandomRecipes();
 
     const page = getRandomPage(5);
-    const cacheKey = buildCacheKey("filter", category, tags, page);
+    const cacheKey = buildCacheKey("filter", category, tags, allergies, page);
 
     return await getWithCacheFallback(
         cacheKey,
-        () => fetchRecipesFromSpoonacular(category, tags, page),
+        () => fetchRecipesFromSpoonacular(category, tags, allergies, page),
         () => {
-            const fallbackKey = buildCacheKey("filter", category, tags, 1);
-            return fetchRecipesFromSpoonacular(category, tags, 1).then((result) => {
+            const fallbackKey = buildCacheKey("filter", category, tags, allergies, 1);
+            return fetchRecipesFromSpoonacular(category, tags, allergies, 1).then((result) => {
                 cacheRecipeResults(fallbackKey, result);
                 return result;
             });
@@ -51,7 +51,6 @@ export const getRecipeDetails = async (id) => {
     logger.info(`Obtaining Recipe Information ID #: ${id}`);
 
     try {
-        //check cached recipes first
         let recipe = await Recipe.findOne({ id: id });
 
         if (recipe) {
@@ -59,7 +58,6 @@ export const getRecipeDetails = async (id) => {
             return recipe;
         }
 
-        //get recipe from spooncaular api if not found in cache
         const response = await axios.get(SPOONACULAR.RECIPE_INFORMATION(id), {
             params: {
                 apiKey: ENV.SPOONACULAR_KEY,
@@ -69,7 +67,6 @@ export const getRecipeDetails = async (id) => {
 
         const data = response.data;
 
-        //save recipe to cache
         const newRecipe = new Recipe({
             id: data.id,
             image: data.image,
@@ -121,12 +118,12 @@ const getRandomRecipes = async () => {
     };
 };
 
-const fetchRecipesFromSpoonacular = async (category, tags, page) => {
-    const params = searchRecipesParamBuilder(category, tags);
+const fetchRecipesFromSpoonacular = async (category, tags, allergies, page) => {
+    const params = searchRecipesParamBuilder(category, tags, allergies);
     params.append("apiKey", ENV.SPOONACULAR_KEY);
     params.append("offset", (page - 1) * 10);
 
-    logger.info(`Fetching with params: ${params.toString()}`);
+    logger.info(`Fetching from Spoonacular with params: ${params.toString()}`);
 
     const { data } = await axios.get(`${SPOONACULAR.COMPLEX_SEARCH}?${params.toString()}`);
     return formatResult(data);
@@ -167,7 +164,7 @@ const getWithCacheFallback = async (cacheKey, fetchFn, fallbackFn) => {
     return fallbackFn();
 };
 
-const buildCacheKey = (type, categoryOrQuery, tags = "", page = 1) => {
+const buildCacheKey = (type, categoryOrQuery, tags = "", allergies = "", page = 1) => {
     if (type === "filter") {
         const sortedTags = tags
             ? tags
@@ -176,7 +173,14 @@ const buildCacheKey = (type, categoryOrQuery, tags = "", page = 1) => {
                   .sort()
                   .join(",")
             : "";
-        return `${categoryOrQuery || "any"}|${sortedTags}|page=${page}`;
+        const sortedAllergies = allergies
+            ? allergies
+                  .split(",")
+                  .map((a) => a.trim())
+                  .sort()
+                  .join(",")
+            : "";
+        return `${categoryOrQuery || "any"}|tags=${sortedTags}|allergies=${sortedAllergies}|page=${page}`;
     }
     return `${categoryOrQuery.toLowerCase().trim()}|page=${page}`;
 };

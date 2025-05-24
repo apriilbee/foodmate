@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('partials/head') %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="/css/grocery.css?v=<%= Date.now() %>" />
+  </head>
+
+  <body>
+    <%- include('partials/navbar') %>
+    <div id="error-alert" class="error-alert hidden">
+      <span id="error-message"></span>
+      <button id="dismissError" class="close-error">&times;</button>
+    </div>
+    <div class="grocery-page">
+      
+      <div class="grocery-header-row">
+        <h1 class="grocery-title"><%= title %></h1>
+        <a href="/grocery-history" class="history-btn">
+          <i class="fas fa-clock"></i> View History
+        </a>
+      </div>
+
+      
+      <div class="date-generate-row">
+        <div class="date-generate-card">
+          <div class="date-field">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" value="2025-05-01" />
+          </div>
+          <div class="date-field">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" value="2025-05-07" />
+          </div>
+          <button id="generate-list-btn" class="generate-btn">Generate</button>
+        </div>
+      </div>
+
+     
+      <div id="grocery-list-container" class="grocery-list-section">
+      </div>
+    </div>
+        
+    <div id="editModal" class="modal hidden">
+      <div class="modal-content">
+        <h4 id="modalItemName">Edit Item</h4>
+        <div class="qty-controls editable">
+          <input type="number" id="modalQtyInput" min="1" value="1" />
+          <span id="unitDisplayText">Unit</span>
+          <button id="decreaseModalQty">−</button>
+          <button id="increaseModalQty">+</button>
+        </div>
+        <div class="modal-buttons">
+          <button id="saveChanges">Save</button>
+          <button id="closeModal">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="overwriteModal" class="modal hidden">
+      <div class="modal-content">
+        <h4 id="overwriteModalTitle">Grocery List Exists</h4>
+        <p id="overwriteModalText">A grocery list already exists for the selected dates.<br>Do you want to overwrite it?</p>
+        <div class="modal-buttons">
+          <button id="confirmOverwriteBtn">Yes, Overwrite</button>
+          <button onclick="closeOverwriteModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+    
+    <script src="/js/grocery-list.js"></script>
+  </body>
+</html>

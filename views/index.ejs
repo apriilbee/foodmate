@@ -1,34 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
     <%- include('partials/head') %>
-    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/login.css" />
     <body>
         <div class="login-container">
             <div class="left-side">
                 <div class="card login-card z-depth-2">
                     <div class="login-header center-align">
-                        <img src="/img/logo-brand.svg" alt="FoodMate" class="login-logo" />
+                        <img
+                            src="/img/logo-brand.svg"
+                            alt="FoodMate"
+                            style="margin-top: -100px; margin-bottom: -150px"
+                        />
                     </div>
-
+                    <br />
                     <form id="loginForm">
-                        <div class="input-field">
-                            <input id="username" name="username" type="text" required />
-                            <label for="username">Username</label>
+                        <div class="input-field" style="position: relative">
+                            <input id="email" name="email" type="email" class="validate" placeholder="Email" required />
+                            <span
+                                style="
+                                    position: absolute;
+                                    top: 50%;
+                                    right: 10px;
+                                    transform: translateY(-50%);
+                                    visibility: hidden;
+                                "
+                            >
+                                @
+                            </span>
                         </div>
 
                         <div class="input-field">
-                            <input id="password" name="password" type="password" required />
-                            <label for="password">Password</label>
+                            <input
+                                type="password"
+                                name="password"
+                                type="password"
+                                class="password-toggle"
+                                placeholder="Password"
+                                required
+                            />
+                            <i
+                                toggle=".password-toggle"
+                                class="material-icons toggle-password"
+                                style="
+                                    cursor: pointer;
+                                    position: absolute;
+                                    right: 10px;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                "
+                            >
+                                visibility
+                            </i>
                         </div>
 
-                        <div id="errorMessage" style="color: red; text-align: center; margin-bottom: 1rem;">
+                        <div id="errorMessage" style="color: red; text-align: center; margin-bottom: 1rem">
                             <% if (error) { %><%= error %><% } %>
                         </div>
 
-                        <button type="submit" class="btn full-btn" style="background-color: #fe8641;">Login</button>
+                        <button type="submit" class="btn full-btn" style="background-color: #fe8641">Login</button>
 
-                        <p class="center-align" style="margin-top: 1rem;">
-                            Don’t have an account? <a href="/auth/register">Sign up</a>
+                        <p class="center-align" style="margin-top: 2rem">
+                            Don’t have an account?
+                            <a href="/auth/register">Sign up</a>
+                            <br />
+
+                            <a href="/auth/forgot-password">Forgot Password</a>
                         </p>
                     </form>
                 </div>
@@ -37,7 +74,6 @@
             <!-- Image Section (RIGHT) -->
             <div class="right-side"></div>
         </div>
-
         <%- include('partials/scripts') %>
     </body>
 </html>

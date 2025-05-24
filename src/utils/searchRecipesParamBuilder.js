@@ -1,6 +1,12 @@
 import { TAG_MAPPINGS, MEAL_TYPES } from "../constants/recipeFilters.js";
 
-export const searchRecipesParamBuilder = (category, tags) => {
+/**
+ * Builds Spoonacular API query parameters based on category, tags, and user allergies.
+ * @param {string} category - Meal type or cuisine
+ * @param {string} tags - Comma-separated list of dietary tags
+ * @param {string} allergies - Comma-separated list of user allergies (e.g., "Peanuts,Eggs")
+ */
+export const searchRecipesParamBuilder = (category, tags, allergies) => {
     const params = new URLSearchParams();
     const diets = [];
     const intolerances = [];
@@ -8,6 +14,7 @@ export const searchRecipesParamBuilder = (category, tags) => {
     const nutritionConstraints = {};
     const keywords = [];
 
+    // Add meal type or cuisine
     if (category) {
         if (MEAL_TYPES.includes(category)) {
             params.append("type", category.toLowerCase());
@@ -16,6 +23,7 @@ export const searchRecipesParamBuilder = (category, tags) => {
         }
     }
 
+    // Handle diet tags from TAG_MAPPINGS
     (tags ? tags.split(",") : []).forEach((tag) => {
         const mapping = TAG_MAPPINGS[tag.trim()];
         if (mapping) {
@@ -42,29 +50,37 @@ export const searchRecipesParamBuilder = (category, tags) => {
         }
     });
 
+    // Merge allergies directly into excludeIngredients instead of intolerances
+    if (allergies) {
+        const allergyList = allergies
+            .split(",")
+            .map((a) => a.trim())
+            .filter(Boolean);
+        excludeIngredients.push(...allergyList);
+    }
+
+    // Append all accumulated params
     if (diets.length > 0) {
         params.append("diet", diets.join(","));
     }
 
     if (intolerances.length > 0) {
-        params.append("intolerances", intolerances.join(","));
+        params.append("intolerances", Array.from(new Set(intolerances)).join(","));
     }
 
     if (excludeIngredients.length > 0) {
-        params.append("excludeIngredients", excludeIngredients.join(","));
+        params.append("excludeIngredients", Array.from(new Set(excludeIngredients)).join(","));
     }
 
     if (Object.keys(nutritionConstraints).length > 0) {
-        for (const [fullKey, value] of Object.entries(nutritionConstraints)) {
-            params.append(fullKey, value);
+        for (const [key, value] of Object.entries(nutritionConstraints)) {
+            params.append(key, value);
         }
     }
 
     if (keywords.length > 0) {
         params.append("query", keywords.join(","));
     }
-
-    // TODO: Add allergies from user profile settings later if needed
 
     return params;
 };

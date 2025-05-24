@@ -1,133 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('partials/head') %>
-  <link rel="stylesheet" href="/css/profile.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <body>
-    <%- include('partials/navbar') %>
- 
-    <div class="profile-header-bg">
-      <h3 class="page-title">User Profile Settings</h3>
-    </div>
- 
-    <div class="profile-container container">
-      <main>
-        <div class="profile-form-wide">
-          <div class="form-avatar-side">
-            <div class="avatar-wrapper">
-              <img src="<%= user.profilePic || '/img/profile.svg' %>" alt="Profile Picture" class="avatar" id="profilePic">
-              <input type="file" id="profilePicInput" name="profilePic" accept="image/*" style="display: none;">
-              <div class="avatar-overlay"><i class="fa fa-camera"></i></div>
-            </div>
-            <button type="button" class="edit-pic-btn">Change Profile Picture</button>
-          </div>
-          
-          <div class="form-info-side">
-            <div class="info-field">
-              <label>User Name</label>
-              <p><%= user?.username || 'Username ' %></p>
-            </div>
-            <div class="info-field">
-              <label>Email</label>
-              <p><%= user?.email || 'user@example.com' %></p>
-            </div>
-            <div id="imageresponse" ></div>
-          </div>
+    <%- include('partials/head') %>
+    <link rel="stylesheet" href="/css/profile.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <body>
+        <%- include('partials/navbar') %>
+
+        <div class="profile-header-bg">
+            <h3 class="page-title">User Profile Settings</h3>
         </div>
-        
-        <section class="preferences card-section">
-          <h2 class="section-heading">🥗 Dietary Preferences</h2>
-          <form id="dietary-form" >
-            <div class="checkbox-wrapper">
-              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Vegan"> Vegan</label>
-              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Gluten-Free"> Gluten-Free</label>
-              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Keto"> Keto</label>
-              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Vegetarian"> Vegetarian</label>
-              <label class="styled-checkbox"><input type="checkbox" name="dietary" value="Pescatarian"> Pescatarian</label>
-            </div>
- 
-            <div class="other-input">
-              <label>Other Dietary Preference:</label>
-              <input type="text" name="dietaryOther" placeholder="Enter other dietary preference">
-            </div>
- 
-            <div class="checkbox-wrapper">
-              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Soy"> Soy </label>
-              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Nuts"> Nuts </label>
-              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Dairy"> Dairy </label>
-              <label class="styled-checkbox"><input type="checkbox" name="allergies" value="Shrimps"> Shrimps </label>
-            </div>
- 
-            <div class="other-input">
-              <label>Other Allergies:</label>
-              <input type="text" name="allergyOther" placeholder="Enter other allergies">
-            </div>
-            <div id="preferenceresponse" ></div>
-            <div class="actions">
-              <button type="submit" class="save-btn">Save Preferences</button>
-            </div>
-          </form>
-        </section>
- 
-        <!-- Account Privacy Section -->
 
-        <section class="account-privacy card-section" >
-          <h2>🔐 Account & Privacy</h2>
-          <p><a href="#" id="openEmailModal" class="modal-link">Update Email</a></p>
-          <p><a href="#" id="openPasswordModal" class="modal-link">Change Password</a></p>
-          <p><a href="#" id="openDeleteModal" class="delete-link">Delete My Account</a></p>
-        </section>
-      </main>
-    </div>
-    
-     <!-- Inside emailModal -->
-     <div id="emailModal" class="modal">
-      <div class="modal-content">
-        <span class="close-btn" id="closeEmailModal">&times;</span>
-        <form id="emailChangeForm">
-          <h3>Change Email</h3>
-          <input type="email" id="newEmail" name="newEmail" placeholder="New Email" required>
-          <input type="password" id="currentPasswordForEmail" name="currentPassword" placeholder="Current Password" required>
-          <div id="emailMessage" style="margin: 10px 0;"></div>
-          <button type="submit" id="saveEmailBtn" class="save-btn">Save Changes</button>
-        </form>
-      </div>
-    </div>
- 
-    <div id="passwordModal" class="modal">
-      <div class="modal-content">
-        <span class="close-btn" id="closePasswordModal">&times;</span>
-        <!-- Inside passwordModal -->
+        <div class="profile-container container">
+            <main>
+                <div class="profile-form-wide">
+                    <div class="form-avatar-side">
+                        <div class="avatar-wrapper">
+                            <img
+                                src="<%= user.profilePic || 'https://cdn-icons-png.flaticon.com/512/847/847969.png' %>"
+                                alt="Profile Picture"
+                                class="avatar"
+                                id="profilePic"
+                            />
+                            <input
+                                type="file"
+                                id="profilePicInput"
+                                name="profilePic"
+                                accept="image/*"
+                                style="display: none"
+                            />
+                            <div class="avatar-overlay"><i class="fa fa-camera"></i></div>
+                        </div>
+                        <button type="button" class="edit-pic-btn">Change Profile Picture</button>
+                    </div>
 
-        <form id="passwordchange">
+                    <div class="form-info-side">
+                        <div class="info-field">
+                            <label>User Name</label>
+                            <p><%= user?.username || 'Username' %></p>
+                        </div>
+                        <div class="info-field">
+                            <label>Email</label>
+                            <p><%= user?.email || 'user@example.com' %></p>
+                        </div>
+                        <div id="imageresponse"></div>
+                    </div>
+                </div>
 
-          <h3>Change Password</h3>
+                <!-- Preferences Section -->
+                <section class="preferences card-section">
+                    <h2 class="section-heading">🥗 Dietary Preferences</h2>
+                    <form id="dietary-form">
+                        <div class="checkbox-wrapper">
+                            <% dietaryOptions.forEach(pref => { %>
+                            <p>
+                                <label>
+                                    <input type="checkbox" class="filled-in" name="dietary" value="<%= pref %>" <%=
+                                    dietaryPrefs.includes(pref) ? 'checked' : '' %> />
+                                    <span><%= pref %></span>
+                                </label>
+                            </p>
+                            <% }) %>
+                        </div>
 
-          <input type="password" id="currentPassword" name="currentPassword" placeholder="Current Password" >
+                        <div class="other-input">
+                            <label>Other Dietary Preference:</label>
+                            <input type="text" name="dietaryOther" placeholder="Enter other dietary preference" />
+                        </div>
 
-          <input type="password" id="newPassword" name="newPassword" placeholder="New Password" >
+                        <h2 class="section-heading">🏥 Allergies</h2>
+                        <div class="checkbox-wrapper">
+                            <% allergyOptions.forEach(allergy => { %>
+                            <p>
+                                <label>
+                                    <input type="checkbox" class="filled-in" name="allergies" value="<%= allergy %>" <%=
+                                    allergyPrefs.includes(allergy) ? 'checked' : '' %> />
+                                    <span><%= allergy %></span>
+                                </label>
+                            </p>
+                            <% }) %>
+                        </div>
 
-          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" >
+                        <div class="other-input">
+                            <label>Other Allergies:</label>
+                            <input type="text" name="allergyOther" placeholder="Enter other allergies" />
+                        </div>
 
-          <div id="passwordMessage" style="margin: 10px 0;"></div>
+                        <div id="preferenceresponse"></div>
+                        <div class="actions">
+                            <button type="submit" class="save-btn">Save Preferences</button>
+                        </div>
+                    </form>
+                </section>
 
-          <button type="submit" id="savePasswordBtn" class="save-btn">Save Changes</button>
-          </form>
-      </div>
-    </div>
-    <!-- Delete Account Confirmation Modal -->
-     <div id="deleteAccountModal" class="modal">
-      <div class="modal-content">
-        <span class="close-btn" id="closeDeleteModal">&times;</span>
-        <h4>Are you sure you want to delete your account?</h4>
-        <p>This action is irreversible. All your data will be permanently deleted.</p>
-        <div style="margin-top: 20px;">
-          <p><button id="confirmDeleteBtn" class="delete-btn">Yes, Delete My Account</button></p>
-          <p><button id="cancelDeleteBtn" class="cancel-btn">Cancel</button></p>
+                <!-- Account Privacy Section -->
+                <section class="account-privacy card-section">
+                    <h2 class="section-heading">🔐 Account & Privacy</h2>
+                    <p><a href="#" id="openEmailModal" class="modal-link">Update Email</a></p>
+                    <p><a href="#" id="openPasswordModal" class="modal-link">Change Password</a></p>
+                    <p><a href="#" id="openDeleteModal" class="delete-link">Delete My Account</a></p>
+                </section>
+            </main>
         </div>
-        <div id="deleteMessage" style="margin-top: 10px;"></div>
-      </div>
-    </div>
-    <%- include('partials/scripts') %>
-  </body>
+
+        <!-- Email Modal -->
+        <div id="emailModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" id="closeEmailModal">&times;</span>
+                <form id="emailChangeForm">
+                    <h3>Change Email</h3>
+                    <input type="email" id="newEmail" name="newEmail" placeholder="New Email" required />
+                    <input
+                        type="password"
+                        id="currentPasswordForEmail"
+                        name="currentPassword"
+                        placeholder="Current Password"
+                        required
+                    />
+                    <div id="emailMessage" style="margin: 10px 0"></div>
+                    <button type="submit" id="saveEmailBtn" class="save-btn">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Password Modal -->
+        <div id="passwordModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" id="closePasswordModal">&times;</span>
+                <form id="passwordchange">
+                    <h3>Change Password</h3>
+                    <input type="password" id="currentPassword" name="currentPassword" placeholder="Current Password" />
+                    <input type="password" id="newPassword" name="newPassword" placeholder="New Password" />
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" />
+                    <div id="passwordMessage" style="margin: 10px 0"></div>
+                    <button type="submit" id="savePasswordBtn" class="save-btn">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Delete Account Modal -->
+        <div id="deleteAccountModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" id="closeDeleteModal">&times;</span>
+                <h5 class="delete-warning">Are you sure you want to delete your account?</h5>
+                <p>This action is irreversible. All your data will be permanently deleted.</p>
+                <div style="margin-top: 20px">
+                    <p>
+                        <button type="submit" id="confirmDeleteBtn" class="delete-button">
+                            Yes, Delete My Account
+                        </button>
+                    </p>
+                    <p><button type="submit" id="cancelDeleteBtn" class="cancel-button">Cancel</button></p>
+                </div>
+                <div id="deleteMessage" style="margin-top: 10px"></div>
+            </div>
+        </div>
+
+        <%- include('partials/scripts') %>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </body>
 </html>

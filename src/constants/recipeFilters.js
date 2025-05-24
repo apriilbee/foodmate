@@ -30,3 +30,37 @@ export const TAG_MAPPINGS = {
 };
 
 export const MEAL_TYPES = ["Breakfast", "Lunch", "Dinner", "Snacks", "Dessert"];
+
+export const ALLERGY_OPTIONS = [
+    "Peanuts",
+    "Shellfish",
+    "Eggs",
+    "Tree Nuts",
+    "Wheat",
+    "Soy",
+    "Fish",
+    "Dairy",
+    "Shrimps",
+];
+
+export const DIETARY_OPTIONS = [
+    "Vegan",
+    "Vegetarian",
+    "Dairy-Free",
+    "Gluten-Free",
+    "Pescatarian",
+    "Low-Carb / Keto",
+    "High-Protein",
+    "Low-Fat",
+    "Sugar-Free",
+    "Nut-Free",
+    "Soy-Free",
+    "Low-Sodium",
+    "Whole30",
+    "Paleo",
+    "Mediterranean",
+    "No Red Meat",
+    "Low Sugar",
+    "Low Calorie",
+    "Plant-Based",
+];

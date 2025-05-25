@@ -31,9 +31,9 @@ export const retrieveGroceryListById = async (req, res) => {
         const userId = req.user.id;
         const groceryListId = req.params.id;
 
-        const {list, owned} = await getGroceryList(userId, groceryListId);
+        const {list, owned, owner} = await getGroceryList(userId, groceryListId);
 
-        return res.status(200).json( {list, owned} );
+        return res.status(200).json( {list, owned, owner} );
     }
     catch (err) {
         return res.status(400).json( {error: err.message} );

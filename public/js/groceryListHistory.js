@@ -22,9 +22,9 @@ document.querySelectorAll('.gh-list-item').forEach(item => {
 
       if (!response.ok) throw new Error('Failed to fetch grocery list');
       const data = await response.json();
-
       document.getElementById('grocery-details-dates').innerHTML = `
         <h6>${startDate} - ${endDate}</h6>
+        <p>Grocery List Owner: ${data.owner}</p>
       `;
 
       renderGroceryList(data.list, data.owned);

@@ -97,18 +97,20 @@ export const getAllGroceryLists = async (userId) => {
 
 export const getGroceryList = async (userId, groceryListId) => {
     const groceryList = await GroceryList.findById(groceryListId);
-
+    
+    
     if (!groceryListId) throw new Error ("Miissing required field");
 
     if (groceryList.userId.toString() !== userId && !groceryList.collaborators.map(id =>id.toString()).includes(userId)) throw new Error ("Not Authorized");
 
     if (!groceryList) throw new Error ("Grocery list does not exist");
 
+    const owner = await User.findById(groceryList.userId);
     const owned = groceryList.userId.toString() == userId
-
     return {
         list : groceryList,
-        owned : owned
+        owned : owned,
+        owner : owner.username
     };
 }
 

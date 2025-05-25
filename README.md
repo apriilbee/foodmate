@@ -165,7 +165,7 @@
   </tr>
 </table>
 
-### Meal Plan Modal
+### Add to Meal Plan Modal
 <table>
   <tr>
     <td align="center">

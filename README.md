@@ -150,20 +150,22 @@
 
 ### Update Profile Setting
 <table>
-  <tr>
-    <td align="center">
-      <img src="public/img/read-me/profile-picture.png" width="450"/>
-    </td>
-    <td align="center">
-      <img src="public/img/read-me/dieterypreference.png" width="450"/>
-      <td align="center">
-      <img src="public/img/read-me/change-password.png" width="450"/>
-    </td>
-    <td align="center">
-      <img src="public/img/read-me/change-email.png" width="450"/>
-    </td>
-    <td align="center">
-      <img src="public/img/read-me/delete-account.png" width="450"/>
-    </td>
-  </tr>
+<tr>
+  <td align="center">
+    <img src="https://raw.githubusercontent.com/apriilbee/foodmate/feature-readme-update/public/img/read-me/profile-picture.png" width="450"/>
+  </td>
+  <td align="center">
+    <img src="https://raw.githubusercontent.com/apriilbee/foodmate/feature-readme-update/public/img/read-me/dieterypreference.png" width="450"/>
+  </td>
+  <td align="center">
+    <img src="https://raw.githubusercontent.com/apriilbee/foodmate/feature-readme-update/public/img/read-me/change-password.png" width="450"/>
+  </td>
+  <td align="center">
+    <img src="https://raw.githubusercontent.com/apriilbee/foodmate/feature-readme-update/public/img/read-me/change-email.png" width="450"/>
+  </td>
+  <td align="center">
+    <img src="https://raw.githubusercontent.com/apriilbee/foodmate/feature-readme-update/public/img/read-me/delete-account.png" width="450"/>
+  </td>
+</tr>
 </table>
+

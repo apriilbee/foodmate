@@ -160,7 +160,7 @@
       <img src="public/img/read-me/change-password.png" width="450"/>
     </td>
     <td align="center">
-      <img src="public/img/read-me/change-email" width="450"/>
+      <img src="public/img/read-me/change-email.png" width="450"/>
     </td>
     <td align="center">
       <img src="public/img/read-me/delete-account.png" width="450"/>

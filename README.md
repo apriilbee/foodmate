@@ -171,3 +171,16 @@
     </td>
   </tr>
 </table>
+
+### Grocery List Generation
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="public/img/read-me/grocery-list.png" width="600"/>
+    </td>
+    <td align="center">
+      <img src="public/img/read-me/grocery-list2.png" width="600"/>
+    </td>
+  </tr>
+</table>

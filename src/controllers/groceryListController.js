@@ -67,7 +67,7 @@ export const renderGenerateGroceryPage = async (req, res) => {
             }
         })
     }
-    catch (err) {
+    catch {
         return res.redirect('/');
     }
 }

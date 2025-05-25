@@ -52,6 +52,15 @@
 | `ai-message` | Client → Server | Sent by the client when a user submits a chat message to the AI |
 | `ai-reply`   | Server → Client | Emitted by the server with the AI's response (from Gemini)         |
 
+##  User Profile API Endpoints 
+| Method | Endpoint             | Description                              | Auth Required |
+|--------|----------------------|------------------------------------------|---------------|
+| GET    | `/profile/`          | Retrieves the user's profile             | ✅            |
+| POST   | `/profile/update`    | Updates the user's profile information   | ✅            |
+| POST   | `/profile/dietpreferences` | Updates dietary preferences        | ✅            |
+| DELETE | `/profile/delete`    | Deletes the user's account               | ✅            |
+| POST   | `/profile/uploadpicture` | Uploads a new profile picture       | ✅            |
+| POST   | `/profile/updateemail` | Updates the user's email address      | ✅            |
 
 ## Running Locally
 
@@ -144,6 +153,18 @@
     </td>
     <td align="center">
       <img src="./public/img/read-me/chatbot.png" width="450"/>
+    </td>
+  </tr>
+</table>
+
+### Forget Password Retrieval
+<table>
+  <tr>
+    <td align="center">
+      <img src="./public/img/read-me/forgetpass.png" width="450"/>
+    </td>
+    <td align="center">
+      <img src="./public/img/read-me/resetpage.png" width="450"/>
     </td>
   </tr>
 </table>

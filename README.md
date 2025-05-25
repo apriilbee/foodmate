@@ -147,3 +147,14 @@
     </td>
   </tr>
 </table>
+### Update Profile Setting
+<table>
+  <tr>
+    <td align="center">
+      <img src="" width="450"/>
+    </td>
+    <td align="center">
+      <img src="" width="450"/>
+    </td>
+  </tr>
+</table>

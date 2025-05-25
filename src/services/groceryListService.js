@@ -3,13 +3,21 @@ import { GroceryList } from "../models/GroceryList.js";
 import { getRecipeDetails } from "../services/recipeService.js";
 import pluralize from "pluralize";
 
-export const generateGroceryList = async (userId, start, end) => {
+export const generateGroceryList = async (userId, start, end, force) => {
     
     if (!start || !end) throw new Error ('Start and end dates are required');
     
     const startDate = new Date(start);
     const endDate = new Date(end);
     if (endDate < startDate) throw new Error ('End date cannot be earlier than start date');
+    
+    const existingList = await GroceryList.findOne({
+        userId,
+        startDate,
+        endDate
+    });
+
+    if(existingList && !force) throw new Error('A grocery list for this date range already exists.');
     
     const mealPlans = await MealPlan.find( {userId : userId} )
 
@@ -160,7 +168,7 @@ const groupIngredientByAisle = (ingredients) => {
         }
         grouped[aisle].push({
             name: ingredient.name,
-            amount: ingredient.amount,
+            amount: roundIfMoreThanTwoDecimals(ingredient.amount),
             unit: ingredient.unit,
             purchased: false
         })
@@ -171,3 +179,11 @@ const groupIngredientByAisle = (ingredients) => {
         items
     }));
 };
+
+function roundIfMoreThanTwoDecimals(amount) {
+  const decimalPart = amount.toString().split('.')[1];
+  if (decimalPart && decimalPart.length > 2) {
+    return Math.ceil(amount);
+  }
+  return amount;
+}

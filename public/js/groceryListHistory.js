@@ -1,4 +1,5 @@
 /* global io */
+/* global currentUserId */
 
 let socket = io();
 let currentListId = null;
@@ -26,8 +27,8 @@ document.querySelectorAll('.gh-list-item').forEach(item => {
       document.getElementById('grocery-details-dates').innerHTML = `
         <h6>${startDate} - ${endDate}</h6>
       `;
-      renderGroceryList(data.list);
-      console.log(data.list.logs);
+
+      renderGroceryList(data.list, data.owned);
 
       document.getElementById('log-details').textContent = `Logs for list ID: ${startDate} - ${endDate}`;
 
@@ -48,15 +49,38 @@ document.querySelectorAll('.gh-list-item').forEach(item => {
   });
 });
 
-socket.on("logMessage", (log) => {
+socket.on("logMessage", async (log) => {
   const logContainer = document.getElementById("log-container");
-  createLogElement(log, logContainer);
+  createLogElement(log.logEntry, logContainer);
+  try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/api/groceryList/${log.groceryId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to fetch grocery list');
+      const data = await response.json();
+      renderGroceryList(data.list, data.owned);
+  }
+  catch (err) {
+    console.error(err);
+  }
 });
 
-function renderGroceryList(groceryList) {
+function renderGroceryList(groceryList, owned) {
   const container = document.getElementById('grocery-details');
   container.innerHTML = '';
 
+  if (owned) {
+      const shareBtn = document.createElement('button');
+      shareBtn.textContent = 'Share';
+      shareBtn.classList.add('share-btn');
+      shareBtn.addEventListener('click', () => openShareModal(groceryList._id));
+      container.appendChild(shareBtn);
+  }
+  
   groceryList.aisles.forEach(aisle => {
     const categoryDiv = document.createElement('div');
     categoryDiv.classList.add('grocery-category');
@@ -105,7 +129,6 @@ function renderGroceryList(groceryList) {
 function renderPreviousLogs(logs) {
   const logContainer = document.getElementById("log-container");
   logs.forEach(log => {
-    console.log(log);
     createLogElement(log, logContainer);
   })
 }
@@ -122,3 +145,41 @@ function createLogElement (log, logContainer) {
   logEl.textContent = `[${day}/${month}/${year} ${time}] ${log.message}`;
   logContainer.appendChild(logEl); 
 }
+
+function openShareModal(groceryListId) {
+  document.getElementById('share-modal').style.display = 'block';
+  document.getElementById('share-grocery-list-id').value = groceryListId;
+}
+
+function closeShareModal() {
+  document.getElementById('share-modal').style.display = 'none';
+}
+
+document.getElementById('share-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById("collaborator-email").value;
+  const groceryListId = document.getElementById("share-grocery-list-id").value;
+
+  try {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`/api/groceryList/${groceryListId}/collaborators`, {
+      method: 'POST',
+      headers: {
+            'Content-Type': 'application/json', 
+            'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify( {email} )
+    })
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error);
+
+    alert('Collaborator added sucessfully!');
+    closeShareModal();
+  }
+  catch (err) {
+    alert(err.message);
+    closeShareModal();
+  }
+})

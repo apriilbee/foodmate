@@ -8,9 +8,22 @@
     <div class="container">
       <div class="row">
         <div class="col s12 m3">
-          <h5>Dates:</h5>
+          <h5>My Lists:</h5>
           <ul class="gh-list-container">
-            <% lists.forEach(item => { %>
+            <% lists?.forEach(item => { %>
+              <li 
+                class="gh-list-item"
+                data-grocery-list-id="<%= item.id %>" 
+                data-startdate="<%= item.startDate %>" 
+                data-enddate="<%= item.endDate%>">
+                <%= item.startDate %> - <%= item.endDate%>
+              </li>
+            <% }) %>
+          </ul>
+          
+          <h5>Shared With Me:</h5>
+          <ul class="gh-list-container">
+            <% collabs?.forEach(item => { %>
               <li 
                 class="gh-list-item"
                 data-grocery-list-id="<%= item.id %>" 
@@ -36,6 +49,7 @@
       </div>
     </div>
     <%- include('partials/groceryListEditModal') %>
+    <%- include('partials/groceryListShareModal') %>
     <%- include('partials/scripts') %>
 
       <script src="/js/groceryListHistory.js"></script>

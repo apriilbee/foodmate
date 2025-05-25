@@ -14,7 +14,7 @@ export const addGroceryLog = async (groceryId, message) => {
 
     if (updatedList) {
         const io = getSocketIO();
-        io.to(groceryId).emit("logMessage", logEntry);
+        io.to(groceryId).emit("logMessage", {logEntry, groceryId});
     }
 
     return updatedList;

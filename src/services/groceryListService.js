@@ -52,7 +52,8 @@ export const generateGroceryList = async (userId, start, end, force) => {
             endDate,
             aisles: groupedIngredients,
             meals: recipeIds,
-            logs: []
+            logs: [],
+            collaborators: [],
         },
         {
             new: true,
@@ -66,7 +67,7 @@ export const generateGroceryList = async (userId, start, end, force) => {
 export const getAllGroceryLists = async (userId) => {
     if (!userId) throw new Error ('Not Authorized');
     
-    const groceryLists = await GroceryList.find( {userId: userId} );
+    
     const formatDate = date => {
         const dateToBeFormatted = new Date(date);
         const day = String(dateToBeFormatted.getDate()).padStart(2, '0');
@@ -74,15 +75,24 @@ export const getAllGroceryLists = async (userId) => {
         const year = dateToBeFormatted.getFullYear();
         return `${day}/${month}/${year}`;
     }
-    const groceryListIds = groceryLists.map(list => {
+    const ownGroceryLists = await GroceryList.find( {userId: userId} );
+    const ownGroceryListIds = ownGroceryLists.map(list => {
         return {
             id : list._id,
             startDate : formatDate(list.startDate),
             endDate : formatDate(list.endDate)
         }
     });
-    
-    return groceryListIds; 
+
+    const collaboratorLists = await GroceryList.find({ collaborators: userId }); 
+    const collaboratorListIds = collaboratorLists.map(list => {
+        return {
+            id : list._id,
+            startDate : formatDate(list.startDate),
+            endDate : formatDate(list.endDate)
+        }
+    });
+    return {ownGroceryListIds, collaboratorListIds}; 
 }
 
 export const getGroceryList = async (userId, groceryListId) => {
@@ -90,11 +100,16 @@ export const getGroceryList = async (userId, groceryListId) => {
 
     if (!groceryListId) throw new Error ("Miissing required field");
 
-    if (groceryList.userId.toString() !== userId) throw new Error ("Not Authorized");
+    if (groceryList.userId.toString() !== userId && !groceryList.collaborators.map(id =>id.toString()).includes(userId)) throw new Error ("Not Authorized");
 
     if (!groceryList) throw new Error ("Grocery list does not exist");
 
-    return groceryList;
+    const owned = groceryList.userId.toString() == userId
+
+    return {
+        list : groceryList,
+        owned : owned
+    };
 }
 
 /**
@@ -126,7 +141,7 @@ export const updateGroceryList = async (groceryListId, updates, userId) => {
     const list = await GroceryList.findById(groceryListId);
 
     if(!list) throw new Error ("Grocery list not found");
-    if(list.userId.toString() !== userId) throw new Error ("Not authorized to edit this list");
+    if(list.userId.toString() !== userId && !list.collaborators.map(id => id.toString()).includes(userId)) throw new Error ("Not authorized to edit this list");
 
     const user = await User.findById(userId);
 
@@ -157,6 +172,24 @@ export const updateGroceryList = async (groceryListId, updates, userId) => {
 
     await list.save();
     return list;
+}
+
+export const addCollaboratorToGroceryList = async (groceryListId, email) => {
+    const list = await GroceryList.findById(groceryListId);
+    const user = await User.findOne({ email: email });
+
+    if(!list) throw new Error ("Grocery list not found.");
+    if(!user) throw new Error ("User does not exist.");
+
+    const userId = user._id
+
+    if (list.userId.toString() === userId.toString()) throw new Error ("User is already the owner of this list.");
+    if (list.collaborators.some(id => id.toString() === userId.toString())) throw new Error ("User is already a collaborator on this list.");
+
+    list.collaborators.push(userId);
+    await list.save();
+
+    return { message: "Successfully added user as a collaborator." };
 }
 
 const getIngredientList = recipes => {
@@ -209,7 +242,7 @@ const groupIngredientByAisle = (ingredients) => {
         items
     }));
 };
-
+ 
 function roundIfMoreThanTwoDecimals(amount) {
   const decimalPart = amount.toString().split('.')[1];
   if (decimalPart && decimalPart.length > 2) {

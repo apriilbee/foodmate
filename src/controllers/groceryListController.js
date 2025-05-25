@@ -1,4 +1,4 @@
-import { generateGroceryList, getAllGroceryLists, getGroceryList, updateGroceryList } from "../services/groceryListService.js";
+import { generateGroceryList, getAllGroceryLists, getGroceryList, updateGroceryList, addCollaboratorToGroceryList } from "../services/groceryListService.js";
 import { getProfilePic } from "../services/profilePicService.js";
 export const createGroceryList = async (req, res) => {
     try {
@@ -31,9 +31,9 @@ export const retrieveGroceryListById = async (req, res) => {
         const userId = req.user.id;
         const groceryListId = req.params.id;
 
-        const list = await getGroceryList(userId, groceryListId);
+        const {list, owned} = await getGroceryList(userId, groceryListId);
 
-        return res.status(200).json( {list} );
+        return res.status(200).json( {list, owned} );
     }
     catch (err) {
         return res.status(400).json( {error: err.message} );
@@ -69,5 +69,19 @@ export const renderGenerateGroceryPage = async (req, res) => {
     }
     catch {
         return res.redirect('/');
+    }
+}
+
+export const inviteCollaboratorToList = async (req, res) => {
+    try {
+        const groceryListId = req.params.id;
+        const { email } = req.body;
+
+        const message = await addCollaboratorToGroceryList(groceryListId, email);
+
+        return res.status(200).json( {message : message} )
+    }
+    catch (err) {
+        return res.status(400).json( {error: err.message} )
     }
 }

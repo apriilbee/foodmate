@@ -1,5 +1,4 @@
 /* global io */
-/* global currentUserId */
 
 let socket = io();
 let currentListId = null;
@@ -146,4 +145,9 @@ function createLogElement (log, logContainer) {
 
   logEl.textContent = `[${day}/${month}/${year} ${time}] ${log.message}`;
   logContainer.appendChild(logEl); 
+}
+
+function openShareModal(groceryListId) {
+  document.getElementById('share-modal').style.display = 'block';
+  document.getElementById('share-grocery-list-id').value = groceryListId;
 }

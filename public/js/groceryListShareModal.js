@@ -1,10 +1,5 @@
 let alertTimeout = null;
 
-function openShareModal(groceryListId) {
-  document.getElementById('share-modal').style.display = 'block';
-  document.getElementById('share-grocery-list-id').value = groceryListId;
-}
-
 function closeShareModal() {
   document.getElementById('share-modal').style.display = 'none';
 }

@@ -52,7 +52,7 @@
 | `ai-message` | Client → Server | Sent by the client when a user submits a chat message to the AI |
 | `ai-reply`   | Server → Client | Emitted by the server with the AI's response (from Gemini)         |
 
-##  User Profile API Endpoints 
+### User Profile Update
 | Method | Endpoint             | Description                              | Auth Required |
 |--------|----------------------|------------------------------------------|---------------|
 | GET    | `/profile/`          | Retrieves the user's profile             | ✅            |
@@ -61,6 +61,15 @@
 | DELETE | `/profile/delete`    | Deletes the user's account               | ✅            |
 | POST   | `/profile/uploadpicture` | Uploads a new profile picture       | ✅            |
 | POST   | `/profile/updateemail` | Updates the user's email address      | ✅            |
+
+### Password Recovery 
+| Method | Endpoint                 | Description                                       | Auth Required |
+| ------ | ------------------------ | ------------------------------------------------- | ------------- |
+| GET    | `/forgot-password`       | Renders the forgot password form                  | ❌             |
+| POST   | `/forgot-password`       | Sends a reset password link to the user's email   | ❌             |
+| GET    | `/reset-password/:token` | Renders the reset password form with token        | ❌             |
+| POST   | `/reset-password/:token` | Updates the user's password using the reset token | ❌             |
+
 
 ## Running Locally
 

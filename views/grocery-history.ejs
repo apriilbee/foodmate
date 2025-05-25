@@ -6,6 +6,10 @@
   <body>
     <%- include('partials/navbar') %>
     <div class="container">
+      <div id="alertBox" class="alert-box hidden">
+        <span id="alertMessage">Placeholder</span>
+        <button class="close-alert" onclick="closeAlert()">×</button>
+      </div>
       <div class="row">
         <div class="col s12 m3">
           <h5>My Lists:</h5>
@@ -37,6 +41,10 @@
 
         <div class="col s12 m6">
           <h5>Grocery List</h5>
+          <div class="row">
+            <div class="col s12 m6" id="grocery-details-dates"></div>
+            <div class="col s12 m6" id="share-btn-container"></div>
+          </div>
           <div id="grocery-details-dates"></div>
           <div id="grocery-details">Select a list to view details</div>
         </div>
@@ -54,5 +62,6 @@
 
       <script src="/js/groceryListHistory.js"></script>
       <script src="/js/groceryListEditModal.js"></script>
+      <script src="/js/groceryListShareModal.js"></script>
   </body>
 </html>

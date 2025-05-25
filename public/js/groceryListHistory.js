@@ -30,7 +30,7 @@ document.querySelectorAll('.gh-list-item').forEach(item => {
 
       renderGroceryList(data.list, data.owned);
 
-      document.getElementById('log-details').textContent = `Logs for list ID: ${startDate} - ${endDate}`;
+      document.getElementById('log-details').textContent = `Logs for list: ${startDate} - ${endDate}`;
 
       if (currentListId) {
         socket.emit("leaveGroceryRoom", currentListId);
@@ -74,11 +74,13 @@ function renderGroceryList(groceryList, owned) {
   container.innerHTML = '';
 
   if (owned) {
+      const shareBtnContainer = document.getElementById('share-btn-container');
+      shareBtnContainer.innerHTML = "";
       const shareBtn = document.createElement('button');
       shareBtn.textContent = 'Share';
       shareBtn.classList.add('share-btn');
       shareBtn.addEventListener('click', () => openShareModal(groceryList._id));
-      container.appendChild(shareBtn);
+      shareBtnContainer.appendChild(shareBtn);
   }
   
   groceryList.aisles.forEach(aisle => {
@@ -117,7 +119,7 @@ function renderGroceryList(groceryList, owned) {
         />
         <span>${item.name}</span>
         <span class="quantity-display">${item.amount} ${item.unit}</span>
-        <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
+        <span class="btn-display"><button class="edit-btn" onclick="openEditModal(this)">Edit</button></span>
       `;
       categoryDiv.appendChild(label);
     });
@@ -145,41 +147,3 @@ function createLogElement (log, logContainer) {
   logEl.textContent = `[${day}/${month}/${year} ${time}] ${log.message}`;
   logContainer.appendChild(logEl); 
 }
-
-function openShareModal(groceryListId) {
-  document.getElementById('share-modal').style.display = 'block';
-  document.getElementById('share-grocery-list-id').value = groceryListId;
-}
-
-function closeShareModal() {
-  document.getElementById('share-modal').style.display = 'none';
-}
-
-document.getElementById('share-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const email = document.getElementById("collaborator-email").value;
-  const groceryListId = document.getElementById("share-grocery-list-id").value;
-
-  try {
-    const token = localStorage.getItem("token");
-    const res = await fetch(`/api/groceryList/${groceryListId}/collaborators`, {
-      method: 'POST',
-      headers: {
-            'Content-Type': 'application/json', 
-            'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify( {email} )
-    })
-    const data = await res.json();
-
-    if (!res.ok) throw new Error(data.error);
-
-    alert('Collaborator added sucessfully!');
-    closeShareModal();
-  }
-  catch (err) {
-    alert(err.message);
-    closeShareModal();
-  }
-})

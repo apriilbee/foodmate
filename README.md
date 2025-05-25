@@ -153,21 +153,21 @@
 <table>
   <tr>
     <td align="center">
-      <img src="public/img/read-me/profile-picture.png" width="450"/>
+      <img src="public/img/read-me/profile-picture.png" width="600"/>
     </td>
     <td align="center">
-      <img src="public/img/read-me/dieterypreference.png" width="450"/>
+      <img src="public/img/read-me/dieterypreference.png" width="600"/>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="public/img/read-me/change-password.png" width="450"/>
+      <img src="public/img/read-me/change-password.png" width="600"/>
     </td>
     <td align="center">
-      <img src="public/img/read-me/change-email.png" width="450"/>
+      <img src="public/img/read-me/change-email.png" width="600"/>
     </td>
     <td align="center">
-      <img src="public/img/read-me/delete-account.png" width="450"/>
+      <img src="public/img/read-me/delete-account.png" width="600"/>
     </td>
   </tr>
 </table>

@@ -177,12 +177,12 @@
 <table>
   <tr>
     <td align="center">
-      <img src="public/img/read-me/grocery-list.png" width="600"/>
+      <img src="public/img/read-me/grocery-list.png" width="450"/>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="public/img/read-me/grocery-list2.png" width="600"/>
+      <img src="public/img/read-me/grocery-list2.png" width="450"/>
     </td>
   </tr>
 </table>

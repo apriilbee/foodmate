@@ -6,9 +6,12 @@
 - User Authentication with Email Verification  
 - Recipe Search with Dietary & Allergen Filters  
 - Personalized Meal Plans  
+- Grocery List Generation based on selected meal plans
+- Customizable User Profile with dietary preferences and account management options
 - Caching for optimized API usage  
 - Modern responsive UI using Materialize CSS  
 - Integration with Spoonacular API (for recipes)
+- Forgot Password support with email-based reset link
 
 ## Tech Stack
 

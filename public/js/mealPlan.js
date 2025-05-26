@@ -1,3 +1,5 @@
+/* global M */
+
 function getStartOfWeek(date) {
   const d = new Date(date);
   const day = d.getDay();

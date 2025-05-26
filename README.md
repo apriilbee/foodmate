@@ -47,6 +47,18 @@
 |--------|--------------|----------------------------------------|---------------|
 | GET    | `/search`    | Searches for recipes (filtered)        | ✅            |
 | GET    | `/`          | Returns saved or suggested recipes     | ✅            |
+| GET    | `/:id`       | Returns recipe details based on ID     | ✅            |
+
+### Grocery List Routes (`groceryList`)
+
+| Method | Endpoint             |Description                              | Auth Required |
+|--------|--------------------- |-----------------------------------------|---------------|
+| POST   | `/generate`          | Creates a new grocery list              | ✅           |
+| GET    | `/:id`               | Retrieves a grocery list by ID          | ✅           |
+| PATCH  | `/:id`               | Edits an existing grocery list          | ✅           |
+| POST   | `/:id/collaborators` | Invites a collaborator to the list      | ✅           |
+| GET    | `/all`               | Retrieves all grocery lists for a user  | ✅           |
+
 
 ### User Profile Update
 | Method | Endpoint             | Description                              | Auth Required |

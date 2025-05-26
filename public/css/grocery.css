@@ -161,10 +161,9 @@ body {
 
 .edit-header {
   width: 25%;
-  text-align: right;
   padding-right: 8px;
   position: relative;
-  left: -3px;
+  left: 18px;
 }
 
 

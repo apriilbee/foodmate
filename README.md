@@ -6,9 +6,12 @@
 - User Authentication with Email Verification  
 - Recipe Search with Dietary & Allergen Filters  
 - Personalized Meal Plans  
+- Grocery List Generation based on selected meal plans
+- Customizable User Profile with dietary preferences and account management options
 - Caching for optimized API usage  
 - Modern responsive UI using Materialize CSS  
 - Integration with Spoonacular API (for recipes)
+- Forgot Password support with email-based reset link
 
 ## Tech Stack
 
@@ -45,13 +48,6 @@
 | GET    | `/search`    | Searches for recipes (filtered)        | ✅            |
 | GET    | `/`          | Returns saved or suggested recipes     | ✅            |
 
-##  Socket Events
-
-| Event Name   | Direction | Description                                                 |
-|--------------|-----------|-------------------------------------------------------------|
-| `ai-message` | Client → Server | Sent by the client when a user submits a chat message to the AI |
-| `ai-reply`   | Server → Client | Emitted by the server with the AI's response (from Gemini)         |
-
 ### User Profile Update
 | Method | Endpoint             | Description                              | Auth Required |
 |--------|----------------------|------------------------------------------|---------------|
@@ -70,6 +66,13 @@
 | GET    | `/reset-password/:token` | Renders the reset password form with token        | ❌             |
 | POST   | `/reset-password/:token` | Updates the user's password using the reset token | ❌             |
 
+
+##  Socket Events
+
+| Event Name   | Direction | Description                                                 |
+|--------------|-----------|-------------------------------------------------------------|
+| `ai-message` | Client → Server | Sent by the client when a user submits a chat message to the AI |
+| `ai-reply`   | Server → Client | Emitted by the server with the AI's response (from Gemini)         |
 
 ## Running Locally
 
@@ -174,6 +177,68 @@
     </td>
     <td align="center">
       <img src="./public/img/read-me/resetpage.png" width="450"/>
+    </td>
+  </tr>
+</table>
+
+### Update Profile Setting
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="public/img/read-me/profile-picture.png" width="600"/>
+    </td>
+    <td align="center">
+      <img src="public/img/read-me/dieterypreference.png" width="600"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="public/img/read-me/change-password.png" width="600"/>
+    </td>
+    <td align="center">
+      <img src="public/img/read-me/change-email.png" width="600"/>
+    </td>
+    <td align="center">
+      <img src="public/img/read-me/delete-account.png" width="600"/>
+### Feedback Form
+<table>
+  <tr>
+    <td align="center">
+      <img src="./public/img/read-me/feedback-form.png" width="450"/>
+    </td>
+  </tr>
+</table>
+
+### Grocery List Generation
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="public/img/read-me/grocery-list.png" width="450"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="public/img/read-me/grocery-list2.png" width="450"/>
+    </td>
+  </tr>
+</table>
+
+### Feedback Management
+<table>
+  <tr>
+    <td align="center">
+      <img src="./public/img/read-me/feedback-management.png" width="450"/>
+    </td>
+  </tr>
+</table>
+
+### Add to Meal Plan Modal
+<table>
+  <tr>
+    <td align="center">
+      <img src="./public/img/read-me/mealplan-modal.png" width="450"/>
     </td>
   </tr>
 </table>

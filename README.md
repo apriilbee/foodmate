@@ -6,9 +6,12 @@
 - User Authentication with Email Verification  
 - Recipe Search with Dietary & Allergen Filters  
 - Personalized Meal Plans  
+- Grocery List Generation based on selected meal plans
+- Customizable User Profile with dietary preferences and account management options
 - Caching for optimized API usage  
 - Modern responsive UI using Materialize CSS  
 - Integration with Spoonacular API (for recipes)
+- Forgot Password support with email-based reset link
 
 ## Tech Stack
 
@@ -147,11 +150,48 @@
     </td>
   </tr>
 </table>
+
+
+### Update Profile Setting
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="public/img/read-me/profile-picture.png" width="600"/>
+    </td>
+    <td align="center">
+      <img src="public/img/read-me/dieterypreference.png" width="600"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="public/img/read-me/change-password.png" width="600"/>
+    </td>
+    <td align="center">
+      <img src="public/img/read-me/change-email.png" width="600"/>
+    </td>
+    <td align="center">
+      <img src="public/img/read-me/delete-account.png" width="600"/>
 ### Feedback Form
 <table>
   <tr>
     <td align="center">
       <img src="./public/img/read-me/feedback-form.png" width="450"/>
+    </td>
+  </tr>
+</table>
+
+### Grocery List Generation
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="public/img/read-me/grocery-list.png" width="450"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="public/img/read-me/grocery-list2.png" width="450"/>
     </td>
   </tr>
 </table>

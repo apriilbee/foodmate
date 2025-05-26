@@ -2,14 +2,24 @@ import MealPlan from "../models/MealPlan.js";
 import { GroceryList } from "../models/GroceryList.js";
 import { getRecipeDetails } from "../services/recipeService.js";
 import pluralize from "pluralize";
+import { addGroceryLog } from "./groceryLogService.js";
+import User from "../models/User.js";
 
-export const generateGroceryList = async (userId, start, end) => {
+export const generateGroceryList = async (userId, start, end, force) => {
     
     if (!start || !end) throw new Error ('Start and end dates are required');
     
     const startDate = new Date(start);
     const endDate = new Date(end);
     if (endDate < startDate) throw new Error ('End date cannot be earlier than start date');
+    
+    const existingList = await GroceryList.findOne({
+        userId,
+        startDate,
+        endDate
+    });
+
+    if(existingList && !force) throw new Error('A grocery list for this date range already exists.');
     
     const mealPlans = await MealPlan.find( {userId : userId} )
 
@@ -41,7 +51,8 @@ export const generateGroceryList = async (userId, start, end) => {
             startDate,
             endDate,
             aisles: groupedIngredients,
-            meals: recipeIds
+            meals: recipeIds,
+            logs: []
         },
         {
             new: true,
@@ -56,8 +67,20 @@ export const getAllGroceryLists = async (userId) => {
     if (!userId) throw new Error ('Not Authorized');
     
     const groceryLists = await GroceryList.find( {userId: userId} );
-    
-    const groceryListIds = groceryLists.map(list => list._id);
+    const formatDate = date => {
+        const dateToBeFormatted = new Date(date);
+        const day = String(dateToBeFormatted.getDate()).padStart(2, '0');
+        const month = String(dateToBeFormatted.getMonth() + 1).padStart(2,'0');
+        const year = dateToBeFormatted.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+    const groceryListIds = groceryLists.map(list => {
+        return {
+            id : list._id,
+            startDate : formatDate(list.startDate),
+            endDate : formatDate(list.endDate)
+        }
+    });
     
     return groceryListIds; 
 }
@@ -105,16 +128,31 @@ export const updateGroceryList = async (groceryListId, updates, userId) => {
     if(!list) throw new Error ("Grocery list not found");
     if(list.userId.toString() !== userId) throw new Error ("Not authorized to edit this list");
 
-    updates.forEach(({aisle, item: updateItem}) => {
+    const user = await User.findById(userId);
+
+    updates.forEach(async ({aisle, item: updateItem}) => {
         const aisleGroup = list.aisles.find(group => group.aisle === aisle);
         if (!aisleGroup) return;
 
         const item = aisleGroup.items.id(updateItem._id);
         if (!item) return;
 
-        if (updateItem.amount) item.amount = updateItem.amount
+        if (updateItem.amount) {
+            item.amount = updateItem.amount
+            const log = `${user.username} edited ${item.name} value to ${updateItem.amount} ${updateItem.unit}`;
+            await addGroceryLog(groceryListId, log)
+        }
         if (updateItem.unit) item.unit = updateItem.unit;
-        if (updateItem.purchased) item.purchased = updateItem.purchased;
+        if (updateItem.purchased === true) {
+            item.purchased = true;
+            const log = `${user.username} marked ${item.name} as purchased`;
+            await addGroceryLog(groceryListId, log)           
+        }
+        else if (updateItem.purchased === false) {
+            item.purchased = false;
+            const log = `${user.username} marked ${item.name} as not purchased`;
+            await addGroceryLog(groceryListId, log)
+        }
     });
 
     await list.save();
@@ -160,7 +198,7 @@ const groupIngredientByAisle = (ingredients) => {
         }
         grouped[aisle].push({
             name: ingredient.name,
-            amount: ingredient.amount,
+            amount: roundIfMoreThanTwoDecimals(ingredient.amount),
             unit: ingredient.unit,
             purchased: false
         })
@@ -171,3 +209,11 @@ const groupIngredientByAisle = (ingredients) => {
         items
     }));
 };
+
+function roundIfMoreThanTwoDecimals(amount) {
+  const decimalPart = amount.toString().split('.')[1];
+  if (decimalPart && decimalPart.length > 2) {
+    return Math.ceil(amount);
+  }
+  return amount;
+}

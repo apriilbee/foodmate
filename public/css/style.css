@@ -72,6 +72,17 @@ body {
     user-select: none;
 }
 
+.allergy-tag {
+    background-color: #444;
+    color: white;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    user-select: none;
+}
+
 .tag:hover {
     background-color: #333;
 }
@@ -82,7 +93,12 @@ body {
     font-weight: bold;
 }
 
-.input-field input {
+.allergy-tag.active {
+    background-color: #ffa726;
+    color: #000;
+    font-weight: bold;
+}
+v .input-field input {
     border-radius: 8px;
     padding: 10px 12px;
     border: 1px solid #ccc;
@@ -219,9 +235,7 @@ nav {
 }
 
 @media screen and (max-width: 600px) {
-
     .brand-logo-img {
-       height: 55px;
+        height: 55px;
     }
-
 }

@@ -7,8 +7,8 @@ import { logger } from "../utils/logger.js";
 export const getRecipes = async (req, res) => {
     logger.info("getRecipes called");
     try {
-        const { category, tags } = req.query;
-        const recipes = await getFilteredRecipes(category, tags);
+        const { category, tags, allergies } = req.query;
+        const recipes = await getFilteredRecipes(category, tags, allergies);
         res.json(recipes);
     } catch (error) {
         console.error("Failed to fetch from Spoonacular:", error.message);
@@ -22,17 +22,17 @@ export const getRecipeById = async (req, res) => {
     const recipeId = req.params.id;
     if (!recipeId) {
         return res.status(404).json({
-            error: "Something went wrong fetching recipes"
-        })
+            error: "Something went wrong fetching recipes",
+        });
     }
 
     const recipe = await getRecipeDetails(recipeId);
 
     if (recipe.error) {
         return res.status(500).json({
-          error: "Something went wrong fetching recipes",
+            error: "Something went wrong fetching recipes",
         });
-      }
+    }
 
     const formattedIngredients = getIngredientDetails(recipe.extendedIngredients);
     let instructionDetails;
@@ -49,15 +49,15 @@ export const getRecipeById = async (req, res) => {
     );
 
     const rawRecipe = recipe.toObject();
-    
+
     const fullRecipe = {
         ...rawRecipe,
         formattedIngredients,
         tags,
-        instructionDetails
-    }
-    
-    res.status(200).json({ recipe: fullRecipe })                                                                                                                     
+        instructionDetails,
+    };
+
+    res.status(200).json({ recipe: fullRecipe });
 };
 
 export const searchRecipes = async (req, res) => {

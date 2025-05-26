@@ -1,0 +1,179 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  nav {
+    margin-bottom: 0;
+  }
+
+  .meal-header {
+    background: #934E26;
+    color: white;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .meal-header a {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+    padding: 0 15px;
+  }
+
+  .meal-header span {
+    font-weight: bold;
+    font-size: 24px;
+  }
+
+  .week-view {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    background-color: #e3a882;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 80vh;
+  }
+
+  .day-column {
+    background-color: #d99166;
+    border-radius: 15px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 320px;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+
+  .day-column h4 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .meal-slot {
+    margin: 8px 0;
+    text-align: center;
+    width: 100%;
+  }
+
+  .meal-name {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .meal-recipe {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+  }
+
+  .empty {
+    color: #555;
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  .delete-meal-btn {
+    background: none;
+    border: none;
+    color: red;
+    font-weight: bold;
+    margin-left: 6px;
+    cursor: pointer;
+  }
+
+  .calories-footer {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .meal-box {
+    background-color: #fbe9e7;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+.loading .spinner {
+  border: 6px solid #f3f3f3;
+  border-top-color: #fe8641;
+  border-radius: 50%;
+  width: 40px; height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 16px auto;
+}
+
+.delete-meal-btn {
+  background-color: #ffe0e0;
+  border: 1px solid red;
+  border-radius: 5px;
+  padding: 6px 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#confirmDeleteModal {
+  max-width: 400px;
+  border-radius: 12px;
+  padding: 0;
+  overflow: hidden;
+}
+
+#confirmDeleteModal .modal-content {
+  padding: 24px;
+  background-color: #ff7043;
+  color: white;
+  text-align: center;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+#confirmDeleteModal .modal-content h5 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#confirmDeleteModal .modal-footer {
+  background-color: #fff3e0;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  padding: 12px 16px;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: auto;
+  min-height: 56px;
+}
+
+
+#confirmDeleteModal .modal-footer a {
+  font-weight: bold;
+}
+
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading p {
+  text-align: center; color: #555; margin-top: 8px;
+}

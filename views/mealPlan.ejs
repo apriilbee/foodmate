@@ -1,189 +1,35 @@
-<%- include("partials/head") %>
-<%- include("partials/navbar") %>
-
-<style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow-x: hidden;
-  }
-
-  nav {
-    margin-bottom: 0;
-  }
-
-  .meal-header {
-    background: #934E26;
-    color: white;
-    padding: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .meal-header a {
-    color: white;
-    text-decoration: none;
-    font-size: 24px;
-    padding: 0 15px;
-  }
-
-  .meal-header span {
-    font-weight: bold;
-    font-size: 24px;
-  }
-
-  .week-view {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-    background-color: #e3a882;
-    padding: 20px;
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 80vh;
-  }
-
-  .day-column {
-    background-color: #d99166;
-    border-radius: 15px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 320px;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  }
-
-  .day-column h4 {
-    text-align: center;
-    font-weight: bold;
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-
-  .meal-slot {
-    margin: 8px 0;
-    text-align: center;
-    width: 100%;
-  }
-
-  .meal-name {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 4px;
-  }
-
-  .meal-recipe {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-  }
-
-  .empty {
-    color: #555;
-    font-style: italic;
-    font-size: 13px;
-  }
-
-  .delete-meal-btn {
-    background: none;
-    border: none;
-    color: red;
-    font-weight: bold;
-    margin-left: 6px;
-    cursor: pointer;
-  }
-
-  .calories-footer {
-    margin-top: 10px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 14px;
-  }
-
-  .meal-box {
-    background-color: #fbe9e7;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    width: 100%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-</style>
-
-<!-- Meal Plan Header -->
-<div class="meal-header">
-  <a href="/mealplan?week=<%= prevWeek %>">&lt;</a>
-  <span>MEAL PLAN: <%= moment(startOfWeek).format("MMMM D") %> - <%= moment(endOfWeek).format("D") %></span>
-  <a href="/mealplan?week=<%= nextWeek %>">&gt;</a>
-</div>
-
-<!-- Week Calendar -->
-<div class="week-view">
-<%
-  function getOrdinalSuffix(day) {
-    if (day > 3 && day < 21) return 'th';
-    switch (day % 10) {
-      case 1: return 'st';
-      case 2: return 'nd';
-      case 3: return 'rd';
-      default: return 'th';
-    }
-  }
-
-  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const mealsByDay = {};
-
-  for (let d = 0; d < 7; d++) {
-    const day = new Date(startOfWeek);
-    day.setDate(day.getDate() + d);
-    const dateStr = day.toISOString().split("T")[0];
-    mealsByDay[dateStr] = { Breakfast: null, Lunch: null, Dinner: null };
-  }
-
-  meals.forEach(meal => {
-    if (mealsByDay[meal.date]) {
-      mealsByDay[meal.date][meal.type] = meal;
-    }
-  });
-
-  Object.entries(mealsByDay).forEach(([date, slots], index) => {
-    const dayObj = new Date(date);
-    const formattedDate = dayObj.getDate() + getOrdinalSuffix(dayObj.getDate());
-    let totalCalories = 0;
-%>
-  <div class="day-column">
-    <h4><%= dayNames[index] %> <br> <%= formattedDate %></h4>
-
-    <% ["Breakfast", "Lunch", "Dinner"].forEach(type => { 
-         const meal = slots[type];
-    %>
-      <div class="meal-slot meal-box">
-        <span class="meal-name"><%= type %>:</span>
-        <% if (meal) { %>
-          <div class="meal-recipe">
-            <%= meal.recipe_id || "Recipe" %>
-            <button class="delete-meal-btn" data-meal-id="<%= meal._id %>">X</button>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('partials/head') %>
+        <link rel="stylesheet" href="/css/mealPlan.css" />
+    </head>
+    <body>
+        <%- include('partials/navbar') %>
+        <div class="meal-header">
+            <a id="prev-week">&lt;</a>
+            <span id="week-range">MEAL PLAN</span>
+            <a id="next-week">&gt;</a>
           </div>
-          <% totalCalories += parseInt(meal.calories || 0); %>
-        <% } else { %>
-          <div class="empty">No meal</div>
-        <% } %>
-      </div>
-    <% }); %>
+          
+          <div id="meal-container">
+            <div class="loading">
+              <div class="spinner"></div>
+              <p>Loading meal plan...</p>
+            </div>
+          </div>
 
-    <div class="calories-footer">
-      <%= totalCalories %> kcal
-    </div>
-  </div>
-<% }); %>
-</div>
+          <div id="confirmDeleteModal" class="modal">
+            <div class="modal-content">
+              <h5>Confirm Delete</h5>
+              <p id="delete-modal-text"></p>
+            </div>
+            <div class="modal-footer">
+              <a href="#!" class="modal-close btn-flat red-text" id="confirm-delete-btn">Delete</a>
+              <a href="#!" class="modal-close btn-flat">Cancel</a>
+            </div>
+          </div>
 
-<script src="/js/mealPlan.js"></script>
+    </body>
+    <%- include('partials/scripts') %>
+</html>

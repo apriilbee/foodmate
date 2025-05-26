@@ -39,7 +39,10 @@ async function loadRecipe() {
         <div class="info-icons">
           ${renderNutrients(recipe.nutrition?.nutrients || [])}
         </div>
-        <button style="background-color: orange; color: white; padding: 10px 16px; border: none; border-radius: 8px;">
+        <button 
+          style="background-color: orange; color: white; padding: 10px 16px; border: none; border-radius: 8px;" 
+          onclick="openModal(this)" 
+          data-recipe-id="${recipe.id}">
           Add to Meal Plan
         </button>
         <a href="/home" style="background-color: orange; color: white; padding: 8.5px 16px; border: none; border-radius: 8px; text-decoration: none; display: inline-block;">

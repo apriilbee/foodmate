@@ -3,16 +3,17 @@
 
 ## Features
 
-- User Authentication with Email Verification  
-- Recipe Search with Dietary & Allergen Filters  
-- Personalized Meal Plans  
-- Grocery List Generation based on selected meal plans
-- Multi-user grocery list editing with real-time updates
-- Customizable User Profile with dietary preferences and account management options
-- Caching for optimized API usage  
-- Modern responsive UI using Materialize CSS  
-- Integration with Spoonacular API (for recipes)
-- Forgot Password support with email-based reset link
+- Secure User Authentication with Email Verification and Password Reset Support
+- Recipe Search with Keyword Matching
+- Recipe Filtering based on Category, Dietary & Allergen Preferences
+- Personalized Weekly Meal Planning 
+- Grocery List Generation from Selected Meals
+- Collaborative Grocery List Editing with Real-Time Updates
+- AI-Powered Real-Time Chat for Meal Recommendations (via Google Gemini & Socket.io)
+- Customizable User Profile with Dietary Preferences and Account Management
+- Optimized API Usage through Database Caching Mechanisms
+- Modern Responsive UI built with Materialize CSS
+- Third-Party Integrations: Spoonacular (Recipes), Google Gemini (AI Chat)
 
 ## Tech Stack
 
@@ -59,7 +60,7 @@
 | DELETE | `/`     | Deletes meal entries for a specific date | ✅            |
 
 
-### Grocery List Routes (`groceryList`)
+### Grocery List Routes (`/groceryList`)
 
 | Method | Endpoint             |Description                              | Auth Required |
 |--------|--------------------- |-----------------------------------------|---------------|
@@ -70,15 +71,15 @@
 | GET    | `/all`               | Retrieves all grocery lists for a user  | ✅           |
 
 
-### User Profile Update
+### User Profile Update (`/profile`)
 | Method | Endpoint             | Description                              | Auth Required |
 |--------|----------------------|------------------------------------------|---------------|
-| GET    | `/profile/`          | Retrieves the user's profile             | ✅            |
-| POST   | `/profile/update`    | Updates the user's profile information   | ✅            |
-| POST   | `/profile/dietpreferences` | Updates dietary preferences        | ✅            |
-| DELETE | `/profile/delete`    | Deletes the user's account               | ✅            |
-| POST   | `/profile/uploadpicture` | Uploads a new profile picture       | ✅            |
-| POST   | `/profile/updateemail` | Updates the user's email address      | ✅            |
+| GET    | `/`          | Retrieves the user's profile             | ✅            |
+| POST   | `/update`    | Updates the user's profile information   | ✅            |
+| POST   | `/dietpreferences` | Updates dietary preferences        | ✅            |
+| DELETE | `/delete`    | Deletes the user's account               | ✅            |
+| POST   | `/uploadpicture` | Uploads a new profile picture       | ✅            |
+| POST   | `/updateemail` | Updates the user's email address      | ✅            |
 
 ### Password Recovery 
 | Method | Endpoint                 | Description                                       | Auth Required |

@@ -22,14 +22,14 @@ document.querySelectorAll('.gh-list-item').forEach(item => {
 
       if (!response.ok) throw new Error('Failed to fetch grocery list');
       const data = await response.json();
-
       document.getElementById('grocery-details-dates').innerHTML = `
         <h6>${startDate} - ${endDate}</h6>
+        <p>Grocery List Owner: ${data.owner}</p>
       `;
-      renderGroceryList(data.list);
-      console.log(data.list.logs);
+      console.log(data);
+      renderGroceryList(data.list, data.owned);
 
-      document.getElementById('log-details').textContent = `Logs for list ID: ${startDate} - ${endDate}`;
+      document.getElementById('log-details').textContent = `Logs for list: ${startDate} - ${endDate}`;
 
       if (currentListId) {
         socket.emit("leaveGroceryRoom", currentListId);
@@ -48,15 +48,40 @@ document.querySelectorAll('.gh-list-item').forEach(item => {
   });
 });
 
-socket.on("logMessage", (log) => {
+socket.on("logMessage", async (log) => {
   const logContainer = document.getElementById("log-container");
-  createLogElement(log, logContainer);
+  createLogElement(log.logEntry, logContainer);
+  try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/api/groceryList/${log.groceryId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to fetch grocery list');
+      const data = await response.json();
+      renderGroceryList(data.list, data.owned);
+  }
+  catch (err) {
+    console.error(err);
+  }
 });
 
-function renderGroceryList(groceryList) {
+function renderGroceryList(groceryList, owned) {
   const container = document.getElementById('grocery-details');
   container.innerHTML = '';
 
+  if (owned) {
+      const shareBtnContainer = document.getElementById('share-btn-container');
+      shareBtnContainer.innerHTML = "";
+      const shareBtn = document.createElement('button');
+      shareBtn.textContent = 'Share';
+      shareBtn.classList.add('share-btn');
+      shareBtn.addEventListener('click', () => openShareModal(groceryList._id));
+      shareBtnContainer.appendChild(shareBtn);
+  }
+  
   groceryList.aisles.forEach(aisle => {
     const categoryDiv = document.createElement('div');
     categoryDiv.classList.add('grocery-category');
@@ -93,7 +118,7 @@ function renderGroceryList(groceryList) {
         />
         <span>${item.name}</span>
         <span class="quantity-display">${item.amount} ${item.unit}</span>
-        <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
+        <span class="btn-display"><button class="edit-btn" onclick="openEditModal(this)">Edit</button></span>
       `;
       categoryDiv.appendChild(label);
     });
@@ -105,7 +130,6 @@ function renderGroceryList(groceryList) {
 function renderPreviousLogs(logs) {
   const logContainer = document.getElementById("log-container");
   logs.forEach(log => {
-    console.log(log);
     createLogElement(log, logContainer);
   })
 }
@@ -121,4 +145,9 @@ function createLogElement (log, logContainer) {
 
   logEl.textContent = `[${day}/${month}/${year} ${time}] ${log.message}`;
   logContainer.appendChild(logEl); 
+}
+
+function openShareModal(groceryListId) {
+  document.getElementById('share-modal').style.display = 'block';
+  document.getElementById('share-grocery-list-id').value = groceryListId;
 }

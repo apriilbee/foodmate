@@ -147,3 +147,29 @@
     </td>
   </tr>
 </table>
+### Feedback Form
+<table>
+  <tr>
+    <td align="center">
+      <img src="./public/img/read-me/feedback-form.png" width="450"/>
+    </td>
+  </tr>
+</table>
+
+### Feedback Management
+<table>
+  <tr>
+    <td align="center">
+      <img src="./public/img/read-me/feedback-management.png" width="450"/>
+    </td>
+  </tr>
+</table>
+
+### Add to Meal Plan Modal
+<table>
+  <tr>
+    <td align="center">
+      <img src="./public/img/read-me/mealplan-modal.png" width="450"/>
+    </td>
+  </tr>
+</table>

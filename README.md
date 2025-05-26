@@ -49,6 +49,15 @@
 | GET    | `/`          | Returns saved or suggested recipes     | ✅            |
 | GET    | `/:id`       | Returns recipe details based on ID     | ✅            |
 
+### Meal Plan Routes (`/mealPlan`)
+| Method | Endpoint| Description                              | Auth Required |
+|--------|---------|------------------------------------------|---------------|
+| POST   | `/`     | Creates a new meal plan entry            | ✅            |
+| GET    | `/week` | Returns weekly meal plan data (JSON)     | ✅            |
+| GET    | `/api`  | Returns meal plan entries                | ✅            |
+| DELETE | `/`     | Deletes meal entries for a specific date | ✅            |
+
+
 ### Grocery List Routes (`groceryList`)
 
 | Method | Endpoint             |Description                              | Auth Required |
@@ -85,6 +94,9 @@
 |--------------|-----------|-------------------------------------------------------------|
 | `ai-message` | Client → Server | Sent by the client when a user submits a chat message to the AI |
 | `ai-reply`   | Server → Client | Emitted by the server with the AI's response (from Gemini)         |
+| `joinGroceryRoom`  | Client → Server  | Sent when a user joins a grocery list room to receive real-time updates.    |
+| `leaveGroceryRoom` | Client → Server  | Sent when a user leaves a grocery list room to stop receiving updates.      |
+| `logMessage`       | Server → Client  | Emitted when a new log entry is added to a grocery list. Sent to all clients in that room. |
 
 ## Running Locally
 
@@ -186,10 +198,16 @@
   <a href="./public/img/read-me/grocery-list2.png" target="_blank">
     <img src="./public/img/read-me/grocery-list2.png" width="150"/>
   </a>
+  <a href="./public/img/read-me/grocery-list-history.png" target="_blank">
+    <img src="./public/img/read-me/grocery-list-history.png" width="150"/>
+  </a>
   <a href="./public/img/read-me/feedback-management.png" target="_blank">
     <img src="./public/img/read-me/feedback-management.png" width="150"/>
   </a>
   <a href="./public/img/read-me/mealplan-modal.png" target="_blank">
     <img src="./public/img/read-me/mealplan-modal.png" width="150"/>
+  </a>
+  <a href="./public/img/read-me/mealplan-management.png" target="_blank">
+    <img src="./public/img/read-me/mealplan-management.png" width="150"/>
   </a>
 </div>

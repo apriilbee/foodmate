@@ -7,6 +7,7 @@
 - Recipe Search with Dietary & Allergen Filters  
 - Personalized Meal Plans  
 - Grocery List Generation based on selected meal plans
+- Multi-user grocery list editing with real-time updates
 - Customizable User Profile with dietary preferences and account management options
 - Caching for optimized API usage  
 - Modern responsive UI using Materialize CSS  

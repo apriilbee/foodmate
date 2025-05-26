@@ -106,14 +106,14 @@ v .input-field input {
 }
 
 .input-field input:focus {
-    border-color: #00897b;
+    border-color: #fe8641;
     box-shadow: none;
 }
 
 .btn.full-btn {
     width: 100%;
     margin-top: 10px;
-    background-color: #00897b;
+    background-color: #fe8641;
     border-radius: 8px;
 }
 
@@ -225,7 +225,7 @@ nav {
 }
 
 .add-to-meal-btn {
-    background-color: #e05104;
+    background-color: #fe8641;
     color: white;
     border: none;
     padding: 6px 10px;

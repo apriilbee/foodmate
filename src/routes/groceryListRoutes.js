@@ -9,5 +9,6 @@ router.get('/:id', authenticateJWT, retrieveGroceryListById);
 router.patch('/:id', authenticateJWT, editGroceryList);
 router.post('/:id/collaborators', authenticateJWT, inviteCollaboratorToList);
 router.get('/all', authenticateJWT, retrieveAllGroceryLists);
+
  
 export default router;

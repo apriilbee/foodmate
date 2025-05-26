@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('partials/head') %>
+    <%- include('partials/head') %>    
     <body>
         <%- include('partials/navbar') %>
 
@@ -48,9 +48,12 @@
 
             <!-- AI Chat -->
             <%- include ('partials/aiModal') %>
+
+            <%- include("partials/recipes/add-to-meal-modal") %>
             <!--feedback-->
             <%- include("feedbackmodal") %>
         </div>
-        <%- include('partials/scripts') %> <%- include("partials/recipes/add-to-meal-modal") %>
+
+        <%- include('partials/scripts') %> 
     </body>
 </html>

@@ -1,0 +1,74 @@
+<%- include("partials/head") %>
+<%- include("partials/navbar") %>
+<link rel="stylesheet" href="/css/mealPlan.css" />
+
+<!-- Meal Plan Header -->
+<div class="meal-header">
+  <a href="/mealPlan?week=<%= prevWeek %>">&lt;</a>
+  <span>MEAL PLAN: <%= moment(startOfWeek).format("MMMM D") %> - <%= moment(endOfWeek).format("D") %></span>
+  <a href="/mealPlan?week=<%= nextWeek %>">&gt;</a>
+</div>
+
+<!-- Week Calendar -->
+<div class="week-view">
+<%
+  function getOrdinalSuffix(day) {
+    if (day > 3 && day < 21) return 'th';
+    switch (day % 10) {
+      case 1: return 'st';
+      case 2: return 'nd';
+      case 3: return 'rd';
+      default: return 'th';
+    }
+  }
+
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const mealsByDay = {};
+
+  for (let d = 0; d < 7; d++) {
+    const day = new Date(startOfWeek);
+    day.setDate(day.getDate() + d);
+    const dateStr = day.toISOString().split("T")[0];
+    mealsByDay[dateStr] = { Breakfast: null, Lunch: null, Dinner: null };
+  }
+
+  meals.forEach(meal => {
+    const dateStr = new Date(meal.date).toISOString().split("T")[0];
+    if (mealsByDay[dateStr]) {
+      mealsByDay[dateStr][meal.mealType] = meal;
+    }
+  });
+
+  Object.entries(mealsByDay).forEach(([date, slots], index) => {
+    const dayObj = new Date(date);
+    const formattedDate = dayObj.getDate() + getOrdinalSuffix(dayObj.getDate());
+    let totalCalories = 0;
+%>
+  <div class="day-column">
+    <h4><%= dayNames[index] %> <br> <%= formattedDate %></h4>
+
+    <% ["Breakfast", "Lunch", "Dinner"].forEach(type => {
+         const meal = slots[type];
+    %>
+      <div class="meal-slot meal-box">
+        <span class="meal-name"><%= type %>:</span>
+        <% if (meal && meal.recipeName) { %>
+          <div class="meal-recipe">
+            <a href="/recipes/<%= meal.recipeId %>"><%= meal.recipeName %></a>
+            <button class="delete-meal-btn" data-meal-id="<%= meal.recipeId %>">X</button>
+          </div>
+          <% totalCalories += parseInt(meal.calories || 0); %>
+        <% } else { %>
+          <div class="empty">No meal</div>
+        <% } %>
+      </div>
+    <% }); %>
+
+    <div class="calories-footer">
+      <%= totalCalories %> kcal
+    </div>
+  </div>
+<% }); %>
+</div>
+
+<script src="/js/mealPlan.js"></script>

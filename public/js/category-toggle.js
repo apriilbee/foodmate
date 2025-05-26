@@ -1,4 +1,4 @@
-import { renderRecipes } from './recipe-card.js';
+import { renderRecipes } from "./recipe-card.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const categories = document.querySelectorAll(".category-item");
@@ -19,23 +19,26 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedDiets = [...dietTags]
             .filter((tag) => tag.classList.contains("active"))
             .map((tag) => tag.textContent.trim());
-        const selectedAllergies = Array.from(document.querySelectorAll('#allergy-dropdown input[type="checkbox"]:checked'))
-            .map((cb) => cb.value);
-    
+        const selectedAllergies = Array.from(
+            document.querySelectorAll('#allergy-dropdown input[type="checkbox"]:checked')
+        ).map((cb) => cb.value);
+
         const params = new URLSearchParams();
-    
-        if (selectedCategory) params.append('category', selectedCategory);
-        if (selectedDiets.length) params.append('tags', selectedDiets.join(','));
-        if (selectedAllergies.length) params.append('allergies', selectedAllergies.join(','));
-    
+
+        if (selectedCategory) params.append("category", selectedCategory);
+        if (selectedDiets.length) params.append("tags", selectedDiets.join(","));
+        if (selectedAllergies.length) params.append("allergies", selectedAllergies.join(","));
+
+        console.log(params);
+
         fetch(`/api/recipes?${params.toString()}`)
             .then((res) => res.json())
             .then((data) => {
-                renderRecipes(data.recipes.slice(0, 9)); 
+                renderRecipes(data.recipes.slice(0, 9));
             })
             .catch((err) => console.error("Failed to fetch recipes:", err));
     }
-    
+
     categories.forEach((item, index) => {
         item.addEventListener("click", () => setActiveCategory(index));
     });
@@ -50,6 +53,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     dietTags.forEach((tag) => {
         tag.addEventListener("click", () => {
+            // Skip toggling and selection if it's the allergy dropdown trigger
+            if (tag.id === "allergy-dropdown-trigger" || tag.closest("#allergy-dropdown")) {
+                return;
+            }
+
             tag.classList.toggle("active");
             logSelection();
         });

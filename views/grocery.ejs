@@ -8,7 +8,10 @@
 
   <body>
     <%- include('partials/navbar') %>
-
+    <div id="error-alert" class="error-alert hidden">
+      <span id="error-message"></span>
+      <button id="dismissError" class="close-error">&times;</button>
+    </div>
     <div class="grocery-page">
       
       <div class="grocery-header-row">
@@ -23,11 +26,11 @@
         <div class="date-generate-card">
           <div class="date-field">
             <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" value="2025-05-01" />
+            <input type="date" id="startDate"/>
           </div>
           <div class="date-field">
             <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" value="2025-05-07" />
+            <input type="date" id="endDate"/>
           </div>
           <button id="generate-list-btn" class="generate-btn">Generate</button>
         </div>
@@ -35,85 +38,24 @@
 
      
       <div id="grocery-list-container" class="grocery-list-section">
-        <% groceryData.forEach(category => { %>
-          <div class="grocery-category">
-            <h3 class="category-title"><%= category.category %></h3>
-            <div class="item-header-row">
-              <span class="item-header">Item</span>
-              <span class="quantity-header">Quantity</span>
-              <span class="edit-header">Action</span>
-            </div>
-            <% category.items.forEach(item => { %>
-              <label class="checkbox-item" data-default-unit="<%= item.unit %>">
-                <input type="checkbox" />
-                <span><%= item.name %></span>
-                <span class="quantity-display"><%= item.quantity %> <%= item.unit %></span>
-                <button class="edit-btn" onclick="openEditModal(this)">Edit</button>
-              </label>
-            <% }); %>
-          </div>
-        <% }); %>
       </div>
     </div>
 
+    <%- include('partials/groceryListEditModal') %>
     
-    <div id="editModal" class="modal hidden">
+    <div id="overwriteModal" class="modal hidden">
       <div class="modal-content">
-        <h4 id="modalItemName">Edit Item</h4>
-        <div class="qty-controls editable">
-          <input type="number" id="modalQtyInput" min="1" value="1" />
-          <span id="unitDisplayText">Unit</span>
-          <button onclick="decreaseModalQty()">−</button>
-          <button onclick="increaseModalQty()">+</button>
-        </div>
+        <h4 id="overwriteModalTitle">Grocery List Exists</h4>
+        <p id="overwriteModalText">A grocery list already exists for the selected dates.<br>Do you want to overwrite it?</p>
         <div class="modal-buttons">
-          <button onclick="saveChanges()">Save</button>
-          <button onclick="closeModal()">Cancel</button>
+          <button id="confirmOverwriteBtn">Yes, Overwrite</button>
+          <button onclick="closeOverwriteModal()">Cancel</button>
         </div>
       </div>
     </div>
-
-    <script>
-      let currentItemElement = null;
-
-      function openEditModal(btn) {
-        const label = btn.closest('.checkbox-item');
-        const itemName = label.querySelector('span').textContent;
-        currentItemElement = label;
-
-        document.getElementById('modalItemName').textContent = `Edit "${itemName}"`;
-        document.getElementById('unitDisplayText').textContent =
-          label.getAttribute('data-unit') || label.getAttribute('data-default-unit') || '';
-        document.getElementById('modalQtyInput').value = label.getAttribute('data-qty') || '1';
-
-        document.getElementById('editModal').classList.remove('hidden');
-      }
-
-      function closeModal() {
-        document.getElementById('editModal').classList.add('hidden');
-        currentItemElement = null;
-      }
-
-      function increaseModalQty() {
-        const input = document.getElementById('modalQtyInput');
-        input.value = parseInt(input.value) + 1;
-      }
-
-      function decreaseModalQty() {
-        const input = document.getElementById('modalQtyInput');
-        if (parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
-      }
-
-      function saveChanges() {
-        const qty = document.getElementById('modalQtyInput').value;
-        const unit = document.getElementById('unitDisplayText').textContent.trim();
-        if (currentItemElement) {
-          currentItemElement.setAttribute('data-qty', qty);
-          currentItemElement.setAttribute('data-unit', unit);
-          currentItemElement.querySelector('.quantity-display').textContent = `${qty} ${unit}`;
-        }
-        closeModal();
-      }
-    </script>
+    
+    <script src="/js/groceryList.js"></script>
+    <%- include('partials/scripts') %>
+    <script src="/js/groceryListEditModal.js"></script>
   </body>
 </html>

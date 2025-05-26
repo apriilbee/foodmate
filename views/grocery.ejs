@@ -26,11 +26,11 @@
         <div class="date-generate-card">
           <div class="date-field">
             <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" value="2025-05-01" />
+            <input type="date" id="startDate"/>
           </div>
           <div class="date-field">
             <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" value="2025-05-07" />
+            <input type="date" id="endDate"/>
           </div>
           <button id="generate-list-btn" class="generate-btn">Generate</button>
         </div>
@@ -40,23 +40,9 @@
       <div id="grocery-list-container" class="grocery-list-section">
       </div>
     </div>
-        
-    <div id="editModal" class="modal hidden">
-      <div class="modal-content">
-        <h4 id="modalItemName">Edit Item</h4>
-        <div class="qty-controls editable">
-          <input type="number" id="modalQtyInput" min="1" value="1" />
-          <span id="unitDisplayText">Unit</span>
-          <button id="decreaseModalQty">−</button>
-          <button id="increaseModalQty">+</button>
-        </div>
-        <div class="modal-buttons">
-          <button id="saveChanges">Save</button>
-          <button id="closeModal">Cancel</button>
-        </div>
-      </div>
-    </div>
 
+    <%- include('partials/groceryListEditModal') %>
+    
     <div id="overwriteModal" class="modal hidden">
       <div class="modal-content">
         <h4 id="overwriteModalTitle">Grocery List Exists</h4>
@@ -68,6 +54,8 @@
       </div>
     </div>
     
-    <script src="/js/grocery-list.js"></script>
+    <script src="/js/groceryList.js"></script>
+    <%- include('partials/scripts') %>
+    <script src="/js/groceryListEditModal.js"></script>
   </body>
 </html>

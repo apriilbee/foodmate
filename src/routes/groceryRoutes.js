@@ -1,12 +1,8 @@
 import express from "express";
 import { authenticateJWT } from "../middleware/authMiddleware.js";
+import { renderGenerateGroceryPage } from "../controllers/groceryListController.js";
 const router = express.Router();
 
-router.get("/", authenticateJWT, (req, res) => {
-  res.render("grocery", {
-    title: "Grocery List",
-    user: req.user,
-  });
-});
+router.get("/", authenticateJWT, renderGenerateGroceryPage)
 
 export default router;

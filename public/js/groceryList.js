@@ -1,82 +1,28 @@
-const token = localStorage.getItem("token");
-let currentItemElement = null;
 let pendingGeneration = null;
+const groceryListContainer = document.getElementById('grocery-list-container');
 
-function openEditModal(btn) {
-        const label = btn.closest('.checkbox-item');
-        const itemName = label.querySelector('span').textContent;
-        currentItemElement = label;
-        document.getElementById('modalItemName').textContent = `Edit "${itemName}"`;
-        document.getElementById('unitDisplayText').textContent =
-          label.getAttribute('data-unit') || label.getAttribute('data-default-unit') || '';
-        document.getElementById('modalQtyInput').value = label.getAttribute('data-qty') || '1';
+const today = new Date();
+const endDate = new Date();
+endDate.setDate(today.getDate() + 7);
 
-        document.getElementById('editModal').classList.remove('hidden');
+function getLocalDate (today) {
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  const localDateString = `${year}-${month}-${day}`;
+
+  return localDateString
 }
 
-function closeModal() {
-        document.getElementById('editModal').classList.add('hidden');
-        currentItemElement = null;
-}
-
-function increaseModalQty() {
-        const input = document.getElementById('modalQtyInput');
-        input.value = parseInt(input.value) + 1;
-}
-
-function decreaseModalQty() {
-        const input = document.getElementById('modalQtyInput');
-        if (parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
-}
-
-async function saveChanges() {
-  const qty = document.getElementById('modalQtyInput').value;
-  const unit = document.getElementById('unitDisplayText').textContent.trim();
-
-  if (currentItemElement) {
-    const itemId = currentItemElement.querySelector('input').dataset.itemId;
-    const aisle = currentItemElement.querySelector('input').dataset.aisle;
-    const groceryListId = currentItemElement.querySelector('input').dataset.groceryListId;
-  
-    currentItemElement.setAttribute('data-qty', qty);
-    currentItemElement.setAttribute('data-unit', unit);
-    currentItemElement.querySelector('.quantity-display').textContent = `${qty} ${unit}`;
-  
-    try {
-      const response = await fetch(`/api/groceryList/${groceryListId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json', 
-            'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          updates: [{
-            aisle,
-            item: {
-              _id: itemId,
-              amount: qty,
-              unit: unit
-            }
-          }]
-        })
-      });
-    
-      if (!response.ok) {
-        throw new Error('Failed to save changes');
-      }
-    
-    } catch (err) {
-      console.error(err);
-    }
-  }
-  closeModal();
-}
+document.getElementById('startDate').value = getLocalDate(today);
+document.getElementById('endDate').value = getLocalDate(endDate);
 
 async function generateGroceryList() {
   const startDate = document.getElementById('startDate').value;
   const endDate = document.getElementById('endDate').value;
 
   try {
+    const token = localStorage.getItem("token");
     const res = await fetch('/api/groceryList/generate', {
       method: 'POST',
       headers: {
@@ -100,14 +46,13 @@ async function generateGroceryList() {
     }
 
     const data = await res.json()
-    renderGroceryList(data.groceryList);
+    renderGroceryList(data.groceryList, groceryListContainer);
   } catch (err) {
         showError(err.message);
   }
 }
 
-function renderGroceryList(groceryList) {
-  const container = document.getElementById('grocery-list-container');
+function renderGroceryList(groceryList, container) {
   container.innerHTML = '';
   groceryList.aisles.forEach(aisle => {
     const categoryDiv = document.createElement('div');
@@ -175,50 +120,11 @@ document.getElementById('generate-list-btn').addEventListener('click', generateG
 
 document.getElementById('dismissError').addEventListener('click', dismissError);
 
-document.getElementById('decreaseModalQty').addEventListener('click', decreaseModalQty);
-
-document.getElementById('increaseModalQty').addEventListener('click', increaseModalQty);
-
-document.getElementById('saveChanges').addEventListener('click', saveChanges);
-
-document.getElementById('closeModal').addEventListener('click', closeModal);
-
-document.addEventListener("change", async (e) => {
-  if (e.target.classList.contains("purchase-checkbox")) {
-    const checkbox = e.target;
-    const itemId = checkbox.dataset.itemId;
-    const aisle = checkbox.dataset.aisle;
-    const groceryListId = checkbox.dataset.groceryListId;
-    const purchased = checkbox.checked;
-
-    try {
-      const response = await fetch(`/api/groceryList/${groceryListId}`, {
-        method: 'PATCH',
-        headers: { 
-            'Content-Type': 'application/json', 
-            'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          updates: [{ aisle, item: { _id: itemId, purchased } }]
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update item.");
-      }
-
-    } catch (err) {
-      console.error("Error updating item:", err);
-      document.getElementById('error-message').textContent = err.message;
-      document.getElementById('error-alert').classList.remove('hidden');
-    }
-  }
-});
-
 document.getElementById('confirmOverwriteBtn').addEventListener('click', async ()=>{
   if (!pendingGeneration) return;
 
   try {
+    const token = localStorage.getItem("token");
     const res = await fetch('/api/groceryList/generate', {
       method: 'POST',
       headers: {
@@ -229,12 +135,10 @@ document.getElementById('confirmOverwriteBtn').addEventListener('click', async (
       body: JSON.stringify({ ...pendingGeneration, force: true })
     });
     const data = await res.json()
-    renderGroceryList(data.groceryList);
+    renderGroceryList(data.groceryList, groceryListContainer);
   } catch (err) {
     showError(err.message);
   } finally {
     closeOverwriteModal();
   }
 })
-
-window.groceryList_openEditModal = openEditModal;

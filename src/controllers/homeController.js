@@ -6,14 +6,6 @@ import { ALLERGY_OPTIONS } from "../constants/recipeFilters.js";
 export const getIndex = (req, res) => {
     res.render("index", { title: "Login", error: null });
 };
-/*
-export const getHome = (req, res) => {
-    res.render("home", {
-        title: "Home",
-        user: req.user,
-    });
-};
-*/
 
 export const getHome = async (req, res) => {
     try {

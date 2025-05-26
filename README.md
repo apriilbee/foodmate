@@ -122,123 +122,26 @@
     ```
 
 ## Screenshots
-### User Authentication
 <table>
   <tr>
-    <td align="center">
-      <img src="./public/img/read-me/login.png" width="350"/>
-    </td>
-    <td align="center">
-      <img src="./public/img/read-me/register.png" width="350"/>
-    </td>
-  </tr>
-</table>
-
-### Recipe Filtering
-<table>
-  <tr>
-    <td align="center">
-      <img src="./public/img/read-me/filtering.png" width="450"/>
-    </td>
-    <td align="center">
-      <img src="./public/img/read-me/filtering-2.png" width="450"/>
-    </td>
-  </tr>
-</table>
-
-
-
-### Recipe Search
-<table>
-  <tr>
-    <td align="center">
-      <img src="./public/img/read-me/search.png" width="450"/>
-    </td>
-  </tr>
-</table>
-
-### Real-time Chat
-<table>
-  <tr>
-    <td align="center">
-      <img src="./public/img/read-me/chatbot2.png" width="450"/>
-    </td>
-    <td align="center">
-      <img src="./public/img/read-me/chatbot.png" width="450"/>
-    </td>
-  </tr>
-</table>
-
-### Forget Password Retrieval
-<table>
-  <tr>
-    <td align="center">
-      <img src="./public/img/read-me/forgetpass.png" width="450"/>
-    </td>
-    <td align="center">
-      <img src="./public/img/read-me/resetpage.png" width="450"/>
-    </td>
-  </tr>
-</table>
-
-### Update Profile Setting
-
-<table>
-  <tr>
-    <td align="center">
-      <img src="public/img/read-me/profile-picture.png" width="600"/>
-    </td>
-    <td align="center">
-      <img src="public/img/read-me/dieterypreference.png" width="600"/>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="public/img/read-me/change-password.png" width="600"/>
-    </td>
-    <td align="center">
-      <img src="public/img/read-me/change-email.png" width="600"/>
-    </td>
-    <td align="center">
-      <img src="public/img/read-me/delete-account.png" width="600"/>
-### Feedback Form
-<table>
-  <tr>
-    <td align="center">
-      <img src="./public/img/read-me/feedback-form.png" width="450"/>
-    </td>
-  </tr>
-</table>
-
-### Grocery List Generation
-
-<table>
-  <tr>
-    <td align="center">
-      <img src="public/img/read-me/grocery-list.png" width="450"/>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="public/img/read-me/grocery-list2.png" width="450"/>
-    </td>
-  </tr>
-</table>
-
-### Feedback Management
-<table>
-  <tr>
-    <td align="center">
-      <img src="./public/img/read-me/feedback-management.png" width="450"/>
-    </td>
-  </tr>
-</table>
-
-### Add to Meal Plan Modal
-<table>
-  <tr>
-    <td align="center">
-      <img src="./public/img/read-me/mealplan-modal.png" width="450"/>
-    </td>
+    <td><img src="./public/img/read-me/login.png" width="150"/></td>
+    <td><img src="./public/img/read-me/register.png" width="150"/></td>
+    <td><img src="./public/img/read-me/filtering.png" width="150"/></td>
+    <td><img src="./public/img/read-me/filtering-2.png" width="150"/></td>
+    <td><img src="./public/img/read-me/search.png" width="150"/></td>
+    <td><img src="./public/img/read-me/chatbot2.png" width="150"/></td>
+    <td><img src="./public/img/read-me/chatbot.png" width="150"/></td>
+    <td><img src="./public/img/read-me/forgetpass.png" width="150"/></td>
+    <td><img src="./public/img/read-me/resetpage.png" width="150"/></td>
+    <td><img src="public/img/read-me/profile-picture.png" width="150"/></td>
+    <td><img src="public/img/read-me/dieterypreference.png" width="150"/></td>
+    <td><img src="public/img/read-me/change-password.png" width="150"/></td>
+    <td><img src="public/img/read-me/change-email.png" width="150"/></td>
+    <td><img src="public/img/read-me/delete-account.png" width="150"/></td>
+    <td><img src="./public/img/read-me/feedback-form.png" width="150"/></td>
+    <td><img src="public/img/read-me/grocery-list.png" width="150"/></td>
+    <td><img src="public/img/read-me/grocery-list2.png" width="150"/></td>
+    <td><img src="./public/img/read-me/feedback-management.png" width="150"/></td>
+    <td><img src="./public/img/read-me/mealplan-modal.png" width="150"/></td>
   </tr>
 </table>

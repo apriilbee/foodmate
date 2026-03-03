@@ -161,9 +161,6 @@
   <a href="./public/img/read-me/search.png" target="_blank">
     <img src="./public/img/read-me/search.png" width="150"/>
   </a>
-  <a href="./public/img/read-me/chatbot2.png" target="_blank">
-    <img src="./public/img/read-me/chatbot2.png" width="150"/>
-  </a>
   <a href="./public/img/read-me/chatbot.png" target="_blank">
     <img src="./public/img/read-me/chatbot.png" width="150"/>
   </a>

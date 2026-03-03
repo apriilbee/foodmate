@@ -170,46 +170,4 @@
   <a href="./public/img/read-me/chatbot.png" target="_blank">
     <img src="./public/img/read-me/chatbot.png" width="150"/>
   </a>
-  <a href="./public/img/read-me/forgetpass.png" target="_blank">
-    <img src="./public/img/read-me/forgetpass.png" width="150"/>
-  </a>
-  <a href="./public/img/read-me/resetpage.png" target="_blank">
-    <img src="./public/img/read-me/resetpage.png" width="150"/>
-  </a>
-  <a href="./public/img/read-me/profile-picture.png" target="_blank">
-    <img src="./public/img/read-me/profile-picture.png" width="150"/>
-  </a>
-  <a href="./public/img/read-me/dieterypreference.png" target="_blank">
-    <img src="./public/img/read-me/dieterypreference.png" width="150"/>
-  </a>
-  <a href="./public/img/read-me/change-password.png" target="_blank">
-    <img src="./public/img/read-me/change-password.png" width="150"/>
-  </a>
-  <a href="./public/img/read-me/change-email.png" target="_blank">
-    <img src="./public/img/read-me/change-email.png" width="150"/>
-  </a>
-  <a href="./public/img/read-me/delete-account.png" target="_blank">
-    <img src="./public/img/read-me/delete-account.png" width="150"/>
-  </a>
-  <a href="./public/img/read-me/feedback-form.png" target="_blank">
-    <img src="./public/img/read-me/feedback-form.png" width="150"/>
-  </a>
-  <a href="./public/img/read-me/grocery-list.png" target="_blank">
-    <img src="./public/img/read-me/grocery-list.png" width="150"/>
-  </a>
-  <a href="./public/img/read-me/grocery-list2.png" target="_blank">
-    <img src="./public/img/read-me/grocery-list2.png" width="150"/>
-  </a>
-  <a href="./public/img/read-me/grocery-list-history.png" target="_blank">
-    <img src="./public/img/read-me/grocery-list-history.png" width="150"/>
-  </a>
-  <a href="./public/img/read-me/feedback-management.png" target="_blank">
-    <img src="./public/img/read-me/feedback-management.png" width="150"/>
-  </a>
-  <a href="./public/img/read-me/mealplan-modal.png" target="_blank">
-    <img src="./public/img/read-me/mealplan-modal.png" width="150"/>
-  </a>
-  <a href="./public/img/read-me/mealplan-management.png" target="_blank">
-    <img src="./public/img/read-me/mealplan-management.png" width="150"/>
-  </a>
 </div>
